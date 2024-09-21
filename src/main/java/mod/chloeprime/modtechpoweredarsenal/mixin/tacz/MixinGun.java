@@ -4,7 +4,7 @@ import com.llamalad7.mixinextras.injector.ModifyExpressionValue;
 import com.tacz.guns.api.item.gun.FireMode;
 import com.tacz.guns.item.ModernKineticGunItem;
 import com.tacz.guns.resource.index.CommonGunIndex;
-import mod.chloeprime.modtechpoweredarsenal.common.attachments.BumpfireStockBehavior;
+import mod.chloeprime.modtechpoweredarsenal.common.standard.attachments.BumpfireStockBehavior;
 import net.minecraft.world.item.ItemStack;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.injection.At;

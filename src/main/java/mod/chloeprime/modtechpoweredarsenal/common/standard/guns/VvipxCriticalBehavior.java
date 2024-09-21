@@ -1,4 +1,4 @@
-package mod.chloeprime.modtechpoweredarsenal.common.guns;
+package mod.chloeprime.modtechpoweredarsenal.common.standard.guns;
 
 import com.google.common.collect.Sets;
 import com.tacz.guns.api.event.common.EntityHurtByGunEvent;

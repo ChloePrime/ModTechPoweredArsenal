@@ -1,4 +1,4 @@
-package mod.chloeprime.modtechpoweredarsenal.common.util;
+package mod.chloeprime.modtechpoweredarsenal.common.standard.util;
 
 import com.tacz.guns.api.item.IGun;
 import com.tacz.guns.api.item.attachment.AttachmentType;

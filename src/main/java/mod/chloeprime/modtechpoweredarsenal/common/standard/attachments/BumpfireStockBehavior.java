@@ -1,4 +1,4 @@
-package mod.chloeprime.modtechpoweredarsenal.common.attachments;
+package mod.chloeprime.modtechpoweredarsenal.common.standard.attachments;
 
 import com.google.common.collect.ImmutableList;
 import com.tacz.guns.api.TimelessAPI;
@@ -9,7 +9,7 @@ import com.tacz.guns.api.item.gun.FireMode;
 import com.tacz.guns.resource.index.CommonGunIndex;
 import com.tacz.guns.resource.pojo.data.gun.Bolt;
 import mod.chloeprime.modtechpoweredarsenal.ModTechPoweredArsenal;
-import mod.chloeprime.modtechpoweredarsenal.common.util.GunPreconditions;
+import mod.chloeprime.modtechpoweredarsenal.common.standard.util.GunPreconditions;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.item.ItemStack;
 import net.minecraftforge.eventbus.api.EventPriority;

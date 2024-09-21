@@ -5,6 +5,7 @@
   "compatibilityLevel": "JAVA_8",
   "refmap": "modtech_arsenal.refmap.json",
   "mixins": [
+    "minecraft.MixinDamageSource",
     "tacz.MixinGun"
   ],
   "client": [

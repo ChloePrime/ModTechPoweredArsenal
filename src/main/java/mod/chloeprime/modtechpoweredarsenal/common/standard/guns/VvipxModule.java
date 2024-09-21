@@ -1,4 +1,4 @@
-package mod.chloeprime.modtechpoweredarsenal.common.guns;
+package mod.chloeprime.modtechpoweredarsenal.common.standard.guns;
 
 import net.minecraft.resources.ResourceLocation;
 

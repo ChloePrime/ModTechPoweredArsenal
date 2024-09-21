@@ -1,7 +1,7 @@
 {
   "version": "1.0.0",
-  "name": "pack.modtech_arsenal.modtech_arsenal_builtin.name",
-  "desc": "pack.modtech_arsenal.modtech_arsenal_builtin.desc",
+  "name": "pack.modtech_arsenal_l2.modtech_arsenal_builtin.name",
+  "desc": "pack.modtech_arsenal_l2.modtech_arsenal_builtin.desc",
   "license": "MIT for configuration/recipes, ? for assets (geo and animation)",
   "authors": [
     "ChloePrime, ?"

@@ -1,11 +1,5 @@
 {
-  "weight": 0.4,
-  "aim_inaccuracy": {
-    "multiplier": 1.1
-  },
-  "inaccuracy": {
-    "multiplier": 1.1
-  },
+  "weight": 0.3,
   // 近战伤害，用于刺刀
   "melee": {
     // 刺刀距离参数，枪械里还有个刺刀攻击距离参数，两者做加和
