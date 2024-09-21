@@ -1,0 +1,15 @@
+{
+  "required": true,
+  "minVersion": "0.8",
+  "package": "mod.chloeprime.modtechpoweredarsenal.mixin",
+  "compatibilityLevel": "JAVA_8",
+  "refmap": "modtech_arsenal.refmap.json",
+  "mixins": [
+    "tacz.MixinGun"
+  ],
+  "client": [
+  ],
+  "injectors": {
+    "defaultRequire": 1
+  }
+}

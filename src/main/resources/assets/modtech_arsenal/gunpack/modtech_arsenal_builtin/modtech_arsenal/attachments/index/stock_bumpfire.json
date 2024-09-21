@@ -1,0 +1,7 @@
+{
+  "name": "modtech_arsenal.attachment.stock_bumpfire.name",
+  "tooltip": "modtech_arsenal.attachment.stock_bumpfire.desc",
+  "display": "modtech_arsenal:stock_bumpfire_display",
+  "data": "modtech_arsenal:stock_bumpfire_data",
+  "type": "stock"
+}

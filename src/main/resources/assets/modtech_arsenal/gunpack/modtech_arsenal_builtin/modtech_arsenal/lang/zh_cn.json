@@ -1,0 +1,6 @@
+{
+  "pack.modtech_arsenal.modtech_arsenal_builtin.name" :"模组科技军工厂",
+  "pack.modtech_arsenal.modtech_arsenal_builtin.desc" :"模组科技军工厂模组内置的枪包",
+  "modtech_arsenal.attachment.stock_bumpfire.name": "撞火枪托",
+  "modtech_arsenal.attachment.stock_bumpfire.desc": "\u00a7a让半自动武器可以全自动开火"
+}

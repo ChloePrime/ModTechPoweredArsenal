@@ -1,0 +1,6 @@
+{
+  "pack.modtech_arsenal.modtech_arsenal_builtin.name" :"ModTechPowered Arsenal",
+  "pack.modtech_arsenal.modtech_arsenal_builtin.desc" :"Builtin Gunpack of ModTechPowered Arsenal Mod",
+  "modtech_arsenal.attachment.stock_bumpfire.name": "Bump-Fire Stock",
+  "modtech_arsenal.attachment.stock_bumpfire.desc": "\u00a7aTurns Semi-Auto to Full-Auto"
+}

@@ -1,0 +1,24 @@
+{
+  "materials": [
+    {
+      "item": {
+        "type": "forge:partial_nbt",
+        "item": "tacz:modern_kinetic_gun",
+        "nbt": {
+          "GunId": "vvip-x:m4a1heiqishi"
+        }
+      },
+      "count": 1
+    },
+    {
+      "item": {
+        "item": "minecraft:emerald"
+      },
+      "count": 888
+    }
+  ],
+  "result": {
+    "type": "gun",
+    "id": "modtech_arsenal_vvipx:m4a1_dark_knight"
+  }
+}
