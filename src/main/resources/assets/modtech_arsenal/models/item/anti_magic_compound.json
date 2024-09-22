@@ -1,0 +1,6 @@
+{
+  "parent": "minecraft:item/generated",
+  "textures": {
+    "layer0": "modtech_arsenal:item/anti_magic_compound"
+  }
+}

@@ -1,0 +1,19 @@
+{
+  "materials": [
+    {
+      "item": {
+        "item": "modtech_arsenal:anti_magic_compound"
+      }
+    },
+    {
+      "item": {
+        "tag": "forge:ingots/copper"
+      },
+      "count": 8
+    }
+  ],
+  "result": {
+    "type": "attachment",
+    "id": "modtech_arsenal:ammo_mod_antimagic"
+  }
+}

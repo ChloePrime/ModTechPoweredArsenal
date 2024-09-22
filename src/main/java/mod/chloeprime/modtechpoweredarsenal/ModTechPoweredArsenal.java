@@ -4,10 +4,11 @@ import com.google.common.base.Suppliers;
 import com.mojang.logging.LogUtils;
 import com.tacz.guns.api.item.builder.AttachmentItemBuilder;
 import com.tacz.guns.api.resource.ResourceManager;
+import mod.chloeprime.modtechpoweredarsenal.network.ModNetwork;
 import net.minecraft.core.registries.Registries;
+import net.minecraft.network.chat.Component;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.item.*;
-import net.minecraft.world.level.block.Block;
 import net.minecraftforge.common.MinecraftForge;
 import net.minecraftforge.event.BuildCreativeModeTabContentsEvent;
 import net.minecraftforge.eventbus.api.IEventBus;
@@ -17,7 +18,6 @@ import net.minecraftforge.fml.config.ModConfig;
 import net.minecraftforge.fml.event.lifecycle.FMLCommonSetupEvent;
 import net.minecraftforge.fml.javafmlmod.FMLJavaModLoadingContext;
 import net.minecraftforge.registries.DeferredRegister;
-import net.minecraftforge.registries.ForgeRegistries;
 import net.minecraftforge.registries.RegistryObject;
 import org.slf4j.Logger;
 
@@ -27,8 +27,6 @@ import java.util.function.Supplier;
 public final class ModTechPoweredArsenal {
     public static final String MODID = "modtech_arsenal";
     public static final Logger LOGGER = LogUtils.getLogger();
-    public static final DeferredRegister<Block> BLOCKS = DeferredRegister.create(ForgeRegistries.BLOCKS, MODID);
-    public static final DeferredRegister<Item> ITEMS = DeferredRegister.create(ForgeRegistries.ITEMS, MODID);
     public static final DeferredRegister<CreativeModeTab> CREATIVE_MODE_TABS = DeferredRegister.create(Registries.CREATIVE_MODE_TAB, MODID);
 
     public static ResourceLocation loc(String path) {
@@ -36,28 +34,27 @@ public final class ModTechPoweredArsenal {
     }
 
     public static final Supplier<ItemStack> CREATIVE_TAB_ICON = Suppliers.memoize(
-            () -> AttachmentItemBuilder.create().setId(loc("stock_bumpfire")).build()
+            () -> MTPA.attachment("ammo_mod_antimagic")
     );
 
-    public static final RegistryObject<CreativeModeTab> EXAMPLE_TAB = CREATIVE_MODE_TABS.register("example_tab", () -> CreativeModeTab.builder()
+    public static final RegistryObject<CreativeModeTab> EXAMPLE_TAB = CREATIVE_MODE_TABS.register("main_tab", () -> CreativeModeTab.builder()
+            .title(Component.translatable("itemGroup.%s.main".formatted(MODID)))
             .withTabsBefore(CreativeModeTabs.COMBAT)
             .icon(CREATIVE_TAB_ICON)
             .displayItems((parameters, output) -> {
-//                output.accept(EXAMPLE_ITEM.get()); // Add the example item to the tab. For your own tabs, this method is preferred over the event
+                output.accept(MTPA.Items.ANTI_MAGIC_COMPOUND.get());
+                output.accept(MTPA.attachment("muzzle_mod_void_amp"));
+                output.accept(MTPA.attachment("stock_bumpfire"));
+                output.accept(MTPA.attachment("ammo_mod_antimagic"));
             }).build());
 
     public ModTechPoweredArsenal() {
         IEventBus modEventBus = FMLJavaModLoadingContext.get().getModEventBus();
 
+        registerDFRs(modEventBus);
+
         // Register the commonSetup method for modloading
         modEventBus.addListener(this::commonSetup);
-
-        // Register the Deferred Register to the mod event bus so blocks get registered
-        BLOCKS.register(modEventBus);
-        // Register the Deferred Register to the mod event bus so items get registered
-        ITEMS.register(modEventBus);
-        // Register the Deferred Register to the mod event bus so tabs get registered
-        CREATIVE_MODE_TABS.register(modEventBus);
 
         // Register ourselves for server and other game events we are interested in
         MinecraftForge.EVENT_BUS.register(this);
@@ -69,8 +66,15 @@ public final class ModTechPoweredArsenal {
         ModLoadingContext.get().registerConfig(ModConfig.Type.COMMON, Config.SPEC);
     }
 
+    private void registerDFRs(IEventBus bus) {
+        MTPA.Items.REGISTRY.register(bus);
+        CREATIVE_MODE_TABS.register(bus);
+        bus.addListener(MTPA::registerIngredientSerializers);
+    }
+
     private void commonSetup(final FMLCommonSetupEvent event) {
         event.enqueueWork(this::addBuiltinGunpacks);
+        event.enqueueWork(ModNetwork::init);
     }
 
     private void addBuiltinGunpacks() {

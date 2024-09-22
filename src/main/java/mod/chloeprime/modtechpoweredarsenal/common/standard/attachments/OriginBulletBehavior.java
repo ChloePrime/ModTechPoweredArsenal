@@ -31,7 +31,7 @@ public class OriginBulletBehavior {
             DamageTypeTags.BYPASSES_EFFECTS
     );
 
-    public static final String PD_KEY = ModTechPoweredArsenal.MODID+":anti_magic";
+    public static final String PD_KEY = ModTechPoweredArsenal.MODID + ":anti_magic";
 
     @SubscribeEvent
     public static void onBulletCreate(BulletCreateEvent event) {
@@ -46,14 +46,12 @@ public class OriginBulletBehavior {
 
     @SubscribeEvent(priority = EventPriority.LOW)
     public static void onPreHurt(EntityHurtByGunEvent.Pre event) {
-        if (event.getBullet() == null || !event.getBullet().getPersistentData().getBoolean(PD_KEY)) {
+        if (event.getLogicalSide().isClient() || event.getBullet() == null || !event.getBullet().getPersistentData().getBoolean(PD_KEY)) {
             return;
         }
         var source1 = event.getDamageSource(GunDamageSourcePart.NON_ARMOR_PIERCING);
         var source2 = event.getDamageSource(GunDamageSourcePart.ARMOR_PIERCING);
-        IMPL_TAGS.forEach(tag -> {
-            DamageSourceUtil.addTag(source1, tag);
-            DamageSourceUtil.addTag(source2, tag);
-        });
+        DamageSourceUtil.addTags(source1, IMPL_TAGS);
+        DamageSourceUtil.addTags(source2, IMPL_TAGS);
     }
 }

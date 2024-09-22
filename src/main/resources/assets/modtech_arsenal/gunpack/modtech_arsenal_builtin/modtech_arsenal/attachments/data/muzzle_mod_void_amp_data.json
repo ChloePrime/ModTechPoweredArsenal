@@ -1,0 +1,9 @@
+{
+  "weight": 0.5,
+  "ads": {
+    "addend": 0.025
+  },
+  "effective_range": {
+    "multiplier": 0.25
+  }
+}

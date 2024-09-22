@@ -1,0 +1,29 @@
+{
+  "conditions": [
+    {
+      "type": "forge:mod_loaded",
+      "modid": "l2hostility"
+    }
+  ],
+  "type": "minecraft:crafting_shaped",
+  "category": "redstone",
+  "key": {
+    "M": {
+      "item": "l2hostility:imagine_breaker"
+    },
+    "B": [
+      {
+        "item": "minecraft:bone_block"
+      }
+    ]
+  },
+  "pattern": [
+    "BBB",
+    "BMB",
+    "BBB"
+  ],
+  "result": {
+    "item": "modtech_arsenal:anti_magic_compound"
+  },
+  "show_notification": true
+}

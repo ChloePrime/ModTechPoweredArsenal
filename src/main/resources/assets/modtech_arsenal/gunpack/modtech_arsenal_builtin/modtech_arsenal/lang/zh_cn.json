@@ -1,8 +1,12 @@
 {
   "pack.modtech_arsenal.modtech_arsenal_builtin.name" :"模组科技军工厂",
-  "pack.modtech_arsenal.modtech_arsenal_builtin.desc" :"模组科技军工厂模组内置的枪包",
+  "pack.modtech_arsenal.modtech_arsenal_builtin.desc" :"包含特殊功能的各种枪械和配件",
+  "modtech_arsenal.gun.albert_01.name": "埃尔伯特-01",
+  "modtech_arsenal.gun.albert_01.desc": "伊森，用这个！\n\u00a7a+ 亡灵杀手 V\n\u00a7a+ 分裂抑制（需要安装莱特兰：恶意模组）",
   "modtech_arsenal.attachment.stock_bumpfire.name": "一体式扳机组",
-  "modtech_arsenal.attachment.stock_bumpfire.desc": "包含枪托部分的全自动扳机组改件\n§a+ 让半自动武器可以全自动开火",
-  "modtech_arsenal.attachment.ammo_mod_antimagic.name": "§e起源弹",
-  "modtech_arsenal.attachment.ammo_mod_antimagic.desc": "反魔法弹头\n§a+ 穿透魔法防御"
+  "modtech_arsenal.attachment.stock_bumpfire.desc": "包含枪托部分的全自动扳机组改件\n\u00a7a+ 让半自动武器可以全自动开火",
+  "modtech_arsenal.attachment.ammo_mod_antimagic.name": "\u00a7e起源弹",
+  "modtech_arsenal.attachment.ammo_mod_antimagic.desc": "反魔法弹头\n\u00a7a+ 穿透魔法防御",
+  "modtech_arsenal.attachment.muzzle_mod_void_amp.name": "虛空增幅器",
+  "modtech_arsenal.attachment.muzzle_mod_void_amp.desc": "\u00a7a+ 30%%额外虚空伤害"
 }

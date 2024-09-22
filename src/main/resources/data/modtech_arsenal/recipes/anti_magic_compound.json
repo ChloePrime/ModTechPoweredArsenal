@@ -1,0 +1,32 @@
+{
+  "conditions": [
+    {
+      "type": "forge:not",
+      "value": {
+        "type": "forge:mod_loaded",
+        "modid": "l2hostility"
+      }
+    }
+  ],
+  "type": "minecraft:crafting_shaped",
+  "category": "redstone",
+  "key": {
+    "M": {
+      "item": "minecraft:milk_bucket"
+    },
+    "B": [
+      {
+        "item": "minecraft:bone_block"
+      }
+    ]
+  },
+  "pattern": [
+    "BBB",
+    "BMB",
+    "BBB"
+  ],
+  "result": {
+    "item": "modtech_arsenal:anti_magic_compound"
+  },
+  "show_notification": true
+}

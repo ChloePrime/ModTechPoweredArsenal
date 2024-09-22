@@ -1,0 +1,34 @@
+{
+  "materials": [
+    {
+      "item": {
+        "type": "modtech_arsenal:if_mod_loaded",
+        "modid": "l2complements",
+        "when_true": {
+          "type": "forge:partial_nbt",
+          "item": "minecraft:enchanted_book",
+          "nbt": "{StoredEnchantments:[{id:\"l2complements:void_touch\",lvl:3s}]}"
+        },
+        "when_false": {
+          "item": "minecraft:eye_armor_trim_smithing_template"
+        }
+      }
+    },
+    {
+      "item": {
+        "tag": "forge:ingots/netherite"
+      },
+      "count": 4
+    },
+    {
+      "item": {
+        "tag": "forge:ender_pearls"
+      },
+      "count": 8
+    }
+  ],
+  "result": {
+    "type": "attachment",
+    "id": "modtech_arsenal:muzzle_mod_void_amp"
+  }
+}

@@ -169,6 +169,10 @@ repositories {
         }
     }
 
+    maven { // Registrate
+        url "https://maven.tterrag.com/"
+    }
+
     // If you have mod jar dependencies in ./libs, you can declare them as a repository like so.
     // See https://docs.gradle.org/current/userguide/declaring_repositories.html#sub:flat_dir_resolver
     flatDir {
@@ -192,6 +196,9 @@ dependencies {
         jarJar.ranged(it, "[1.20.1-1.0,)")
     }
 
+    // JEI
+    runtimeOnly(fg.deobf("mezz.jei:jei-${minecraft_version}-forge:${jei_version}"))
+
     // 饰品栏
     runtimeOnly fg.deobf("top.theillusivec4.curios:curios-forge:5.10.0+1.20.1")
     compileOnly fg.deobf("top.theillusivec4.curios:curios-forge:5.10.0+1.20.1:api")
@@ -204,6 +211,7 @@ dependencies {
     implementation fg.deobf('maven.modrinth:l2hostility:2.4.30')
 
     // 模组依赖的依赖
+    compileOnly fg.deobf("com.tterrag.registrate:Registrate:MC1.20-1.3.11")
     compileOnly fg.deobf("vazkii.patchouli:Patchouli:1.20.1-84-FORGE:api")
     runtimeOnly fg.deobf("vazkii.patchouli:Patchouli:1.20.1-84-FORGE")
 
