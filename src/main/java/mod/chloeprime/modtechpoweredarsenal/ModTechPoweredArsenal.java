@@ -2,7 +2,6 @@ package mod.chloeprime.modtechpoweredarsenal;
 
 import com.google.common.base.Suppliers;
 import com.mojang.logging.LogUtils;
-import com.tacz.guns.api.item.builder.AttachmentItemBuilder;
 import com.tacz.guns.api.resource.ResourceManager;
 import mod.chloeprime.modtechpoweredarsenal.network.ModNetwork;
 import net.minecraft.core.registries.Registries;

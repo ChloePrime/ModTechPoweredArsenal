@@ -2,7 +2,6 @@ package mod.chloeprime.modtechpoweredarsenal.common.lightland.guns;
 
 import com.tacz.guns.api.event.common.EntityHurtByGunEvent;
 import dev.xkmc.l2hostility.content.capability.mob.MobTraitCap;
-import dev.xkmc.l2hostility.content.traits.highlevel.SplitTrait;
 import dev.xkmc.l2hostility.init.registrate.LHTraits;
 import mod.chloeprime.modtechpoweredarsenal.common.standard.guns.Albert01Behavior;
 import mod.chloeprime.modtechpoweredarsenal.network.ModNetwork;

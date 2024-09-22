@@ -2,15 +2,12 @@ package mod.chloeprime.modtechpoweredarsenal.mixin.minecraft;
 
 import it.unimi.dsi.fastutil.objects.Object2DoubleLinkedOpenHashMap;
 import it.unimi.dsi.fastutil.objects.Object2DoubleMap;
-import it.unimi.dsi.fastutil.objects.Object2FloatLinkedOpenHashMap;
-import it.unimi.dsi.fastutil.objects.Object2FloatMap;
 import mod.chloeprime.modtechpoweredarsenal.common.standard.internal.ClassicDamageSource;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.tags.TagKey;
 import net.minecraft.world.damagesource.DamageSource;
 import net.minecraft.world.damagesource.DamageType;
 import net.minecraftforge.common.util.Lazy;
-import net.minecraftforge.common.util.LazyOptional;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.Unique;
 import org.spongepowered.asm.mixin.injection.At;
