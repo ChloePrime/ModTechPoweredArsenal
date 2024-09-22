@@ -6,7 +6,9 @@ import com.tacz.guns.api.event.common.EntityHurtByGunEvent;
 import com.tacz.guns.api.event.common.GunDamageSourcePart;
 import com.tacz.guns.api.item.attachment.AttachmentType;
 import mod.chloeprime.gunsmithlib.api.common.BulletCreateEvent;
+import mod.chloeprime.modtechpoweredarsenal.ModLoadStatus;
 import mod.chloeprime.modtechpoweredarsenal.ModTechPoweredArsenal;
+import mod.chloeprime.modtechpoweredarsenal.common.lightland.attachments.VoidAmpBehaviorL2H;
 import mod.chloeprime.modtechpoweredarsenal.common.standard.util.DamageSourceUtil;
 import net.minecraft.core.registries.Registries;
 import net.minecraft.resources.ResourceLocation;
@@ -15,6 +17,7 @@ import net.minecraft.tags.TagKey;
 import net.minecraft.world.damagesource.DamageSource;
 import net.minecraft.world.damagesource.DamageType;
 import net.minecraft.world.entity.LivingEntity;
+import net.minecraftforge.common.MinecraftForge;
 import net.minecraftforge.event.entity.living.LivingAttackEvent;
 import net.minecraftforge.event.entity.living.LivingDamageEvent;
 import net.minecraftforge.event.entity.living.LivingHurtEvent;
@@ -47,6 +50,12 @@ public class VoidAmpBehavior {
     );
 
     public static final String PD_KEY = ModTechPoweredArsenal.MODID + ":void_amped";
+
+    static {
+        if (ModLoadStatus.L2H_INSTALLED) {
+            MinecraftForge.EVENT_BUS.register(VoidAmpBehaviorL2H.class);
+        }
+    }
 
     @SubscribeEvent
     public static void onBulletCreate(BulletCreateEvent event) {
