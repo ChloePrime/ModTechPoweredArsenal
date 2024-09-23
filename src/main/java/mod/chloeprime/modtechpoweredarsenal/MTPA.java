@@ -1,6 +1,7 @@
 package mod.chloeprime.modtechpoweredarsenal;
 
 import com.tacz.guns.api.TimelessAPI;
+import com.tacz.guns.api.item.builder.AmmoItemBuilder;
 import com.tacz.guns.api.item.builder.AttachmentItemBuilder;
 import com.tacz.guns.api.item.builder.GunItemBuilder;
 import com.tacz.guns.resource.pojo.data.gun.Bolt;
@@ -69,6 +70,16 @@ public final class MTPA {
 
     static ItemStack gun(String path) {
         return gun(loc(path).getNamespace(), path);
+    }
+
+
+    static ItemStack ammo(String namespace, String path) {
+        var loc = new ResourceLocation(namespace, path);
+        return AmmoItemBuilder.create().setId(loc).build();
+    }
+
+    static ItemStack ammo(String path) {
+        return ammo(loc(path).getNamespace(), path);
     }
 
     static ItemStack attachment(String namespace, String path) {
