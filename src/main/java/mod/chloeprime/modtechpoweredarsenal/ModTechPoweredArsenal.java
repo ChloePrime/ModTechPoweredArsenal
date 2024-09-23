@@ -3,6 +3,7 @@ package mod.chloeprime.modtechpoweredarsenal;
 import com.google.common.base.Suppliers;
 import com.mojang.logging.LogUtils;
 import com.tacz.guns.api.resource.ResourceManager;
+import mod.chloeprime.modtechpoweredarsenal.common.lightland.MtpaL2Module;
 import mod.chloeprime.modtechpoweredarsenal.network.ModNetwork;
 import net.minecraft.core.registries.Registries;
 import net.minecraft.network.chat.Component;
@@ -36,15 +37,16 @@ public final class ModTechPoweredArsenal {
             () -> MTPA.attachment("ammo_mod_antimagic")
     );
 
-    public static final RegistryObject<CreativeModeTab> EXAMPLE_TAB = CREATIVE_MODE_TABS.register("main_tab", () -> CreativeModeTab.builder()
+    public static final RegistryObject<CreativeModeTab> MAIN_TAB = CREATIVE_MODE_TABS.register("main_tab", () -> CreativeModeTab.builder()
             .title(Component.translatable("itemGroup.%s.main".formatted(MODID)))
             .withTabsBefore(CreativeModeTabs.COMBAT)
             .icon(CREATIVE_TAB_ICON)
             .displayItems((parameters, output) -> {
                 output.accept(MTPA.Items.ANTI_MAGIC_COMPOUND.get());
+                output.accept(MTPA.gun(MtpaL2Module.ID, "albert_01"));
                 output.accept(MTPA.attachment("stock_bumpfire"));
                 output.accept(MTPA.attachment("ammo_mod_antimagic"));
-                output.accept(MTPA.attachment("muzzle_mod_void_amp"));
+                output.accept(MTPA.attachment(MtpaL2Module.ID, "muzzle_mod_void_amp"));
             }).build());
 
     public ModTechPoweredArsenal() {

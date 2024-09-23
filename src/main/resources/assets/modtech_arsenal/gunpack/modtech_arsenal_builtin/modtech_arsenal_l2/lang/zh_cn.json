@@ -2,7 +2,7 @@
   "pack.modtech_arsenal_l2.modtech_arsenal_builtin.name" :"模组科技军工厂 (莱特兰模块)",
   "pack.modtech_arsenal_l2.modtech_arsenal_builtin.desc" :"联动莱特兰系列模组的，包含特殊功能的各种枪械和配件。\n§2带*的特殊效果需要在安装莱特兰系列模组（多数依赖莱特兰：恶意）后才能生效。",
   "modtech_arsenal_l2.gun.albert_01.name": "埃尔伯特-01",
-  "modtech_arsenal_l2.gun.albert_01.desc": "伊森，用这个！\n§a+ 亡灵杀手 V\n§6+ 神经毒素§8*",
+  "modtech_arsenal_l2.gun.albert_01.desc": "伊森，用这个！\n§a+ 亡灵杀手 V\n§6+ 反再生毒素§8*",
   "modtech_arsenal_l2.attachment.muzzle_mod_void_amp.name": "虛空增幅器",
   "modtech_arsenal_l2.attachment.muzzle_mod_void_amp.desc": "§a+ 30%%额外虚空伤害\n§6+ 心智之殁§8*"
 }
