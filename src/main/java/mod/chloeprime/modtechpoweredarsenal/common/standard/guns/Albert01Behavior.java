@@ -7,7 +7,7 @@ import mod.chloeprime.gunsmithlib.api.common.BulletCreateEvent;
 import mod.chloeprime.modtechpoweredarsenal.ModLoadStatus;
 import mod.chloeprime.modtechpoweredarsenal.ModTechPoweredArsenal;
 import mod.chloeprime.modtechpoweredarsenal.common.lightland.MtpaL2Module;
-import mod.chloeprime.modtechpoweredarsenal.common.lightland.guns.Albert01BehaviorL2H;
+import mod.chloeprime.modtechpoweredarsenal.common.lightland.guns.Albert01BehaviorL2C;
 import mod.chloeprime.modtechpoweredarsenal.network.ModNetwork;
 import mod.chloeprime.modtechpoweredarsenal.network.S2CEnchantedHit;
 import net.minecraft.resources.ResourceLocation;
@@ -30,8 +30,8 @@ public class Albert01Behavior {
     public static final String PD_KEY = ModTechPoweredArsenal.loc("smite_v").toString();
 
     static {
-        if (ModLoadStatus.L2H_INSTALLED) {
-            MinecraftForge.EVENT_BUS.register(Albert01BehaviorL2H.class);
+        if (ModLoadStatus.L2C_INSTALLED) {
+            MinecraftForge.EVENT_BUS.register(Albert01BehaviorL2C.class);
         }
     }
 
