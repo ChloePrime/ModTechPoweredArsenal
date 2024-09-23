@@ -1,19 +1,19 @@
 {
-  "ammo": "tacz:9mm",
+  "ammo": "modtech_arsenal_l2:9mm_antiregen",
   "rpm": 120,
   "bullet": {
     "life": 0.7,
     "bullet_amount": 1,
-    "damage": 10,
+    "damage": 24,
     "tracer_count_interval": 0,
     "extra_damage": {
       "armor_ignore": 0,
       "head_shot_multiplier": 1.75,
       "damage_adjust": [
-        {"distance": 15, "damage": 10},
-        {"distance": 30, "damage": 9},
-        {"distance": 50, "damage": 8},
-        {"distance": "infinite", "damage": 6}
+        {"distance": 15, "damage": 24},
+        {"distance": 30, "damage": 21},
+        {"distance": 50, "damage": 18},
+        {"distance": "infinite", "damage": 16}
       ]
     },
     "speed": 170,

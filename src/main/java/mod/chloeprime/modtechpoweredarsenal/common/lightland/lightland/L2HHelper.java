@@ -1,4 +1,4 @@
-package mod.chloeprime.modtechpoweredarsenal.common.standard.util.lightland;
+package mod.chloeprime.modtechpoweredarsenal.common.lightland.lightland;
 
 import dev.xkmc.l2hostility.content.capability.mob.MobTraitCap;
 import dev.xkmc.l2hostility.content.traits.base.MobTrait;

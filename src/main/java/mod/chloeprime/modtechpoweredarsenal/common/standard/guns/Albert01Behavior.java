@@ -4,16 +4,14 @@ import com.google.common.collect.Sets;
 import com.tacz.guns.api.event.common.EntityHurtByGunEvent;
 import com.tacz.guns.api.item.IGun;
 import mod.chloeprime.gunsmithlib.api.common.BulletCreateEvent;
-import mod.chloeprime.modtechpoweredarsenal.ModLoadStatus;
 import mod.chloeprime.modtechpoweredarsenal.ModTechPoweredArsenal;
 import mod.chloeprime.modtechpoweredarsenal.common.lightland.MtpaL2Module;
-import mod.chloeprime.modtechpoweredarsenal.common.lightland.guns.Albert01BehaviorL2C;
 import mod.chloeprime.modtechpoweredarsenal.network.ModNetwork;
 import mod.chloeprime.modtechpoweredarsenal.network.S2CEnchantedHit;
 import net.minecraft.resources.ResourceLocation;
+import net.minecraft.world.effect.MobEffectInstance;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.MobType;
-import net.minecraftforge.common.MinecraftForge;
 import net.minecraftforge.eventbus.api.EventPriority;
 import net.minecraftforge.eventbus.api.SubscribeEvent;
 import net.minecraftforge.fml.common.Mod;
@@ -28,12 +26,6 @@ public class Albert01Behavior {
     ));
 
     public static final String PD_KEY = ModTechPoweredArsenal.loc("smite_v").toString();
-
-    static {
-        if (ModLoadStatus.L2C_INSTALLED) {
-            MinecraftForge.EVENT_BUS.register(Albert01BehaviorL2C.class);
-        }
-    }
 
     @SubscribeEvent
     public static void onBulletCreate(BulletCreateEvent event) {
@@ -52,7 +44,7 @@ public class Albert01Behavior {
     }
 
     @SubscribeEvent(priority = EventPriority.HIGH)
-    public static void onGunshotPre(EntityHurtByGunEvent.Pre event) {
+    public static void smite(EntityHurtByGunEvent.Pre event) {
         if (event.getLogicalSide().isClient()) {
             return;
         }
@@ -67,5 +59,23 @@ public class Albert01Behavior {
         }
         event.setBaseAmount(event.getBaseAmount() + 12.5F);
         ModNetwork.sendToNearby(new S2CEnchantedHit(victim.getId()), victim);
+    }
+
+    @SubscribeEvent(priority = EventPriority.LOWEST)
+    public static void antiRegen(EntityHurtByGunEvent.Pre event) {
+        if (event.getLogicalSide().isClient()) {
+            return;
+        }
+        if (!(event.getHurtEntity() instanceof LivingEntity victim)) {
+            return;
+        }
+        if (event.getBullet().getPersistentData().getBoolean(Albert01Behavior.PD_KEY)) {
+            var curse = MtpaL2Module.getAntiRegenEffect();
+            if (!victim.hasEffect(curse)) {
+                ModNetwork.sendToNearby(new S2CEnchantedHit(victim.getId()), victim);
+            }
+            var HALF_MINUTE = 20 * 30;
+            victim.addEffect(new MobEffectInstance(curse, HALF_MINUTE));
+        }
     }
 }

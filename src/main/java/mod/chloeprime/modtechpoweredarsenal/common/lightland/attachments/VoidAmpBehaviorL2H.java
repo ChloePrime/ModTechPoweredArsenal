@@ -3,7 +3,7 @@ package mod.chloeprime.modtechpoweredarsenal.common.lightland.attachments;
 import dev.xkmc.l2hostility.content.traits.common.AdaptingTrait;
 import dev.xkmc.l2hostility.init.registrate.LHTraits;
 import mod.chloeprime.modtechpoweredarsenal.common.standard.attachments.VoidAmpBehavior;
-import mod.chloeprime.modtechpoweredarsenal.common.standard.util.lightland.L2HHelper;
+import mod.chloeprime.modtechpoweredarsenal.common.lightland.lightland.L2HHelper;
 import mod.chloeprime.modtechpoweredarsenal.network.ModNetwork;
 import mod.chloeprime.modtechpoweredarsenal.network.S2CEnchantedHit;
 import net.minecraftforge.event.entity.living.LivingAttackEvent;

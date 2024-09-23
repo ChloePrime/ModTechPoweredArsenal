@@ -1,4 +1,6 @@
 {
   "itemGroup.modtech_arsenal.main": "ModTechPowered Arsenal",
-  "item.modtech_arsenal.anti_magic_compound": "Bone of Sever and Bind"
+  "item.modtech_arsenal.anti_magic_compound": "Bone of Sever and Bind",
+  "effect.modtech_arsenal.anti_regen": "Anti-Regeneration",
+  "effect.modtech_arsenal.anti_regen.desc": "Disables healing"
 }

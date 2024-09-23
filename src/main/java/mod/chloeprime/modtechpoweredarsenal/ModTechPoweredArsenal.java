@@ -69,6 +69,7 @@ public final class ModTechPoweredArsenal {
 
     private void registerDFRs(IEventBus bus) {
         MTPA.Items.REGISTRY.register(bus);
+        MTPA.MobEffects.REGISTRY.register(bus);
         CREATIVE_MODE_TABS.register(bus);
         bus.addListener(MTPA::registerIngredientSerializers);
     }

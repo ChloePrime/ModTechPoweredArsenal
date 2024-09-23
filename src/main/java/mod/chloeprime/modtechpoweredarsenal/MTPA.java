@@ -4,9 +4,11 @@ import com.tacz.guns.api.TimelessAPI;
 import com.tacz.guns.api.item.builder.AttachmentItemBuilder;
 import com.tacz.guns.api.item.builder.GunItemBuilder;
 import com.tacz.guns.resource.pojo.data.gun.Bolt;
+import mod.chloeprime.modtechpoweredarsenal.common.standard.mob_effects.AntiRegenEffect;
 import mod.chloeprime.modtechpoweredarsenal.common.standard.util.IfModLoadIngredient;
 import net.minecraft.network.chat.Component;
 import net.minecraft.resources.ResourceLocation;
+import net.minecraft.world.effect.MobEffect;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
 import net.minecraftforge.common.crafting.CraftingHelper;
@@ -14,6 +16,8 @@ import net.minecraftforge.registries.DeferredRegister;
 import net.minecraftforge.registries.ForgeRegistries;
 import net.minecraftforge.registries.RegisterEvent;
 import net.minecraftforge.registries.RegistryObject;
+
+import java.awt.*;
 
 import static net.minecraft.world.item.Items.BARRIER;
 
@@ -25,6 +29,15 @@ public final class MTPA {
         );
 
         private Items() {}
+    }
+
+    public static final class MobEffects {
+        static final DeferredRegister<MobEffect> REGISTRY = DeferredRegister.create(ForgeRegistries.MOB_EFFECTS, ModTechPoweredArsenal.MODID);
+        public static final RegistryObject<MobEffect> ANTI_REGEN = REGISTRY.register(
+                "anti_regen", () -> new AntiRegenEffect(new Color(0x60, 0, 0, 1).getRGB())
+        );
+
+        private MobEffects() {}
     }
 
     static ResourceLocation loc(String path) {
