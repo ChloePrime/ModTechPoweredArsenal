@@ -61,3 +61,18 @@ description='''${mod_description}'''
    versionRange="${minecraft_version_range}"
    ordering="NONE"
    side="BOTH"
+
+# L2 Series
+[[dependencies."${mod_id}"]]
+   modId="l2complements"
+   mandatory=false
+   versionRange="[2,)"
+   ordering="NONE"
+   side="BOTH"
+[[dependencies."${mod_id}"]]
+   modId="l2hostility"
+   mandatory=false
+   versionRange="[2,)"
+   ordering="NONE"
+   side="BOTH"
+
