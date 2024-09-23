@@ -1,0 +1,31 @@
+{
+  "materials": [
+    {
+      "item": {
+        "type": "modtech_arsenal:if_mod_loaded",
+        "modid": "l2complements",
+        "when_true": {
+          "type": "forge:partial_nbt",
+          "item": "minecraft:potion",
+          "nbt": "{Potion:\"l2complements:curse\"}"
+        },
+        "when_false": {
+          "item": "minecraft:lily_of_the_valley"
+        }
+      }
+    },
+    {
+      "item": {
+        "type": "forge:partial_nbt",
+        "item": "tacz:ammo",
+        "nbt": "{AmmoId:\"tacz:9mm\"}"
+      },
+      "count": 6
+    }
+  ],
+  "result": {
+    "type": "ammo",
+    "id": "modtech_arsenal_l2:9mm_antiregen",
+    "count": 6
+  }
+}
