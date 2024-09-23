@@ -42,9 +42,9 @@ public final class ModTechPoweredArsenal {
             .icon(CREATIVE_TAB_ICON)
             .displayItems((parameters, output) -> {
                 output.accept(MTPA.Items.ANTI_MAGIC_COMPOUND.get());
-                output.accept(MTPA.attachment("muzzle_mod_void_amp"));
                 output.accept(MTPA.attachment("stock_bumpfire"));
                 output.accept(MTPA.attachment("ammo_mod_antimagic"));
+                output.accept(MTPA.attachment("muzzle_mod_void_amp"));
             }).build());
 
     public ModTechPoweredArsenal() {

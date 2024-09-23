@@ -1,4 +1,8 @@
 {
   "pack.modtech_arsenal_l2.modtech_arsenal_builtin.name" :"ModTechPowered Arsenal (Lightland Module)",
-  "pack.modtech_arsenal_l2.modtech_arsenal_builtin.desc" :"Builtin Gunpack of ModTechPowered Arsenal Mod"
+  "pack.modtech_arsenal_l2.modtech_arsenal_builtin.desc" :"Guns and attachments with coded effects.\n§2Effects with '*' needs Lightland series (mainly L2Hostility) mods\ninstalled to take effect.",
+  "modtech_arsenal_l2.gun.albert_01.name": "Albert-01",
+  "modtech_arsenal_l2.gun.albert_01.desc": "Use this, Ethan!\n§a+ Smite V\n§6+ Neurotoxin§8*",
+  "modtech_arsenal_l2.attachment.muzzle_mod_void_amp.name": "Void Amp",
+  "modtech_arsenal_l2.attachment.muzzle_mod_void_amp.desc": "§a+ 30%% extra void damage\n§6+ Paracesis§8*"
 }

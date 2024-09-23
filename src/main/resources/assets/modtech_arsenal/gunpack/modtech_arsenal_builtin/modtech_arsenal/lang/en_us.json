@@ -1,12 +1,8 @@
 {
   "pack.modtech_arsenal.modtech_arsenal_builtin.name" :"ModTechPowered Arsenal",
   "pack.modtech_arsenal.modtech_arsenal_builtin.desc" :"Guns and attachments with coded effects",
-  "modtech_arsenal.gun.albert_01.name": "Albert-01",
-  "modtech_arsenal.gun.albert_01.desc": "Use this, Ethan!\n\u00a7a+ Smite V\n\u00a7a+ Split suppression (requires L2Hostility installed)",
   "modtech_arsenal.attachment.stock_bumpfire.name": "AIO Full-Auto Trigger Group",
-  "modtech_arsenal.attachment.stock_bumpfire.desc": "Full-Auto capable trigger group\nconnected with a pre-made stock.\n\u00a7a+ Turns Semi-Auto to Full-Auto",
-  "modtech_arsenal.attachment.ammo_mod_antimagic.name": "\u00a7eOrigin Bullet",
-  "modtech_arsenal.attachment.ammo_mod_antimagic.desc": "Hexed warheads.\n\u00a7a+ Bypasses magical protection",
-  "modtech_arsenal.attachment.muzzle_mod_void_amp.name": "Void Amp",
-  "modtech_arsenal.attachment.muzzle_mod_void_amp.desc": "\u00a7a+ 30%% extra void damage"
+  "modtech_arsenal.attachment.stock_bumpfire.desc": "Full-Auto capable trigger group\nconnected with a pre-made stock.\n§a+ Turns Semi-Auto to Full-Auto",
+  "modtech_arsenal.attachment.ammo_mod_antimagic.name": "§eOrigin Bullet",
+  "modtech_arsenal.attachment.ammo_mod_antimagic.desc": "Hexed warheads.\n§a+ Bypasses magical protection"
 }

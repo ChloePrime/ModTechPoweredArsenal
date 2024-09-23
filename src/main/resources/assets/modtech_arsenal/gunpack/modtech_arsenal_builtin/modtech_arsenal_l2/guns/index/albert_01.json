@@ -1,0 +1,7 @@
+{
+  "name": "modtech_arsenal_l2.gun.albert_01.name",
+  "tooltip": "modtech_arsenal_l2.gun.albert_01.desc",
+  "display": "modtech_arsenal_l2:albert_01_display",
+  "data": "modtech_arsenal_l2:albert_01_data",
+  "type": "pistol"
+}

@@ -8,6 +8,7 @@ import com.tacz.guns.api.item.attachment.AttachmentType;
 import mod.chloeprime.gunsmithlib.api.common.BulletCreateEvent;
 import mod.chloeprime.modtechpoweredarsenal.ModLoadStatus;
 import mod.chloeprime.modtechpoweredarsenal.ModTechPoweredArsenal;
+import mod.chloeprime.modtechpoweredarsenal.common.lightland.MtpaL2Module;
 import mod.chloeprime.modtechpoweredarsenal.common.lightland.attachments.VoidAmpBehaviorL2H;
 import mod.chloeprime.modtechpoweredarsenal.common.standard.util.DamageSourceUtil;
 import net.minecraft.core.registries.Registries;
@@ -34,7 +35,7 @@ import static mod.chloeprime.modtechpoweredarsenal.common.standard.util.GunPreco
 @Mod.EventBusSubscriber
 public class VoidAmpBehavior {
     public static Set<ResourceLocation> VALID_ATTACHMENTS = Sets.newConcurrentHashSet(List.of(
-            ModTechPoweredArsenal.loc("muzzle_mod_void_amp")
+            MtpaL2Module.loc("muzzle_mod_void_amp")
     ));
     public static final TagKey<DamageType> VOID_MARK = TagKey.create(Registries.DAMAGE_TYPE, ModTechPoweredArsenal.loc("void_mark"));
 

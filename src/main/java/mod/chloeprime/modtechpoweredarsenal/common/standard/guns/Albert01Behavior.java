@@ -6,6 +6,7 @@ import com.tacz.guns.api.item.IGun;
 import mod.chloeprime.gunsmithlib.api.common.BulletCreateEvent;
 import mod.chloeprime.modtechpoweredarsenal.ModLoadStatus;
 import mod.chloeprime.modtechpoweredarsenal.ModTechPoweredArsenal;
+import mod.chloeprime.modtechpoweredarsenal.common.lightland.MtpaL2Module;
 import mod.chloeprime.modtechpoweredarsenal.common.lightland.guns.Albert01BehaviorL2H;
 import mod.chloeprime.modtechpoweredarsenal.network.ModNetwork;
 import mod.chloeprime.modtechpoweredarsenal.network.S2CEnchantedHit;
@@ -23,7 +24,7 @@ import java.util.Set;
 @Mod.EventBusSubscriber
 public class Albert01Behavior {
     public static final Set<ResourceLocation> VALID_GUNS = Sets.newConcurrentHashSet(Set.of(
-            ModTechPoweredArsenal.loc("albert_01")
+            MtpaL2Module.loc("albert_01")
     ));
 
     public static final String PD_KEY = ModTechPoweredArsenal.loc("smite_v").toString();

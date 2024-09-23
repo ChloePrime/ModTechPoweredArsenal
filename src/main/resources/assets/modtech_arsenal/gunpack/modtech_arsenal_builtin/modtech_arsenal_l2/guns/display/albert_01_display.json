@@ -46,10 +46,10 @@
     "inspect": "tacz:deagle/deagle_inspect",
     "inspect_empty": "tacz:deagle/deagle_inspect_empty",
     "draw": "tacz:deagle/deagle_draw",
-    "shoot": "modtech_arsenal:albert_01/albert_01_shoot",
-    "shoot_3p": "modtech_arsenal:albert_01/albert_01_shoot_3p",
-    "silence": "modtech_arsenal:albert_01/albert_01_shoot",
-    "silence_3p": "modtech_arsenal:albert_01/albert_01_shoot_3p"
+    "shoot": "modtech_arsenal_l2:albert_01/albert_01_shoot",
+    "shoot_3p": "modtech_arsenal_l2:albert_01/albert_01_shoot_3p",
+    "silence": "modtech_arsenal_l2:albert_01/albert_01_shoot",
+    "silence_3p": "modtech_arsenal_l2:albert_01/albert_01_shoot_3p"
   },
   "offhand_show": {
     "pos": [4, 13, -2],

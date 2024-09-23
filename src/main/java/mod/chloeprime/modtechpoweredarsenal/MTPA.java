@@ -32,6 +32,11 @@ public final class MTPA {
         }
     }
 
+    static ItemStack attachment(String namespace, String path) {
+        var loc = new ResourceLocation(namespace, path);
+        return AttachmentItemBuilder.create().setId(loc).build();
+    }
+
     static ItemStack attachment(String path) {
         return AttachmentItemBuilder.create().setId(loc(path)).build();
     }
