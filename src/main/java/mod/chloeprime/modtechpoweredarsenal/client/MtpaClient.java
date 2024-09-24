@@ -27,9 +27,9 @@ public class MtpaClient {
         var cx = shockwave.getX();
         var cy = shockwave.getY() + 0.25;
         var cz = shockwave.getZ();
-        var dx = shockwave.getSize();
+        var dx = Math.max(0, shockwave.getSize() - 0.5);
         var dy = 0.25;
-        var dz = shockwave.getSize();
+        var dz = Math.max(0, shockwave.getSize() - 0.5);
         for (int i = 0; i < 4; i++) {
             var x = cx + dx * (RNG.nextFloat() - RNG.nextFloat());
             var y = cy + dy * (RNG.nextFloat() - RNG.nextFloat());
