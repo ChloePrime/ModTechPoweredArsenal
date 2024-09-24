@@ -44,8 +44,12 @@ public class AbstractShockwave extends Projectile {
 
     private int life;
     private int lifeTime = 40;
-
     private float damage;
+
+    @Override
+    public float getStepHeight() {
+        return 1.25F;
+    }
 
     @Override
     public void tick() {
