@@ -1,0 +1,7 @@
+{
+  "name": "modtech_arsenal.attachment.ammo_trait_chain_action.name",
+  "tooltip": "modtech_arsenal.attachment.ammo_trait_chain_action.desc",
+  "display": "modtech_arsenal:ammo_trait_chain_action_display",
+  "data": "modtech_arsenal:ammo_trait_chain_action_data",
+  "type": "extended_mag"
+}

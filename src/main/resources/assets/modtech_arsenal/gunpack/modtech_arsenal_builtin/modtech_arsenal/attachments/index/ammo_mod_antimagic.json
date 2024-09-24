@@ -1,7 +1,7 @@
 {
   "name": "modtech_arsenal.attachment.ammo_mod_antimagic.name",
+  "tooltip": "modtech_arsenal.attachment.ammo_mod_antimagic.desc",
   "display": "modtech_arsenal:ammo_mod_antimagic_display",
   "data": "modtech_arsenal:ammo_mod_antimagic_data",
-  "tooltip": "modtech_arsenal.attachment.ammo_mod_antimagic.desc",
   "type": "extended_mag"
 }

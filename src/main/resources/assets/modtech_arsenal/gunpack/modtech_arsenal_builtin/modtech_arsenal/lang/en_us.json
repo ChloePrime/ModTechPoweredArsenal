@@ -8,5 +8,7 @@
   "modtech_arsenal.attachment.stock_bumpfire.name": "AIO Full-Auto Trigger Group",
   "modtech_arsenal.attachment.stock_bumpfire.desc": "Full-Auto capable trigger group\nconnected with a pre-made stock.\n§a+ Turns Semi-Auto to Full-Auto",
   "modtech_arsenal.attachment.ammo_mod_antimagic.name": "§eOrigin Bullet",
-  "modtech_arsenal.attachment.ammo_mod_antimagic.desc": "Hexed warheads.\n§a+ Bypasses magical protection"
+  "modtech_arsenal.attachment.ammo_mod_antimagic.desc": "Hexed warheads.\n§a+ Bypasses magical protection",
+  "modtech_arsenal.attachment.ammo_trait_chain_action.name": "Chain Reaction",
+  "modtech_arsenal.attachment.ammo_trait_chain_action.desc": "§6Legendary\n§a+ Each kill with shockwave fired by this weapon creates an explosion"
 }
