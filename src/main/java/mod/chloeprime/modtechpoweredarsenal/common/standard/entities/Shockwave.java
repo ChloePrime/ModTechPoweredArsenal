@@ -1,5 +1,6 @@
 package mod.chloeprime.modtechpoweredarsenal.common.standard.entities;
 
+import com.tacz.guns.util.ExplodeUtil;
 import mod.chloeprime.modtechpoweredarsenal.MTPA;
 import mod.chloeprime.modtechpoweredarsenal.client.MtpaClient;
 import net.minecraft.core.registries.Registries;
@@ -9,6 +10,7 @@ import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.projectile.Projectile;
+import net.minecraft.world.entity.projectile.ProjectileUtil;
 import net.minecraft.world.level.Level;
 
 import java.util.List;
@@ -38,10 +40,22 @@ public class Shockwave extends AbstractShockwave {
         if (level.isClientSide) {
             MtpaClient.onShockwaveClientTick(this, level);
         } else {
+            var chainDmg = getChainReactionDamage();
+            var chainRange = getChainReactionRange();
+            var hasChainAct = chainDmg>0&&chainRange>0;
             for (var victim : getOverlappingEntities()) {
                 var damageType = level.registryAccess().registryOrThrow(Registries.DAMAGE_TYPE).getHolderOrThrow(DamageTypes.SONIC_BOOM);
                 var damageSrc = new DamageSource(damageType, this, getOwner());
-                victim.hurt(damageSrc, getDamage());
+                var hurt = victim.hurt(damageSrc, getDamage());
+                if (!hasChainAct || !hurt || victim.isAlive()) {
+                    continue;
+                }
+                // 连锁反应
+                ExplodeUtil.createExplosion(
+                        getOwner(), this,
+                        chainDmg, chainRange,
+                        true, false, victim.position()
+                );
             }
         }
     }

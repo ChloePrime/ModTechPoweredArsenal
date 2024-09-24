@@ -42,9 +42,24 @@ public class AbstractShockwave extends Projectile {
         setDamage((float) damage);
     }
 
+    public void enableChainReaction(float damage, float range) {
+        chainDamage = damage;
+        chainRange = range;
+    }
+
+    public float getChainReactionDamage() {
+        return chainDamage;
+    }
+
+    public float getChainReactionRange() {
+        return chainRange;
+    }
+
     private int life;
     private int lifeTime = 40;
     private float damage;
+    protected float chainDamage;
+    protected float chainRange;
 
     @Override
     public float getStepHeight() {

@@ -10,5 +10,5 @@
   "modtech_arsenal.attachment.ammo_mod_antimagic.name": "§e起源弹",
   "modtech_arsenal.attachment.ammo_mod_antimagic.desc": "反魔法弹头\n§a+ 穿透魔法防御",
   "modtech_arsenal.attachment.ammo_trait_chain_action.name": "连锁反应",
-  "modtech_arsenal.attachment.ammo_trait_chain_action.desc": "§6传奇词条\n§a+ 此武器爆炸后产生的冲击比每次击杀都会造成一次新的爆炸"
+  "modtech_arsenal.attachment.ammo_trait_chain_action.desc": "§6传奇词条\n§a+ 此武器爆炸后产生的冲击波每次击杀都会造成一次新的爆炸"
 }

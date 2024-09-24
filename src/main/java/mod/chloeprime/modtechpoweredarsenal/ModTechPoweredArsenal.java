@@ -50,6 +50,7 @@ public final class ModTechPoweredArsenal {
                 output.accept(MTPA.attachment("stock_bumpfire"));
                 output.accept(MTPA.attachment(MtpaL2Module.ID, "muzzle_mod_void_amp"));
                 output.accept(MTPA.attachment("ammo_mod_antimagic"));
+                output.accept(MTPA.attachment("ammo_trait_chain_action"));
             }).build());
 
     public ModTechPoweredArsenal() {
