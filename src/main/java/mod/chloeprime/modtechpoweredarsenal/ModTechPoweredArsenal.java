@@ -43,11 +43,13 @@ public final class ModTechPoweredArsenal {
             .icon(CREATIVE_TAB_ICON)
             .displayItems((parameters, output) -> {
                 output.accept(MTPA.Items.ANTI_MAGIC_COMPOUND.get());
+                output.accept(MTPA.gun("gl_shark"));
+                output.accept(MTPA.gun("gl_deafening_whisper"));
                 output.accept(MTPA.gun(MtpaL2Module.ID, "albert_01"));
                 output.accept(MTPA.ammo(MtpaL2Module.ID, "9mm_antiregen"));
                 output.accept(MTPA.attachment("stock_bumpfire"));
-                output.accept(MTPA.attachment("ammo_mod_antimagic"));
                 output.accept(MTPA.attachment(MtpaL2Module.ID, "muzzle_mod_void_amp"));
+                output.accept(MTPA.attachment("ammo_mod_antimagic"));
             }).build());
 
     public ModTechPoweredArsenal() {
