@@ -1,0 +1,7 @@
+{
+  "name": "modtech_arsenal.gun.gl_deafening_whisper.name",
+  "tooltip": "modtech_arsenal.gun.gl_deafening_whisper.desc",
+  "display": "tacz:m320_display",
+  "data": "modtech_arsenal:gl_deafening_whisper_data",
+  "type": "rpg"
+}

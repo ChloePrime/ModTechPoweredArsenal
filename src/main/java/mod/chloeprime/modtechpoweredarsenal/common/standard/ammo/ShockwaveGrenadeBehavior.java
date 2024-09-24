@@ -22,7 +22,7 @@ public class ShockwaveGrenadeBehavior {
             ModTechPoweredArsenal.loc("gl_shark")
     ));
     public static final Set<ResourceLocation> SHOCKWAVE_GUNS = Sets.newConcurrentHashSet(Set.of(
-            new ResourceLocation("tacz:m320")
+            ModTechPoweredArsenal.loc("gl_deafening_whisper")
     ));
 
     @SubscribeEvent
