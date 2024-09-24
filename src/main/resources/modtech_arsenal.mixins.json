@@ -6,6 +6,7 @@
   "refmap": "modtech_arsenal.refmap.json",
   "mixins": [
     "minecraft.MixinDamageSource",
+    "minecraft.MixinEvokerFang",
     "tacz.MixinGun"
   ],
   "client": [

@@ -1,6 +1,8 @@
 {
   "pack.modtech_arsenal.modtech_arsenal_builtin.name" :"ModTechPowered Arsenal",
   "pack.modtech_arsenal.modtech_arsenal_builtin.desc" :"Guns and attachments with coded effects",
+  "modtech_arsenal.gun.gl_shark.name" :"Big Shark",
+  "modtech_arsenal.gun.gl_shark.desc" :"▣ Fang Frame",
   "modtech_arsenal.attachment.stock_bumpfire.name": "AIO Full-Auto Trigger Group",
   "modtech_arsenal.attachment.stock_bumpfire.desc": "Full-Auto capable trigger group\nconnected with a pre-made stock.\n§a+ Turns Semi-Auto to Full-Auto",
   "modtech_arsenal.attachment.ammo_mod_antimagic.name": "§eOrigin Bullet",

@@ -5,11 +5,16 @@ import com.tacz.guns.api.item.builder.AmmoItemBuilder;
 import com.tacz.guns.api.item.builder.AttachmentItemBuilder;
 import com.tacz.guns.api.item.builder.GunItemBuilder;
 import com.tacz.guns.resource.pojo.data.gun.Bolt;
+import dev.xkmc.l2library.util.raytrace.EntityTarget;
+import mod.chloeprime.modtechpoweredarsenal.common.standard.entities.FangEmitter;
 import mod.chloeprime.modtechpoweredarsenal.common.standard.mob_effects.AntiRegenEffect;
 import mod.chloeprime.modtechpoweredarsenal.common.standard.util.IfModLoadIngredient;
 import net.minecraft.network.chat.Component;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.effect.MobEffect;
+import net.minecraft.world.entity.Entity;
+import net.minecraft.world.entity.EntityType;
+import net.minecraft.world.entity.MobCategory;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
 import net.minecraftforge.common.crafting.CraftingHelper;
@@ -19,6 +24,7 @@ import net.minecraftforge.registries.RegisterEvent;
 import net.minecraftforge.registries.RegistryObject;
 
 import java.awt.*;
+import java.util.function.Supplier;
 
 import static net.minecraft.world.item.Items.BARRIER;
 
@@ -32,6 +38,18 @@ public final class MTPA {
         private Items() {}
     }
 
+    public static final class Entities {
+        public static final DeferredRegister<EntityType<?>> REGISTRY = DeferredRegister.create(ForgeRegistries.ENTITY_TYPES, ModTechPoweredArsenal.MODID);
+        public static final RegistryObject<EntityType<FangEmitter>> FANG_EMITTER = registerEntity(
+                "fang_emitter",
+                () -> EntityType.Builder.<FangEmitter>of(FangEmitter::new, MobCategory.MISC)
+                        .sized(1F / 16, 1F / 16)
+                        .clientTrackingRange(8)
+                        .fireImmune()
+                        .noSave()
+        );
+    }
+
     public static final class MobEffects {
         static final DeferredRegister<MobEffect> REGISTRY = DeferredRegister.create(ForgeRegistries.MOB_EFFECTS, ModTechPoweredArsenal.MODID);
         public static final RegistryObject<MobEffect> ANTI_REGEN = REGISTRY.register(
@@ -41,15 +59,21 @@ public final class MTPA {
         private MobEffects() {}
     }
 
+
+
+
     static ResourceLocation loc(String path) {
         return ModTechPoweredArsenal.loc(path);
     }
 
-    static void registerIngredientSerializers(RegisterEvent event)
-    {
+    static void registerIngredientSerializers(RegisterEvent event) {
         if (event.getRegistryKey().equals(ForgeRegistries.Keys.RECIPE_SERIALIZERS)) {
             CraftingHelper.register(loc("if_mod_loaded"), IfModLoadIngredient.Serializer.INSTANCE);
         }
+    }
+
+    static <T extends Entity> RegistryObject<EntityType<T>> registerEntity(String path, Supplier<EntityType.Builder<T>> builder) {
+        return Entities.REGISTRY.register(path, () -> builder.get().build(loc(path).toString()));
     }
 
     static ItemStack gun(String namespace, String path) {
