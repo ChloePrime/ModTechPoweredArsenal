@@ -5,7 +5,6 @@ import com.tacz.guns.api.item.builder.AmmoItemBuilder;
 import com.tacz.guns.api.item.builder.AttachmentItemBuilder;
 import com.tacz.guns.api.item.builder.GunItemBuilder;
 import com.tacz.guns.resource.pojo.data.gun.Bolt;
-import dev.xkmc.l2library.util.raytrace.EntityTarget;
 import mod.chloeprime.modtechpoweredarsenal.common.standard.entities.FangEmitter;
 import mod.chloeprime.modtechpoweredarsenal.common.standard.mob_effects.AntiRegenEffect;
 import mod.chloeprime.modtechpoweredarsenal.common.standard.util.IfModLoadIngredient;
