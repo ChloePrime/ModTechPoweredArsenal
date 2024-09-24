@@ -6,6 +6,7 @@ import com.tacz.guns.api.event.server.AmmoHitBlockEvent;
 import com.tacz.guns.resource.pojo.data.gun.ExplosionData;
 import mod.chloeprime.modtechpoweredarsenal.ModTechPoweredArsenal;
 import mod.chloeprime.modtechpoweredarsenal.common.standard.entities.FangEmitter;
+import mod.chloeprime.modtechpoweredarsenal.common.standard.entities.Shockwave;
 import net.minecraft.core.Direction;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraftforge.eventbus.api.SubscribeEvent;
@@ -61,6 +62,15 @@ public class ShockwaveGrenadeBehavior {
                 damage.ifPresent(emitter::setDamage);
                 bullet.level().addFreshEntity(emitter);
             }
+        } else if (SHOCKWAVE_GUNS.contains(bullet.getGunId())) {
+            var emitterSpeed = 0.7;
+            var emitter = new Shockwave(bullet.level(), bullet.getOwner());
+            var direction = velocity.normalize();
+            emitter.setYRot(bullet.getYRot());
+            emitter.setPos(event.getHitResult().getLocation());
+            emitter.setDeltaMovement(direction.scale(emitterSpeed));
+            damage.ifPresent(emitter::setDamage);
+            bullet.level().addFreshEntity(emitter);
         }
     }
 }

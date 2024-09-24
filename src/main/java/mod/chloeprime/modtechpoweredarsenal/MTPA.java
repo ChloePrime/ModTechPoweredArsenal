@@ -6,6 +6,7 @@ import com.tacz.guns.api.item.builder.AttachmentItemBuilder;
 import com.tacz.guns.api.item.builder.GunItemBuilder;
 import com.tacz.guns.resource.pojo.data.gun.Bolt;
 import mod.chloeprime.modtechpoweredarsenal.common.standard.entities.FangEmitter;
+import mod.chloeprime.modtechpoweredarsenal.common.standard.entities.Shockwave;
 import mod.chloeprime.modtechpoweredarsenal.common.standard.mob_effects.AntiRegenEffect;
 import mod.chloeprime.modtechpoweredarsenal.common.standard.util.IfModLoadIngredient;
 import net.minecraft.network.chat.Component;
@@ -43,6 +44,15 @@ public final class MTPA {
                 "fang_emitter",
                 () -> EntityType.Builder.<FangEmitter>of(FangEmitter::new, MobCategory.MISC)
                         .sized(1F / 16, 1F / 16)
+                        .clientTrackingRange(8)
+                        .fireImmune()
+                        .noSave()
+        );
+
+        public static final RegistryObject<EntityType<Shockwave>> SHOCKWAVE = registerEntity(
+                "shockwave",
+                () -> EntityType.Builder.<Shockwave>of(Shockwave::new, MobCategory.MISC)
+                        .sized(0.5F, 1F / 16)
                         .clientTrackingRange(8)
                         .fireImmune()
                         .noSave()
