@@ -62,6 +62,11 @@ public class AbstractShockwave extends Projectile {
     protected float chainRange;
 
     @Override
+    public boolean ignoreExplosion() {
+        return true;
+    }
+
+    @Override
     public float getStepHeight() {
         return 1.25F;
     }
