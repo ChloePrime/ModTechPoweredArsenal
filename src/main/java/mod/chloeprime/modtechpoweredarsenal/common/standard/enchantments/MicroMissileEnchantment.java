@@ -8,11 +8,13 @@ import com.tacz.guns.resource.pojo.data.gun.ExplosionData;
 import mod.chloeprime.gunsmithlib.api.common.BulletCreateEvent;
 import mod.chloeprime.modtechpoweredarsenal.MTPA;
 import mod.chloeprime.modtechpoweredarsenal.mixin.tacz.KineticBulletAccessor;
+import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.entity.EquipmentSlot;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.enchantment.Enchantment;
 import net.minecraft.world.item.enchantment.EnchantmentCategory;
 import net.minecraftforge.common.MinecraftForge;
+import net.minecraftforge.registries.ForgeRegistries;
 
 import javax.annotation.Nonnull;
 import java.util.Optional;
@@ -41,6 +43,8 @@ public class MicroMissileEnchantment extends Enchantment {
         return 1 + 0.5 * level;
     }
 
+    private static final ResourceLocation BULLET = new ResourceLocation("tacz", "bullet");
+
     private void onBulletCreate(BulletCreateEvent event) {
         var bullet = event.getBullet();
         if (bullet.level().isClientSide) {
@@ -48,6 +52,9 @@ public class MicroMissileEnchantment extends Enchantment {
         }
         var level = event.getGun().getEnchantmentLevel(this);
         if (level <= 0) {
+            return;
+        }
+        if (!BULLET.equals(ForgeRegistries.ENTITY_TYPES.getKey(bullet.getType()))) {
             return;
         }
         bullet.setNoGravity(true);
