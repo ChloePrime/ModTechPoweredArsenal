@@ -205,7 +205,7 @@ dependencies {
     compileOnly fg.deobf("top.theillusivec4.curios:curios-forge:5.10.0+1.20.1:api")
 
     // 莱特兰系列
-    implementation(jarJar(fg.deobf('libs:l2damagetracker:0.3.7')))
+    implementation fg.deobf('libs:l2damagetracker:0.3.7')
     implementation fg.deobf('libs:l2modularblock:1.1.0')
     implementation fg.deobf('maven.modrinth:l2library:2.4.28')
     implementation fg.deobf('maven.modrinth:l2-complements:2.4.41')
