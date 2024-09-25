@@ -6,6 +6,7 @@ import mod.chloeprime.gunsmithlib.api.common.BulletCreateEvent;
 import mod.chloeprime.modtechpoweredarsenal.MTPA;
 import mod.chloeprime.modtechpoweredarsenal.ModTechPoweredArsenal;
 import mod.chloeprime.modtechpoweredarsenal.mixin.tacz.KineticBulletAccessor;
+import net.minecraft.nbt.Tag;
 import net.minecraft.world.entity.EquipmentSlot;
 import net.minecraft.world.item.enchantment.EnchantmentCategory;
 import net.minecraftforge.common.MinecraftForge;
@@ -22,11 +23,14 @@ public class PrimeChamberPerk extends PerkBase {
         bus.addListener(this::onReload);
     }
 
-    public static final String TAG_KEY = ModTechPoweredArsenal.loc("prime_chamber_activated").toString();
-    public static final float POWER = 0.5F;
+    public static final String TAG_KEY = ModTechPoweredArsenal.loc("prime_chamber_coefficient").toString();
 
     public static PrimeChamberPerk create() {
         return new PrimeChamberPerk(Rarity.UNCOMMON, MTPA.Enchantments.GUN_PERKS, EquipmentSlot.MAINHAND);
+    }
+
+    public float getDamageCoefficient(int level) {
+        return 1.5F + 0.25F * level;
     }
 
     protected void onReload(GunReloadEvent event) {
@@ -34,19 +38,22 @@ public class PrimeChamberPerk extends PerkBase {
             return;
         }
         var gun = event.getGunItemStack();
-        if (gun.getEnchantmentLevel(this) <= 0) {
+        int level = gun.getEnchantmentLevel(this);
+        if (level <= 0) {
             return;
         }
-        gun.getOrCreateTag().putBoolean(TAG_KEY, true);
+        gun.getOrCreateTag().putFloat(TAG_KEY, getDamageCoefficient(level));
     }
 
     @SubscribeEvent
     @SuppressWarnings("DataFlowIssue")
     public static void onBulletCreate(BulletCreateEvent event) {
         var gun = event.getGun();
-        if (gun.hasTag() && gun.getTag().getBoolean(TAG_KEY)) {
+        if (gun.hasTag() && gun.getTag().contains(TAG_KEY, Tag.TAG_ANY_NUMERIC)) {
+            var coefficient = gun.getTag().getFloat(TAG_KEY);
             gun.getTag().remove(TAG_KEY);
-            event.getBullet().getPersistentData().putBoolean(TAG_KEY, true);
+
+            event.getBullet().getPersistentData().putFloat(TAG_KEY, coefficient);
             if (event.getBullet() instanceof KineticBulletAccessor accessor) {
                 accessor.setPierce(accessor.getPierce() + 1);
             }
@@ -54,9 +61,11 @@ public class PrimeChamberPerk extends PerkBase {
     }
 
     @SubscribeEvent(priority = EventPriority.LOW)
-    public void onPreHurt(EntityHurtByGunEvent.Pre event) {
-        if (event.getBullet().getPersistentData().getBoolean(TAG_KEY)) {
-            event.setBaseAmount(event.getBaseAmount() * (1 + POWER));
+    public static void onPreHurt(EntityHurtByGunEvent.Pre event) {
+        var pd = event.getBullet().getPersistentData();
+        if (pd.contains(TAG_KEY, Tag.TAG_ANY_NUMERIC)) {
+            var coefficient = pd.getFloat(TAG_KEY);
+            event.setBaseAmount(event.getBaseAmount() * coefficient);
         }
     }
 }
