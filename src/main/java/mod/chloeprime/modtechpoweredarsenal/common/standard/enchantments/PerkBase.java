@@ -19,7 +19,7 @@ import java.util.stream.Stream;
  */
 @Mod.EventBusSubscriber
 public class PerkBase extends Enchantment {
-    protected PerkBase(Rarity pRarity, EnchantmentCategory pCategory, EquipmentSlot[] pApplicableSlots) {
+    protected PerkBase(Rarity pRarity, EnchantmentCategory pCategory, EquipmentSlot... pApplicableSlots) {
         super(pRarity, pCategory, pApplicableSlots);
     }
 

@@ -8,6 +8,7 @@ import com.tacz.guns.api.item.builder.GunItemBuilder;
 import com.tacz.guns.resource.pojo.data.gun.Bolt;
 import mod.chloeprime.modtechpoweredarsenal.common.standard.enchantments.MicroMissileEnchantment;
 import mod.chloeprime.modtechpoweredarsenal.common.standard.enchantments.PrimeChamberPerk;
+import mod.chloeprime.modtechpoweredarsenal.common.standard.enchantments.SubsistencePerk;
 import mod.chloeprime.modtechpoweredarsenal.common.standard.entities.FangEmitter;
 import mod.chloeprime.modtechpoweredarsenal.common.standard.entities.Shockwave;
 import mod.chloeprime.modtechpoweredarsenal.common.standard.mob_effects.AntiRegenEffect;
@@ -69,6 +70,7 @@ public final class MTPA {
         public static final EnchantmentCategory GUN_PERKS = EnchantmentCategory.create("MTPA_GUN_PERKS", IGun.class::isInstance);
         public static final RegistryObject<Enchantment> PRIME_CHAMBER = REGISTRY.register("prime_chamber", PrimeChamberPerk::create);
         public static final RegistryObject<Enchantment> MICRO_MISSILE = REGISTRY.register("micro_missile", MicroMissileEnchantment::create);
+        public static final RegistryObject<Enchantment> SUBSISTENCE = REGISTRY.register("subsistence", SubsistencePerk::create);
         private Enchantments() {}
     }
 

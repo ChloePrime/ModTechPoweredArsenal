@@ -11,7 +11,7 @@ import mod.chloeprime.modtechpoweredarsenal.ModTechPoweredArsenal;
 import mod.chloeprime.modtechpoweredarsenal.common.standard.entities.FangEmitter;
 import mod.chloeprime.modtechpoweredarsenal.common.standard.entities.Shockwave;
 import mod.chloeprime.modtechpoweredarsenal.common.standard.util.AttachmentHolder;
-import mod.chloeprime.modtechpoweredarsenal.common.standard.util.GunPreconditions;
+import mod.chloeprime.modtechpoweredarsenal.common.standard.util.GunHelper;
 import net.minecraft.core.Direction;
 import net.minecraft.nbt.Tag;
 import net.minecraft.resources.ResourceLocation;
@@ -57,7 +57,7 @@ public class ShockwaveGrenadeBehavior {
         // 将爆炸数据作为连锁爆炸数据记录到子弹中
         TimelessAPI.getCommonGunIndex(gid).ifPresent(
                 index -> CHAIN_REACTION_ATTACHMENTS.keySet().stream()
-                        .filter(ath -> GunPreconditions.hasAttachmentInstalled(gun, ath.type(), ath.id()))
+                        .filter(ath -> GunHelper.hasAttachmentInstalled(gun, ath.type(), ath.id()))
                         .findFirst()
                         .ifPresent(ignoredAth -> {
                             var explosionData = Optional.ofNullable(index.getBulletData().getExplosionData());

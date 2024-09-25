@@ -5,6 +5,8 @@
   "entity.modtech_arsenal.shockwave": "Shockwave",
   "enchantment.modtech_arsenal.prime_chamber": "Prime Chamber",
   "enchantment.modtech_arsenal.prime_chamber.desc": "First bullet after reload causes 1.5x damage and +1 pierce",
+  "enchantment.modtech_arsenal.subsistence": "Subsistence",
+  "enchantment.modtech_arsenal.subsistence.desc": "Refills part of the magazine from inventory on weapon kills",
   "enchantment.modtech_arsenal.micro_missile": "Micro Missile",
   "enchantment.modtech_arsenal.micro_missile.desc": "This weapon fires a high-speed projectile in a straight line",
   "effect.modtech_arsenal.anti_regen": "Anti-Regeneration",

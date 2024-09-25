@@ -9,7 +9,7 @@ import com.tacz.guns.api.item.gun.FireMode;
 import com.tacz.guns.resource.index.CommonGunIndex;
 import com.tacz.guns.resource.pojo.data.gun.Bolt;
 import mod.chloeprime.modtechpoweredarsenal.ModTechPoweredArsenal;
-import mod.chloeprime.modtechpoweredarsenal.common.standard.util.GunPreconditions;
+import mod.chloeprime.modtechpoweredarsenal.common.standard.util.GunHelper;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.item.ItemStack;
 import net.minecraftforge.eventbus.api.EventPriority;
@@ -32,7 +32,7 @@ public class BumpfireStockBehavior {
             return original;
         }
         // 判断是否安装了撞火枪托
-        if (!GunPreconditions.hasAttachmentInstalled(gunStack, AttachmentType.STOCK, BUMPFIRE_STOCK_ID)) {
+        if (!GunHelper.hasAttachmentInstalled(gunStack, AttachmentType.STOCK, BUMPFIRE_STOCK_ID)) {
             return original;
         }
         if (original.contains(FireMode.AUTO)) {
@@ -57,7 +57,7 @@ public class BumpfireStockBehavior {
             return;
         }
         TimelessAPI.getCommonGunIndex(kun.getGunId(gun)).ifPresent(index -> {
-            if (GunPreconditions.hasAttachmentInstalled(gun, AttachmentType.STOCK, BUMPFIRE_STOCK_ID)) {
+            if (GunHelper.hasAttachmentInstalled(gun, AttachmentType.STOCK, BUMPFIRE_STOCK_ID)) {
                 kun.setFireMode(gun, FireMode.AUTO);
             } else {
                 var gunpackSupported = index.getGunData().getFireModeSet();

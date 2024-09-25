@@ -18,7 +18,7 @@ import net.minecraftforge.fml.common.Mod;
 import java.util.List;
 import java.util.Set;
 
-import static mod.chloeprime.modtechpoweredarsenal.common.standard.util.GunPreconditions.*;
+import static mod.chloeprime.modtechpoweredarsenal.common.standard.util.GunHelper.*;
 
 @Mod.EventBusSubscriber
 public class OriginBulletBehavior {

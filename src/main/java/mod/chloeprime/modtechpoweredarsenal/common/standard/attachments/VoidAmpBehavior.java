@@ -30,7 +30,7 @@ import net.minecraftforge.fml.common.Mod;
 import java.util.List;
 import java.util.Set;
 
-import static mod.chloeprime.modtechpoweredarsenal.common.standard.util.GunPreconditions.hasAttachmentInstalled;
+import static mod.chloeprime.modtechpoweredarsenal.common.standard.util.GunHelper.hasAttachmentInstalled;
 
 @Mod.EventBusSubscriber
 public class VoidAmpBehavior {

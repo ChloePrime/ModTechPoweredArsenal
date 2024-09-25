@@ -5,6 +5,8 @@
   "entity.modtech_arsenal.shockwave": "冲击波",
   "enchantment.modtech_arsenal.prime_chamber": "强力首发",
   "enchantment.modtech_arsenal.prime_chamber.desc": "装填后的第一发子弹获得 +50%% 伤害加成和 +1 穿透",
+  "enchantment.modtech_arsenal.subsistence": "维持生计",
+  "enchantment.modtech_arsenal.subsistence.desc": "击杀目标会从物品栏中转移并装填部分弹匣",
   "enchantment.modtech_arsenal.micro_missile": "微型导弹",
   "enchantment.modtech_arsenal.micro_missile.desc": "此武器会发射一个直线前进的高速射弹",
   "effect.modtech_arsenal.anti_regen": "反再生",
