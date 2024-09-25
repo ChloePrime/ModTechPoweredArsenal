@@ -193,8 +193,8 @@ dependencies {
     implementation fg.deobf('curse.maven:timeless-and-classics-zero-1028108:5722050-sources-5724527')
 
     // GunsmithLib
-    implementation(jarJar(fg.deobf('mod.chloeprime:gunsmithlib:1.20.1-1.0.0'))) {
-        jarJar.ranged(it, "[1.20.1-1.0,)")
+    implementation(jarJar(fg.deobf('mod.chloeprime:gunsmithlib:1.20.1-1.1.0'))) {
+        jarJar.ranged(it, "[1.20.1-1.1,)")
     }
 
     // JEI
