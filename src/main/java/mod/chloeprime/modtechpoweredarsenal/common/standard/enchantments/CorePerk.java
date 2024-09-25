@@ -20,7 +20,7 @@ public @interface CorePerk {
         public static final int MAX_ON_BOOKS = 1;
         public static final int MAX_ON_EQUIPMENTS = 2;
 
-        public static boolean isPerk(Object object) {
+        public static boolean isCorePerk(Object object) {
             return object.getClass().getAnnotation(CorePerk.class) != null;
         }
 
@@ -30,7 +30,7 @@ public @interface CorePerk {
             var max = stack.is(Items.BOOK) ? MAX_ON_BOOKS : MAX_ON_EQUIPMENTS;
             while (iterator.hasNext()) {
                 var ench = iterator.next();
-                if (!isPerk(ench.enchantment)) {
+                if (!isCorePerk(ench.enchantment)) {
                     continue;
                 }
                 count++;
