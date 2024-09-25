@@ -10,7 +10,6 @@ import mod.chloeprime.modtechpoweredarsenal.common.standard.util.GunHelper;
 import mod.chloeprime.modtechpoweredarsenal.common.standard.util.StreamSupportMC;
 import net.minecraft.world.entity.EquipmentSlot;
 import net.minecraft.world.entity.LivingEntity;
-import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.enchantment.EnchantmentCategory;
 import net.minecraftforge.common.MinecraftForge;
 import net.minecraftforge.common.capabilities.ForgeCapabilities;
@@ -100,8 +99,9 @@ public class ReconstructionPerk extends PerkBase {
 
     private static int reloadGun(LivingEntity shooter, GunInfo gun) {
         var magazineSize = AttachmentDataUtils.getAmmoCountWithAttachment(gun.gunStack(), gun.index().getGunData());
+        var maxRefill = 2 * magazineSize;
         var currentAmmo = gun.gunItem().getCurrentAmmoCount(gun.gunStack());
-        var fillCount = Math.min((int) Math.ceil(magazineSize * FILL_RATE), 2 * magazineSize - currentAmmo);
+        var fillCount = Math.min((int) Math.ceil(magazineSize * FILL_RATE), maxRefill - currentAmmo);
         return GunHelper.magicReload(shooter, gun.gunStack(), fillCount, true);
     }
 }
