@@ -5,8 +5,11 @@
   "compatibilityLevel": "JAVA_8",
   "refmap": "modtech_arsenal.refmap.json",
   "mixins": [
+    "minecraft.MakeGunEnchantableMixin",
     "minecraft.MixinDamageSource",
     "minecraft.MixinEvokerFang",
+    "minecraft.PerkEnchantmentLimitMixin",
+    "tacz.KineticBulletAccessor",
     "tacz.MixinGun"
   ],
   "client": [
