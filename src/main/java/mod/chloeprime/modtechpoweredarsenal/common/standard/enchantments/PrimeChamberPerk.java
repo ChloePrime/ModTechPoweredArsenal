@@ -48,6 +48,9 @@ public class PrimeChamberPerk extends PerkBase {
     @SubscribeEvent
     @SuppressWarnings("DataFlowIssue")
     public static void onBulletCreate(BulletCreateEvent event) {
+        if (event.getBullet().level().isClientSide) {
+            return;
+        }
         var gun = event.getGun();
         if (gun.hasTag() && gun.getTag().contains(TAG_KEY, Tag.TAG_ANY_NUMERIC)) {
             var coefficient = gun.getTag().getFloat(TAG_KEY);
@@ -62,6 +65,9 @@ public class PrimeChamberPerk extends PerkBase {
 
     @SubscribeEvent(priority = EventPriority.LOW)
     public static void onPreHurt(EntityHurtByGunEvent.Pre event) {
+        if (event.getLogicalSide().isClient()) {
+            return;
+        }
         var pd = event.getBullet().getPersistentData();
         if (pd.contains(TAG_KEY, Tag.TAG_ANY_NUMERIC)) {
             var coefficient = pd.getFloat(TAG_KEY);

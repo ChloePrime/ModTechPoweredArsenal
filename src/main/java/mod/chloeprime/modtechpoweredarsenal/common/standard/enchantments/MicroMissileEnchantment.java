@@ -42,11 +42,14 @@ public class MicroMissileEnchantment extends Enchantment {
     }
 
     private void onBulletCreate(BulletCreateEvent event) {
+        var bullet = event.getBullet();
+        if (bullet.level().isClientSide) {
+            return;
+        }
         var level = event.getGun().getEnchantmentLevel(this);
         if (level <= 0) {
             return;
         }
-        var bullet = event.getBullet();
         bullet.setNoGravity(true);
         if (bullet instanceof KineticBulletAccessor accessor) {
             accessor.setGravity(0);
