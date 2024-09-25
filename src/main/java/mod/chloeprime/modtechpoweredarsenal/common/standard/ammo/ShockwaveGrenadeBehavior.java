@@ -1,6 +1,5 @@
 package mod.chloeprime.modtechpoweredarsenal.common.standard.ammo;
 
-import com.google.common.collect.Maps;
 import com.google.common.collect.Sets;
 import com.tacz.guns.api.TimelessAPI;
 import com.tacz.guns.api.event.server.AmmoHitBlockEvent;
@@ -14,7 +13,6 @@ import mod.chloeprime.modtechpoweredarsenal.common.standard.entities.Shockwave;
 import mod.chloeprime.modtechpoweredarsenal.common.standard.util.AttachmentHolder;
 import mod.chloeprime.modtechpoweredarsenal.common.standard.util.GunPreconditions;
 import net.minecraft.core.Direction;
-import net.minecraft.nbt.CompoundTag;
 import net.minecraft.nbt.Tag;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraftforge.eventbus.api.SubscribeEvent;
