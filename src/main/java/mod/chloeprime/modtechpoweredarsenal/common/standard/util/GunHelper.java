@@ -47,7 +47,7 @@ public class GunHelper {
         var op = IGunOperator.fromLivingEntity(shooter);
         // 主手武器在切枪和装弹时不触发
         if (gun == shooter.getMainHandItem()) {
-            if (op.getSynReloadState().getStateType().isReloading() || op.getSynDrawCoolDown() != 0) {
+            if (op.getSynReloadState().getCountDown() > 0 || op.getSynDrawCoolDown() != 0) {
                 return 0;
             }
             if (op.getSynBoltCoolDown() > 0) {
