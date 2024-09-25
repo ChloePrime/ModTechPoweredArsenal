@@ -5,6 +5,7 @@ import com.tacz.guns.api.entity.IGunOperator;
 import com.tacz.guns.api.item.IGun;
 import com.tacz.guns.api.item.attachment.AttachmentType;
 import com.tacz.guns.api.item.gun.AbstractGunItem;
+import com.tacz.guns.resource.pojo.data.gun.Bolt;
 import com.tacz.guns.resource.pojo.data.gun.FeedType;
 import com.tacz.guns.util.AttachmentDataUtils;
 import net.minecraft.resources.ResourceLocation;
@@ -49,6 +50,9 @@ public class GunHelper {
             if (op.getSynReloadState().getStateType().isReloading() || op.getSynDrawCoolDown() != 0) {
                 return 0;
             }
+            if (op.getSynBoltCoolDown() > 0) {
+                return 0;
+            }
         }
 
         var reloadCount = allowOverflow ? count : Math.min(
@@ -56,6 +60,13 @@ public class GunHelper {
                 AttachmentDataUtils.getAmmoCountWithAttachment(gun, index.getGunData()) - kun.getCurrentAmmoCount(gun)
         );
         var ammoExtracted = extractAmmo(shooter, gun, reloadCount);
+        if (ammoExtracted <= 0) {
+            return 0;
+        }
+        if (index.getGunData().getBolt() == Bolt.CLOSED_BOLT && !kun.hasBulletInBarrel(gun)) {
+            kun.setBulletInBarrel(gun, true);
+            ammoExtracted--;
+        }
         kun.setCurrentAmmoCount(gun, kun.getCurrentAmmoCount(gun) + ammoExtracted);
         return ammoExtracted;
     }
