@@ -155,6 +155,10 @@ repositories {
     }
 
     repositories {
+        maven { url 'https://modmaven.dev/' }
+    }
+
+    repositories {
         maven { url 'https://maven.blamejared.com' }
     }
 
@@ -196,6 +200,9 @@ dependencies {
     implementation(jarJar(fg.deobf('mod.chloeprime:gunsmithlib:1.20.1-1.1.0'))) {
         jarJar.ranged(it, "[1.20.1-1.1,)")
     }
+
+    // MEK, 用于测试能量武器
+    runtimeOnly fg.deobf("mekanism:Mekanism:${mekanism_version}")// core
 
     // JEI
     runtimeOnly(fg.deobf("mezz.jei:jei-${minecraft_version}-forge:${jei_version}"))
