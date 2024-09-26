@@ -1,7 +1,7 @@
 {
   "name": "modtech_arsenal.gun.gl_shark.name",
   "tooltip": "modtech_arsenal.gun.gl_shark.desc",
-  "display": "tacz:m320_display",
+  "display": "modtech_arsenal:shark_cannon_display",
   "data": "modtech_arsenal:gl_shark_data",
   "type": "rpg"
 }

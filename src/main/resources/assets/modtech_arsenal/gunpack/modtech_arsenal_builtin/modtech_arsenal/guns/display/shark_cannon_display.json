@@ -1,0 +1,47 @@
+{
+    "model": "modtech_arsenal:gun/shark_cannon",
+    "texture": "modtech_arsenal:gun/uv/shark_cannon",
+    "slot": "modtech_arsenal:gun/slot/shark_cannon",
+    "hud": "modtech_arsenal:gun/hud/shark_cannon",
+    "animation": "modtech_arsenal:shark_cannon",
+
+
+    "use_default_animation": "rifle",
+    "shell": {
+
+        "initial_velocity": [5, 2, 1],
+
+        "random_velocity": [1, 1, 0.25],
+
+        "acceleration": [0.0, -10, 0.0],
+
+        "angular_velocity": [360, -1200, 90],
+
+        "living_time": 1.0
+    },
+    "transform": {
+        "scale": {
+            "thirdperson": [
+                1.0,
+                1.0,
+                1.0
+            ],
+            "ground": [
+                1.0,
+                1.0,
+                1.0
+            ],
+            "fixed": [
+                1.0,
+                1.0,
+                1.0
+            ]
+        }
+    },
+    
+    "third_person_animation": "default",
+    "sounds": {
+        "shoot_3p": "modtech_arsenal:shark_cannon/shoot"
+
+    }
+}

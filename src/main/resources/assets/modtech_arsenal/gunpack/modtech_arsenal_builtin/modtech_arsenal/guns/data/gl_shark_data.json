@@ -9,7 +9,11 @@
     "damage": 10,
     "extra_damage": {
       "armor_ignore": 0.0,
-      "head_shot_multiplier": 1.0
+      "head_shot_multiplier": 1.0,
+      "damage_adjust": [
+        {"distance": 25, "damage": 10},
+        {"distance": "infinite", "damage": 10}
+      ]
     },
     "speed": 60,
     "gravity": 0.15,
@@ -28,17 +32,19 @@
   "reload": {
     "type": "magazine",
     "feed": {
-      "empty": 1.78
+      "empty": 1.75,
+      "tactical": 0.5
     },
     "cooldown": {
-      "empty": 3
+      "empty": 2.75,
+      "tactical": 1
     }
   },
-  "draw_time": 1.18,
-  "put_away_time": 1.17,
+  "draw_time": 1,
+  "put_away_time": 1,
   "aim_time": 0.1,
-  "sprint_time": 0.15,
-  "weight": 3.6,
+  "sprint_time": 0.1,
+  "weight": 6.8,
   "movement_speed": {
     "base": 0.0,
     "aim": -0.1,
