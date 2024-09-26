@@ -64,6 +64,7 @@ public final class MTPA {
         );
     }
 
+    @SuppressWarnings("unused")
     public static final class Enchantments {
         static final DeferredRegister<Enchantment> REGISTRY = DeferredRegister.create(ForgeRegistries.ENCHANTMENTS, ModTechPoweredArsenal.MODID);
         public static final EnchantmentCategory GUN_PERKS = EnchantmentCategory.create("MTPA_GUN_PERKS", IGun.class::isInstance);
