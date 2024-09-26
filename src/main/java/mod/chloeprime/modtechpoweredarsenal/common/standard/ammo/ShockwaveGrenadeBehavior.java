@@ -166,7 +166,7 @@ public class ShockwaveGrenadeBehavior {
         if (context.contains(PDK_FOOD_VALUE, Tag.TAG_ANY_NUMERIC) && context.contains(PDK_SATURATION_VALUE, Tag.TAG_ANY_NUMERIC)) {
             var food = context.getInt(PDK_FOOD_VALUE);
             var saturation = context.getFloat(PDK_SATURATION_VALUE);
-            shooter.level().playSound(null, shooter.getX(), shooter.getY(), shooter.getZ(), SoundEvents.PLAYER_BURP, shooter.getSoundSource(), 0.5F, shooter.level().random.nextFloat() * 0.1F + 0.9F);
+            shooter.level().playSound(null, shooter.getX(), shooter.getY(), shooter.getZ(), SoundEvents.PLAYER_BURP, shooter.getSoundSource(), 1, shooter.level().random.nextFloat() * 0.1F + 0.9F);
             shooter.getFoodData().eat(food, saturation);
         }
     }
