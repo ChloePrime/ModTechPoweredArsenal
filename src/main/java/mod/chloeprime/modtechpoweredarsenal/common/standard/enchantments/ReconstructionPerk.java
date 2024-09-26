@@ -50,8 +50,12 @@ public class ReconstructionPerk extends PerkBase {
         if (event.getLogicalSide().isClient()) {
             return;
         }
+        var gun = event.getGunItemStack();
+        if (gun.getEnchantmentLevel(this) <= 0) {
+            return;
+        }
         var now = event.getShooter().level().getGameTime();
-        event.getGunItemStack().getOrCreateTag().putLong(TAG_KEY_LAST_SHOOT, now);
+        gun.getOrCreateTag().putLong(TAG_KEY_LAST_SHOOT, now);
     }
 
     private void onPlayerTick(TickEvent.PlayerTickEvent event) {

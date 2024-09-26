@@ -8,13 +8,16 @@ import com.tacz.guns.api.item.gun.AbstractGunItem;
 import com.tacz.guns.resource.pojo.data.gun.Bolt;
 import com.tacz.guns.resource.pojo.data.gun.FeedType;
 import com.tacz.guns.util.AttachmentDataUtils;
+import mod.chloeprime.modtechpoweredarsenal.ModTechPoweredArsenal;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.item.ItemStack;
 import net.minecraftforge.common.capabilities.ForgeCapabilities;
+import net.minecraftforge.fml.common.Mod;
 
 import javax.annotation.Nonnull;
 
+@Mod.EventBusSubscriber
 public class GunHelper {
     public static boolean hasAttachmentInstalled(ItemStack gun, AttachmentType type, @Nonnull ResourceLocation attachmentId) {
         var kun = IGun.getIGunOrNull(gun);
@@ -58,14 +61,15 @@ public class GunHelper {
                 AttachmentDataUtils.getAmmoCountWithAttachment(gun, index.getGunData()) - kun.getCurrentAmmoCount(gun)
         );
         var ammoExtracted = extractAmmo(shooter, gun, reloadCount);
-        if (ammoExtracted <= 0) {
+        var needToRefill = ammoExtracted;
+        if (needToRefill <= 0) {
             return 0;
         }
         if (index.getGunData().getBolt() == Bolt.CLOSED_BOLT && !kun.hasBulletInBarrel(gun)) {
             kun.setBulletInBarrel(gun, true);
-            ammoExtracted--;
+            needToRefill--;
         }
-        kun.setCurrentAmmoCount(gun, kun.getCurrentAmmoCount(gun) + ammoExtracted);
+        kun.setCurrentAmmoCount(gun, kun.getCurrentAmmoCount(gun) + needToRefill);
         return ammoExtracted;
     }
 
