@@ -9,6 +9,7 @@ import net.minecraft.core.registries.Registries;
 import net.minecraft.network.chat.Component;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.item.*;
+import net.minecraft.world.item.enchantment.EnchantmentInstance;
 import net.minecraftforge.common.MinecraftForge;
 import net.minecraftforge.event.BuildCreativeModeTabContentsEvent;
 import net.minecraftforge.eventbus.api.IEventBus;
@@ -18,9 +19,11 @@ import net.minecraftforge.fml.config.ModConfig;
 import net.minecraftforge.fml.event.lifecycle.FMLCommonSetupEvent;
 import net.minecraftforge.fml.javafmlmod.FMLJavaModLoadingContext;
 import net.minecraftforge.registries.DeferredRegister;
+import net.minecraftforge.registries.ForgeRegistries;
 import net.minecraftforge.registries.RegistryObject;
 import org.slf4j.Logger;
 
+import java.util.Objects;
 import java.util.function.Supplier;
 
 @Mod(ModTechPoweredArsenal.MODID)
@@ -50,7 +53,16 @@ public final class ModTechPoweredArsenal {
                 output.accept(MTPA.attachment("stock_bumpfire"));
                 output.accept(MTPA.attachment(MtpaL2Module.ID, "muzzle_mod_void_amp"));
                 output.accept(MTPA.attachment("ammo_mod_antimagic"));
+                output.accept(MTPA.attachment("ammo_trait_greed_of_ussr"));
                 output.accept(MTPA.attachment("ammo_trait_chain_action"));
+                // 添加满级附魔书
+                ForgeRegistries.ENCHANTMENTS.getKeys().stream()
+                        .filter(key -> MODID.equals(key.getNamespace()))
+                        .map(ForgeRegistries.ENCHANTMENTS::getValue)
+                        .filter(Objects::nonNull)
+                        .map(ench -> new EnchantmentInstance(ench, ench.getMaxLevel()))
+                        .map(EnchantedBookItem::createForEnchantment)
+                        .forEach(output::accept);
             }).build());
 
     public ModTechPoweredArsenal() {
