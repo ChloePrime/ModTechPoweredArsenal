@@ -72,6 +72,7 @@ public final class MTPA {
         public static final RegistryObject<Enchantment> SUBSISTENCE = REGISTRY.register("subsistence", SubsistencePerk::create);
         public static final RegistryObject<Enchantment> RECONSTRUCTION = REGISTRY.register("reconstruction", ReconstructionPerk::create);
         public static final RegistryObject<Enchantment> RECOMBINATION = REGISTRY.register("recombination", RecombinationPerk::create);
+        public static final RegistryObject<Enchantment> RANGER = REGISTRY.register("ranger", RangerPerk::create);
         private Enchantments() {}
     }
 

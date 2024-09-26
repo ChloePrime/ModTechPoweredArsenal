@@ -7,6 +7,8 @@
   "enchantment.modtech_arsenal.micro_missile.desc": "This weapon fires a high-speed projectile in a straight line",
   "enchantment.modtech_arsenal.prime_chamber": "Prime Chamber",
   "enchantment.modtech_arsenal.prime_chamber.desc": "First bullet after reload causes 1.5x damage and +1 pierce",
+  "enchantment.modtech_arsenal.ranger": "Ranger",
+  "enchantment.modtech_arsenal.ranger.desc": "Boost damage based on distance",
   "enchantment.modtech_arsenal.reconstruction": "Reconstruction",
   "enchantment.modtech_arsenal.reconstruction.desc": "Slowly reloads itself over time, up to double capacity",
   "enchantment.modtech_arsenal.recombination": "Recombination",

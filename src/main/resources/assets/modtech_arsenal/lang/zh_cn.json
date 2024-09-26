@@ -7,6 +7,8 @@
   "enchantment.modtech_arsenal.micro_missile.desc": "此武器会发射一个直线前进的高速射弹",
   "enchantment.modtech_arsenal.prime_chamber": "强力首发",
   "enchantment.modtech_arsenal.prime_chamber.desc": "装填后的第一发子弹获得 +50%% 伤害加成和 +1 穿透",
+  "enchantment.modtech_arsenal.ranger": "游骑兵",
+  "enchantment.modtech_arsenal.ranger.desc": "根据你与目标的距离增加伤害",
   "enchantment.modtech_arsenal.reconstruction": "重建",
   "enchantment.modtech_arsenal.reconstruction.desc": "缓慢装填弹匣至两倍弹匣容量",
   "enchantment.modtech_arsenal.recombination": "重组",
