@@ -10,5 +10,7 @@
   "modtech_arsenal.attachment.ammo_mod_antimagic.name": "§eOrigin Bullet",
   "modtech_arsenal.attachment.ammo_mod_antimagic.desc": "Hexed warheads.\n§a+ Bypasses magical protection",
   "modtech_arsenal.attachment.ammo_trait_chain_action.name": "Chain Reaction",
-  "modtech_arsenal.attachment.ammo_trait_chain_action.desc": "§6Legendary\n§a+ Each kill with shockwave fired by this weapon creates an explosion"
+  "modtech_arsenal.attachment.ammo_trait_chain_action.desc": "§6Legendary\n§a+ Each kill with shockwave fired by this weapon creates an explosion",
+  "modtech_arsenal.attachment.ammo_trait_greed_of_ussr.name": "Greed of the Kirov Empire",
+  "modtech_arsenal.attachment.ammo_trait_greed_of_ussr.desc": "§6Legendary\nFeel the bottomless greed of the fallen empire\n§a+ Kills caused by magic fang will feed your stomach"
 }

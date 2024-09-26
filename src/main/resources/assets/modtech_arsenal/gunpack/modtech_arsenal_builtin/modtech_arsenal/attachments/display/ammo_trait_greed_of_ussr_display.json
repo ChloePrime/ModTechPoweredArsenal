@@ -1,0 +1,7 @@
+{
+  "slot": "modtech_arsenal:attachment/slot/ammo_trait_greed_of_ussr",
+  "sounds": {
+    "install": "tacz:attachments/attachment_general_a",
+    "uninstall": "tacz:attachments/attachment_general_uninstall"
+  }
+}

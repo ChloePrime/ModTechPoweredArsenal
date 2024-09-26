@@ -54,6 +54,9 @@
   "fire_mode": [
     "semi"
   ],
+  "allow_attachment_types": [
+    "extended_mag"
+  ],
   "recoil": {
     "pitch": [
       {"time": 0, "value": [2.5, 2.5]},

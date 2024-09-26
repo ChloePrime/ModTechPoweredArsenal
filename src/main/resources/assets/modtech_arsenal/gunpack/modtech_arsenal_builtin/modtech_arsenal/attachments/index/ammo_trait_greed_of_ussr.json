@@ -1,0 +1,7 @@
+{
+  "name": "modtech_arsenal.attachment.ammo_trait_greed_of_ussr.name",
+  "tooltip": "modtech_arsenal.attachment.ammo_trait_greed_of_ussr.desc",
+  "display": "modtech_arsenal:ammo_trait_greed_of_ussr_display",
+  "data": "modtech_arsenal:ammo_trait_greed_of_ussr_data",
+  "type": "extended_mag"
+}

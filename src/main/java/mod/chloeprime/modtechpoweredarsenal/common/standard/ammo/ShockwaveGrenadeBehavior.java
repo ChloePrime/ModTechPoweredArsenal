@@ -13,19 +13,29 @@ import mod.chloeprime.modtechpoweredarsenal.common.standard.entities.Shockwave;
 import mod.chloeprime.modtechpoweredarsenal.common.standard.util.AttachmentHolder;
 import mod.chloeprime.modtechpoweredarsenal.common.standard.util.GunHelper;
 import net.minecraft.core.Direction;
+import net.minecraft.nbt.CompoundTag;
 import net.minecraft.nbt.Tag;
 import net.minecraft.resources.ResourceLocation;
+import net.minecraft.sounds.SoundEvents;
+import net.minecraft.sounds.SoundSource;
+import net.minecraft.world.entity.Entity;
+import net.minecraft.world.entity.LivingEntity;
+import net.minecraft.world.entity.TraceableEntity;
+import net.minecraft.world.entity.player.Player;
+import net.minecraft.world.food.FoodData;
+import net.minecraft.world.item.ItemStack;
+import net.minecraft.world.item.Items;
 import net.minecraftforge.eventbus.api.SubscribeEvent;
 import net.minecraftforge.fml.common.Mod;
 
-import java.util.Map;
-import java.util.Optional;
-import java.util.OptionalDouble;
-import java.util.Set;
+import java.util.*;
 import java.util.concurrent.ConcurrentHashMap;
 
 @Mod.EventBusSubscriber
 public class ShockwaveGrenadeBehavior {
+    public static final Map<AttachmentHolder, Object> GREED_OF_USSR_ATTACHMENTS = new ConcurrentHashMap<>(Map.of(
+            new AttachmentHolder(ModTechPoweredArsenal.loc("ammo_trait_greed_of_ussr"), AttachmentType.EXTENDED_MAG), Boolean.TRUE
+    ));
     public static final Map<AttachmentHolder, Object> CHAIN_REACTION_ATTACHMENTS = new ConcurrentHashMap<>(Map.of(
             new AttachmentHolder(ModTechPoweredArsenal.loc("ammo_trait_chain_action"), AttachmentType.EXTENDED_MAG), Boolean.TRUE
     ));
@@ -36,6 +46,8 @@ public class ShockwaveGrenadeBehavior {
             ModTechPoweredArsenal.loc("gl_deafening_whisper")
     ));
 
+    public static final String PDK_FOOD_VALUE = ModTechPoweredArsenal.loc("greed_of_ussr.food_value").toString();
+    public static final String PDK_SATURATION_VALUE = ModTechPoweredArsenal.loc("greed_of_ussr.saturation_value").toString();
     public static final String PDK_CHAIN_DAMAGE = ModTechPoweredArsenal.loc("chain_reaction_damage").toString();
     public static final String PDK_CHAIN_RANGE = ModTechPoweredArsenal.loc("chain_reaction_range").toString();
 
@@ -55,22 +67,31 @@ public class ShockwaveGrenadeBehavior {
             return;
         }
         // 将爆炸数据作为连锁爆炸数据记录到子弹中
-        TimelessAPI.getCommonGunIndex(gid).ifPresent(
-                index -> CHAIN_REACTION_ATTACHMENTS.keySet().stream()
-                        .filter(ath -> GunHelper.hasAttachmentInstalled(gun, ath.type(), ath.id()))
-                        .findFirst()
-                        .ifPresent(ignoredAth -> {
-                            var explosionData = Optional.ofNullable(index.getBulletData().getExplosionData());
-                            var damage = explosionData
-                                    .map(ExplosionData::getDamage)
-                                    .orElse(index.getBulletData().getDamageAmount());
-                            var range = explosionData
-                                    .map(ExplosionData::getRadius)
-                                    .orElse(3F);
-                            var pd = event.getBullet().getPersistentData();
-                            pd.putFloat(PDK_CHAIN_DAMAGE, damage);
-                            pd.putFloat(PDK_CHAIN_RANGE, range);
-                        }));
+        TimelessAPI.getCommonGunIndex(gid).ifPresent(index -> {
+            CHAIN_REACTION_ATTACHMENTS.keySet().stream()
+                    .filter(ath -> GunHelper.hasAttachmentInstalled(gun, ath.type(), ath.id()))
+                    .findFirst()
+                    .ifPresent(ignoredAth -> {
+                        var explosionData = Optional.ofNullable(index.getBulletData().getExplosionData());
+                        var damage = explosionData
+                                .map(ExplosionData::getDamage)
+                                .orElse(index.getBulletData().getDamageAmount());
+                        var range = explosionData
+                                .map(ExplosionData::getRadius)
+                                .orElse(3F);
+                        var pd = event.getBullet().getPersistentData();
+                        pd.putFloat(PDK_CHAIN_DAMAGE, damage);
+                        pd.putFloat(PDK_CHAIN_RANGE, range);
+                    });
+            GREED_OF_USSR_ATTACHMENTS.keySet().stream()
+                    .filter(ath -> GunHelper.hasAttachmentInstalled(gun, ath.type(), ath.id()))
+                    .findFirst()
+                    .ifPresent(ignoredAth -> {
+                        var pd = event.getBullet().getPersistentData();
+                        pd.putInt(PDK_FOOD_VALUE, 6);
+                        pd.putFloat(PDK_SATURATION_VALUE, 2.5F);
+                    });
+        });
     }
 
     @SubscribeEvent
@@ -108,6 +129,13 @@ public class ShockwaveGrenadeBehavior {
                 emitter.setPos(event.getHitResult().getLocation());
                 emitter.setDeltaMovement(direction.scale(emitterSpeed));
                 damage.ifPresent(emitter::setDamage);
+                var context = bullet.getPersistentData();
+                if (context.contains(PDK_FOOD_VALUE, Tag.TAG_ANY_NUMERIC) && context.contains(PDK_SATURATION_VALUE, Tag.TAG_ANY_NUMERIC)) {
+                    var data = new CompoundTag();
+                    data.put(PDK_FOOD_VALUE, Objects.requireNonNull(context.get(PDK_FOOD_VALUE)));
+                    data.put(PDK_SATURATION_VALUE, Objects.requireNonNull(context.get(PDK_SATURATION_VALUE)));
+                    emitter.setFangData(data);
+                }
                 bullet.level().addFreshEntity(emitter);
             }
         } else if (SHOCKWAVE_GUNS.contains(bullet.getGunId())) {
@@ -125,6 +153,25 @@ public class ShockwaveGrenadeBehavior {
                 emitter.enableChainReaction(chainDamage, chainRange);
             }
             bullet.level().addFreshEntity(emitter);
+        }
+    }
+
+    public static void onFangHit(TraceableEntity fang, LivingEntity victim, boolean hurt) {
+        if (!hurt || victim.level().isClientSide) {
+            return;
+        }
+        if (!(fang instanceof Entity fangEntity)) {
+            return;
+        }
+        if (!(fang.getOwner() instanceof Player shooter)) {
+            return;
+        }
+        var context = fangEntity.getPersistentData();
+        if (context.contains(PDK_FOOD_VALUE, Tag.TAG_ANY_NUMERIC) && context.contains(PDK_SATURATION_VALUE, Tag.TAG_ANY_NUMERIC)) {
+            var food = context.getInt(PDK_FOOD_VALUE);
+            var saturation = context.getFloat(PDK_SATURATION_VALUE);
+            shooter.level().playSound(null, shooter.getX(), shooter.getY(), shooter.getZ(), SoundEvents.PLAYER_BURP, shooter.getSoundSource(), 0.5F, shooter.level().random.nextFloat() * 0.1F + 0.9F);
+            shooter.getFoodData().eat(food, saturation);
         }
     }
 }

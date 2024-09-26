@@ -2,6 +2,7 @@ package mod.chloeprime.modtechpoweredarsenal.common.standard.entities;
 
 import mod.chloeprime.modtechpoweredarsenal.MTPA;
 import mod.chloeprime.modtechpoweredarsenal.ModTechPoweredArsenal;
+import net.minecraft.nbt.CompoundTag;
 import net.minecraft.nbt.Tag;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.EntityType;
@@ -10,6 +11,8 @@ import net.minecraft.world.entity.projectile.EvokerFangs;
 import net.minecraft.world.entity.projectile.Projectile;
 import net.minecraft.world.level.Level;
 
+import java.util.Objects;
+import java.util.Optional;
 import java.util.OptionalDouble;
 
 public class FangEmitter extends AbstractShockwave {
@@ -22,8 +25,13 @@ public class FangEmitter extends AbstractShockwave {
         super(pEntityType, pLevel);
     }
 
+    public void setFangData(CompoundTag data) {
+        this.fangData = Objects.requireNonNull(data);
+    }
+
     public static final String FANG_DAMAGE_PDK = ModTechPoweredArsenal.loc("damage_override").toString();
     private static final int spawnInterval = 3;
+    private CompoundTag fangData;
     private int spawnCounter;
 
     @Override
@@ -48,6 +56,12 @@ public class FangEmitter extends AbstractShockwave {
         if (dmg > 0) {
             fang.getPersistentData().putFloat(FANG_DAMAGE_PDK, dmg);
         }
+        Optional.ofNullable(fangData).ifPresent(data -> {
+            var pd = fang.getPersistentData();
+            for (var key : data.getAllKeys()) {
+                pd.put(key, data.get(key));
+            }
+        });
         level.addFreshEntity(fang);
     }
 

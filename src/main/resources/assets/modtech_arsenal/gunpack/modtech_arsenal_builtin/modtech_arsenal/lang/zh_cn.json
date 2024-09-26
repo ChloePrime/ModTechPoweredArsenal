@@ -10,5 +10,7 @@
   "modtech_arsenal.attachment.ammo_mod_antimagic.name": "§e起源弹",
   "modtech_arsenal.attachment.ammo_mod_antimagic.desc": "反魔法弹头\n§a+ 穿透魔法防御",
   "modtech_arsenal.attachment.ammo_trait_chain_action.name": "连锁反应",
-  "modtech_arsenal.attachment.ammo_trait_chain_action.desc": "§6传奇词条\n§a+ 此武器爆炸后产生的冲击波每次击杀都会造成一次新的爆炸"
+  "modtech_arsenal.attachment.ammo_trait_chain_action.desc": "§6传奇词条\n§a+ 此武器爆炸后产生的冲击波每次击杀都会造成一次新的爆炸",
+  "modtech_arsenal.attachment.ammo_trait_greed_of_ussr.name": "基洛夫的贪婪",
+  "modtech_arsenal.attachment.ammo_trait_greed_of_ussr.desc": "§6传奇词条\n感受堕落帝国那无尽的贪欲\n§a+ 魔法尖牙造成的击杀将会填饱你的肚子"
 }
