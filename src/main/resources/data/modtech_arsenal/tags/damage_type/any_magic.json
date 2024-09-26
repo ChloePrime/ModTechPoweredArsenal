@@ -1,0 +1,16 @@
+{
+  "replace": false,
+  "values": [
+    "#forge:is_magic",
+    "#minecraft:bypasses_armor",
+    "#minecraft:bypasses_shield",
+    "#minecraft:bypasses_invulnerability",
+    "#minecraft:bypasses_cooldown",
+    "#minecraft:bypasses_effects",
+    "#minecraft:bypasses_resistance",
+    "#minecraft:bypasses_enchantments",
+    "#minecraft:is_fire",
+    "#minecraft:is_freezing",
+    "#minecraft:is_lightning"
+  ]
+}

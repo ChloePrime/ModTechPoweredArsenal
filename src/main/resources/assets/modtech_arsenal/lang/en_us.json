@@ -9,8 +9,12 @@
   "enchantment.modtech_arsenal.prime_chamber.desc": "First bullet after reload causes 1.5x damage and +1 pierce",
   "enchantment.modtech_arsenal.reconstruction": "Reconstruction",
   "enchantment.modtech_arsenal.reconstruction.desc": "Slowly reloads itself over time, up to double capacity",
+  "enchantment.modtech_arsenal.recombination": "Recombination",
+  "enchantment.modtech_arsenal.recombination.desc": "Final blows caused by sword or magic increase the damage of this weapon's next shot",
   "enchantment.modtech_arsenal.subsistence": "Subsistence",
   "enchantment.modtech_arsenal.subsistence.desc": "Refills part of the magazine from inventory on weapon kills",
   "effect.modtech_arsenal.anti_regen": "Anti-Regeneration",
-  "effect.modtech_arsenal.anti_regen.desc": "Disables healing"
+  "effect.modtech_arsenal.anti_regen.desc": "Disables healing",
+  "effect.modtech_arsenal.recombination_buff": "Recombination",
+  "effect.modtech_arsenal.recombination_buff.desc": "Increases damage of next gunshot"
 }

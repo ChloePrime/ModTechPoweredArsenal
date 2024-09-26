@@ -55,6 +55,9 @@ public class ReconstructionPerk extends PerkBase {
     }
 
     private void onPlayerTick(TickEvent.PlayerTickEvent event) {
+        if (event.phase == TickEvent.Phase.END) {
+            return;
+        }
         if (event.player.level().isClientSide) {
             return;
         }

@@ -9,8 +9,12 @@
   "enchantment.modtech_arsenal.prime_chamber.desc": "装填后的第一发子弹获得 +50%% 伤害加成和 +1 穿透",
   "enchantment.modtech_arsenal.reconstruction": "重建",
   "enchantment.modtech_arsenal.reconstruction.desc": "缓慢装填弹匣至两倍弹匣容量",
+  "enchantment.modtech_arsenal.recombination": "重组",
+  "enchantment.modtech_arsenal.recombination.desc": "刀剑和魔法造成的最后一击会提升此武器的下一击伤害",
   "enchantment.modtech_arsenal.subsistence": "维持生计",
   "enchantment.modtech_arsenal.subsistence.desc": "击杀目标会从物品栏中转移并装填部分弹匣",
   "effect.modtech_arsenal.anti_regen": "反再生",
-  "effect.modtech_arsenal.anti_regen.desc": "生命值无法得到回复"
+  "effect.modtech_arsenal.anti_regen.desc": "生命值无法得到回复",
+  "effect.modtech_arsenal.recombination_buff": "重组",
+  "effect.modtech_arsenal.recombination_buff.desc": "增加下一次射击的威力"
 }
