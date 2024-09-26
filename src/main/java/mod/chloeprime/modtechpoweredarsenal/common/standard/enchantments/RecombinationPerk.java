@@ -86,9 +86,6 @@ public class RecombinationPerk extends PerkBase {
         if (invalid) {
             return;
         }
-        if (!isSwordOrMagic(event.getSource())) {
-            return;
-        }
         int maxBuffAmp = shooter.getCapability(ForgeCapabilities.ITEM_HANDLER, null)
                 .map(StreamSupportMC::of)
                 .map(items -> items
@@ -108,10 +105,6 @@ public class RecombinationPerk extends PerkBase {
                 .orElse(-1);
         var newBuffAmp = Mth.clamp(oldBuffAmp + 1, 0, maxBuffAmp);
         shooter.addEffect(new MobEffectInstance(buff, BUFF_DURATION, newBuffAmp, true, true));
-    }
-
-    private static boolean isSwordOrMagic(DamageSource source) {
-        return !source.isIndirect() || source.is(ANY_MAGIC);
     }
 
     @SubscribeEvent(priority = EventPriority.HIGHEST)
