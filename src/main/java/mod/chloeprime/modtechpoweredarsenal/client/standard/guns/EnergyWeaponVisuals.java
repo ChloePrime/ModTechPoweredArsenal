@@ -1,12 +1,11 @@
 package mod.chloeprime.modtechpoweredarsenal.client.standard.guns;
 
 import com.mojang.blaze3d.systems.RenderSystem;
-import com.tacz.guns.resource.pojo.data.gun.Bolt;
-import com.tacz.guns.util.AttachmentDataUtils;
 import mod.chloeprime.gunsmithlib.api.util.Gunsmith;
 import mod.chloeprime.modtechpoweredarsenal.ModTechPoweredArsenal;
 import mod.chloeprime.modtechpoweredarsenal.common.standard.guns.EnergyWeaponBehavior;
 import mod.chloeprime.modtechpoweredarsenal.common.standard.guns.EnergyWeaponData;
+import mod.chloeprime.modtechpoweredarsenal.common.standard.util.GunHelper;
 import mod.chloeprime.modtechpoweredarsenal.common.standard.util.Property;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.GuiGraphics;
@@ -15,7 +14,6 @@ import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.item.ItemStack;
 import net.minecraftforge.common.capabilities.ForgeCapabilities;
-import net.minecraftforge.energy.IEnergyStorage;
 
 import java.util.Optional;
 import java.util.function.IntSupplier;
@@ -51,14 +49,8 @@ public final class EnergyWeaponVisuals {
                 return;
             }
 
-            var isOpenBolt = gun.index().getGunData().getBolt() == Bolt.OPEN_BOLT;
-            var magAmmo = gun.gunItem().getCurrentAmmoCount(gun.gunStack());
-            var barrel = (!isOpenBolt && gun.gunItem().hasBulletInBarrel(gun.gunStack())) ? 1 : 0;
-            var curAmmo = magAmmo + barrel;
-
-            var magSize = AttachmentDataUtils.getAmmoCountWithAttachment(gun.gunStack(), gun.index().getGunData());
-            var barrelSize = isOpenBolt ? 0 : 1;
-            var maxAmmo = magSize + barrelSize;
+            var curAmmo = GunHelper.getTotalAmmo(gun) + EnergyWeaponBehavior.getCoolness(gun);
+            var maxAmmo = GunHelper.getTotalMagSize(gun);
 
             gui.pose().pushPose();
             {

@@ -8,7 +8,7 @@ import com.tacz.guns.api.item.gun.AbstractGunItem;
 import com.tacz.guns.resource.pojo.data.gun.Bolt;
 import com.tacz.guns.resource.pojo.data.gun.FeedType;
 import com.tacz.guns.util.AttachmentDataUtils;
-import mod.chloeprime.modtechpoweredarsenal.ModTechPoweredArsenal;
+import mod.chloeprime.gunsmithlib.api.util.GunInfo;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.item.ItemStack;
@@ -26,6 +26,45 @@ public class GunHelper {
         }
         return attachmentId.equals(kun.getAttachmentId(gun, type));
     }
+
+    public static int getTotalAmmo(GunInfo gun) {
+        int mag = gun.gunItem().getCurrentAmmoCount(gun.gunStack());
+        int barrel = gun.index().getGunData().getBolt() == Bolt.OPEN_BOLT
+                ? 0
+                : gun.gunItem().hasBulletInBarrel(gun.gunStack()) ? 1 : 0;
+        return mag + barrel;
+    }
+
+    public static int getTotalMagSize(GunInfo gun) {
+        int mag = AttachmentDataUtils.getAmmoCountWithAttachment(gun.gunStack(), gun.index().getGunData());
+        int barrel = gun.index().getGunData().getBolt() == Bolt.OPEN_BOLT
+                ? 0
+                : 1;
+        return mag + barrel;
+    }
+
+    /**
+     * 增加子弹数：<p>
+     * 这个方法会先上膛，然后再添加至弹匣，
+     */
+    public static int addBullet(GunInfo gun, int count) {
+        var isOpenBolt = gun.index().getGunData().getBolt() == Bolt.OPEN_BOLT;
+        var doNotConsiderBolt = isOpenBolt || gun.gunItem().hasBulletInBarrel(gun.gunStack());
+
+        var magMax = AttachmentDataUtils.getAmmoCountWithAttachment(gun.gunStack(), gun.index().getGunData());
+        var magCur = gun.gunItem().getCurrentAmmoCount(gun.gunStack());
+        if (doNotConsiderBolt) {
+            var newBulletCount = Math.min(magMax, magCur + count);
+            gun.gunItem().setCurrentAmmoCount(gun.gunStack(), newBulletCount);
+            return newBulletCount - magCur;
+        } else {
+            var newBulletCount = Math.min(magMax, magCur + count - 1);
+            gun.gunItem().setBulletInBarrel(gun.gunStack(), true);
+            gun.gunItem().setCurrentAmmoCount(gun.gunStack(), newBulletCount);
+            return newBulletCount - magCur + 1;
+        }
+    }
+
 
     public static int magicReload(LivingEntity shooter, ItemStack gun, int reloadCount) {
         return magicReload(shooter, gun, reloadCount, false);

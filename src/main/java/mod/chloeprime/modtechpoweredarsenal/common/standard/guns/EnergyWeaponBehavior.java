@@ -10,6 +10,7 @@ import net.minecraft.core.Direction;
 import net.minecraft.core.particles.ParticleTypes;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.sounds.SoundEvents;
+import net.minecraft.util.Mth;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.item.ItemStack;
@@ -44,6 +45,7 @@ public class EnergyWeaponBehavior {
     }
 
     public static final String TAG_KEY_NEXT_LOAD_ETA = ModTechPoweredArsenal.loc("energy_weapons.last_shoot").toString();
+    public static final String TAG_KEY_COOLNESS = ModTechPoweredArsenal.loc("energy_weapons.coolness").toString();
 
     /**
      * 注意：eta 记录的永远是"战术装填"（非空弹匣情况下）的开始装填时间。
@@ -94,7 +96,8 @@ public class EnergyWeaponBehavior {
 
         var isEmpty = gun.gunItem().getCurrentAmmoCount(gun.gunStack()) == 0
                 && !gun.gunItem().hasBulletInBarrel(gun.gunStack());
-        var etaPenalty = isEmpty
+        var isOverheat = isEmpty && getCoolness(gun) == 0;
+        var etaPenalty = isOverheat
                 ? energyData.emptyMagCooldown() - energyData.tacticalCooldown()
                 : 0;
         var now = event.player.level().getGameTime();
@@ -102,7 +105,7 @@ public class EnergyWeaponBehavior {
                 ? gun.gunStack().getOrCreateTag().getLong(TAG_KEY_NEXT_LOAD_ETA)
                 : 0;
         if (now < eta + etaPenalty) {
-            if (isEmpty && isClient) {
+            if (isOverheat && isClient) {
                 if (now == eta - energyData.tacticalCooldown() + 1) {
                     playCooldownSound(event.player);
                 }
@@ -115,8 +118,43 @@ public class EnergyWeaponBehavior {
             return;
         }
         if (!isClient) {
-            GunHelper.magicReload(event.player, gun.gunStack(), 1);
+            var loadCount = 1;
+            var loaded = GunHelper.magicReload(event.player, gun.gunStack(), loadCount);
+            var coolness = loadCount - loaded;
+            if (coolness == 0) {
+                limitCoolness(gun);
+            } else {
+                addCoolness(gun, coolness);
+            }
             gun.gunStack().getOrCreateTag().putLong(TAG_KEY_NEXT_LOAD_ETA, now + energyData.refillDelay());
+        }
+    }
+
+    public static int getCoolness(GunInfo gun) {
+        ItemStack stack = gun.gunStack();
+        return stack.hasTag() ? stack.getOrCreateTag().getInt(TAG_KEY_COOLNESS) : 0;
+    }
+
+    private static void addCoolness(GunInfo gun, int value) {
+        if (value == 0) {
+            return;
+        }
+        var tag = gun.gunStack().getOrCreateTag();
+        tag.putInt(TAG_KEY_COOLNESS, tag.getInt(TAG_KEY_COOLNESS) + value);
+        limitCoolness(gun);
+    }
+
+    private static void limitCoolness(GunInfo gun) {
+        if (!gun.gunStack().hasTag()) {
+            return;
+        }
+        var tag = gun.gunStack().getOrCreateTag();
+        var curAmmo = GunHelper.getTotalAmmo(gun) + gun.gunItem().getDummyAmmoAmount(gun.gunStack());
+        var magSize = GunHelper.getTotalMagSize(gun);
+        var oldCool = tag.getInt(TAG_KEY_COOLNESS);
+        var newCool = Mth.clamp(oldCool, 0, Math.max(0, magSize - curAmmo));
+        if (oldCool != newCool) {
+            tag.putInt(TAG_KEY_COOLNESS, newCool);
         }
     }
 
@@ -179,9 +217,15 @@ public class EnergyWeaponBehavior {
             }
             var shootCost = data.energy().shootCost();
             var dummyAmmo = backend / shootCost;
-            data.gun().gunItem().setDummyAmmoAmount(data.gun().gunStack(), dummyAmmo);
+            // 优先把过冷却转换成枪内的弹药，
+            // 这样可以避免充好电以后枪还是热的的问题
+            var loadToFrontend = Math.min(dummyAmmo, getCoolness(data.gun()));
+            var reallyLoaded = GunHelper.addBullet(data.gun(), loadToFrontend);
+            data.gun().gunItem().setDummyAmmoAmount(data.gun().gunStack(), dummyAmmo - reallyLoaded);
+
             stack.getOrCreateTag().putInt(TAG_ENERGY, backend - dummyAmmo * shootCost);
             stack.getOrCreateTag().putInt(TAG_CACHED_TOTAL_ENERGY, value);
+            limitCoolness(data.gun());
         }
 
         public int getMaxReceive() {
