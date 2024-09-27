@@ -8,7 +8,15 @@ import mod.chloeprime.gunsmithlib.api.util.Gunsmith;
 import mod.chloeprime.modtechpoweredarsenal.ModTechPoweredArsenal;
 import mod.chloeprime.modtechpoweredarsenal.common.standard.util.GunHelper;
 import net.minecraft.core.Direction;
+import net.minecraft.core.particles.DustColorTransitionOptions;
+import net.minecraft.core.particles.DustParticleOptions;
+import net.minecraft.core.particles.ParticleOptions;
+import net.minecraft.core.particles.ParticleTypes;
 import net.minecraft.resources.ResourceLocation;
+import net.minecraft.sounds.SoundEvent;
+import net.minecraft.sounds.SoundEvents;
+import net.minecraft.world.entity.Entity;
+import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.item.ItemStack;
 import net.minecraftforge.common.capabilities.Capability;
 import net.minecraftforge.common.capabilities.ForgeCapabilities;
@@ -21,6 +29,7 @@ import net.minecraftforge.eventbus.api.SubscribeEvent;
 import net.minecraftforge.fml.common.Mod;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
+import org.joml.Vector3f;
 
 import java.util.Map;
 import java.util.Optional;
@@ -34,6 +43,10 @@ public class EnergyWeaponBehavior {
 
     public static final String TAG_KEY_NEXT_LOAD_ETA = ModTechPoweredArsenal.loc("energy_weapons.last_shoot").toString();
 
+    /**
+     * 注意：eta 记录的永远是"战术装填"（非空弹匣情况下）的开始装填时间。
+     * 空弹匣额外的装填时间以记录中两者装填时间的插值作为惩罚实现。
+     */
     @SubscribeEvent
     public static void recordLastShoot(GunShootEvent event) {
         if (event.getLogicalSide().isClient()) {
@@ -60,7 +73,7 @@ public class EnergyWeaponBehavior {
 
     @SubscribeEvent
     public static void syncAndLoadAmmo(TickEvent.PlayerTickEvent event) {
-        if (event.phase == TickEvent.Phase.END || event.player.level().isClientSide) {
+        if (event.phase == TickEvent.Phase.END) {
             return;
         }
         var rgi = EnergyWeaponData.runtime(event.player.getMainHandItem()).orElse(null);
@@ -75,6 +88,8 @@ public class EnergyWeaponBehavior {
             return;
         }
 
+        var isClient = event.player.level().isClientSide;
+
         var isEmpty = gun.gunItem().getCurrentAmmoCount(gun.gunStack()) == 0
                 && !gun.gunItem().hasBulletInBarrel(gun.gunStack());
         var etaPenalty = isEmpty
@@ -84,11 +99,36 @@ public class EnergyWeaponBehavior {
         var eta = gun.gunStack().hasTag()
                 ? gun.gunStack().getOrCreateTag().getLong(TAG_KEY_NEXT_LOAD_ETA)
                 : 0;
-        if (now <= eta + etaPenalty) {
+        if (now < eta + etaPenalty) {
+            if (isEmpty && isClient) {
+                if (now == eta - energyData.tacticalCooldown() + 1) {
+                    playCooldownSound(event.player);
+                }
+                var updateInterval = 2;
+                var salt = event.player.hashCode();
+                if ((now + salt) % updateInterval == 0) {
+                    spawnCooldownSmoke(event.player);
+                }
+            }
             return;
         }
-        GunHelper.magicReload(event.player, gun.gunStack(), 1);
-        gun.gunStack().getOrCreateTag().putLong(TAG_KEY_NEXT_LOAD_ETA, now + energyData.refillDelay());
+        if (!isClient) {
+            GunHelper.magicReload(event.player, gun.gunStack(), 1);
+            gun.gunStack().getOrCreateTag().putLong(TAG_KEY_NEXT_LOAD_ETA, now + energyData.refillDelay());
+        }
+    }
+
+    private static void playCooldownSound(Entity shooter) {
+        shooter.playSound(SoundEvents.FIRE_EXTINGUISH, 1, 0.8F);
+    }
+
+    private static void spawnCooldownSmoke(LivingEntity shooter) {
+        var muzzle = Gunsmith.getProximityMuzzlePos(shooter);
+        shooter.level().addParticle(
+                ParticleTypes.POOF,
+                muzzle.x(), muzzle.y(), muzzle.z(),
+                0, 0.25, 0
+        );
     }
 
     @Mod.EventBusSubscriber
