@@ -2,18 +2,13 @@ package mod.chloeprime.modtechpoweredarsenal.common.standard.guns;
 
 import com.tacz.guns.api.event.common.GunReloadEvent;
 import com.tacz.guns.api.event.common.GunShootEvent;
-import com.tacz.guns.api.item.IGun;
 import mod.chloeprime.gunsmithlib.api.util.GunInfo;
 import mod.chloeprime.gunsmithlib.api.util.Gunsmith;
 import mod.chloeprime.modtechpoweredarsenal.ModTechPoweredArsenal;
 import mod.chloeprime.modtechpoweredarsenal.common.standard.util.GunHelper;
 import net.minecraft.core.Direction;
-import net.minecraft.core.particles.DustColorTransitionOptions;
-import net.minecraft.core.particles.DustParticleOptions;
-import net.minecraft.core.particles.ParticleOptions;
 import net.minecraft.core.particles.ParticleTypes;
 import net.minecraft.resources.ResourceLocation;
-import net.minecraft.sounds.SoundEvent;
 import net.minecraft.sounds.SoundEvents;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.LivingEntity;
@@ -25,11 +20,11 @@ import net.minecraftforge.common.util.LazyOptional;
 import net.minecraftforge.energy.IEnergyStorage;
 import net.minecraftforge.event.AttachCapabilitiesEvent;
 import net.minecraftforge.event.TickEvent;
+import net.minecraftforge.eventbus.api.EventPriority;
 import net.minecraftforge.eventbus.api.SubscribeEvent;
 import net.minecraftforge.fml.common.Mod;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
-import org.joml.Vector3f;
 
 import java.util.Map;
 import java.util.Optional;
@@ -41,13 +36,20 @@ public class EnergyWeaponBehavior {
             ModTechPoweredArsenal.loc("ew_scythe"), new EnergyWeaponData(200, 200 * 30 * 3, 600, 20, 60, 1)
     ));
 
+    public static boolean isEnergyWeapon(ItemStack stack) {
+        return Gunsmith.getGunInfo(stack)
+                .map(GunInfo::gunId)
+                .filter(DATA_MAP::containsKey)
+                .isPresent();
+    }
+
     public static final String TAG_KEY_NEXT_LOAD_ETA = ModTechPoweredArsenal.loc("energy_weapons.last_shoot").toString();
 
     /**
      * 注意：eta 记录的永远是"战术装填"（非空弹匣情况下）的开始装填时间。
      * 空弹匣额外的装填时间以记录中两者装填时间的插值作为惩罚实现。
      */
-    @SubscribeEvent
+    @SubscribeEvent(priority = EventPriority.LOWEST)
     public static void recordLastShoot(GunShootEvent event) {
         if (event.getLogicalSide().isClient()) {
             return;
@@ -64,7 +66,7 @@ public class EnergyWeaponBehavior {
         gun.gunStack().getOrCreateTag().putLong(TAG_KEY_NEXT_LOAD_ETA, now + delay);
     }
 
-    @SubscribeEvent
+    @SubscribeEvent(priority = EventPriority.HIGHEST)
     public static void energyWeaponCannotReload(GunReloadEvent event) {
         if (EnergyWeaponData.runtime(event.getGunItemStack()).isPresent()) {
             event.setCanceled(true);
@@ -155,6 +157,7 @@ public class EnergyWeaponBehavior {
 
         public static final Capability<IEnergyStorage> ENERGY_CAP = ForgeCapabilities.ENERGY;
         public static final String TAG_ENERGY = ModTechPoweredArsenal.loc("energy_stored").toString();
+        public static final String TAG_CACHED_TOTAL_ENERGY = ModTechPoweredArsenal.loc("energy_stored_cache").toString();
         private final LazyOptional<IEnergyStorage> CAP_INSTANCE = LazyOptional.of(() -> this);
 
         @Override
@@ -178,6 +181,7 @@ public class EnergyWeaponBehavior {
             var dummyAmmo = backend / shootCost;
             data.gun().gunItem().setDummyAmmoAmount(data.gun().gunStack(), dummyAmmo);
             stack.getOrCreateTag().putInt(TAG_ENERGY, backend - dummyAmmo * shootCost);
+            stack.getOrCreateTag().putInt(TAG_CACHED_TOTAL_ENERGY, value);
         }
 
         public int getMaxReceive() {

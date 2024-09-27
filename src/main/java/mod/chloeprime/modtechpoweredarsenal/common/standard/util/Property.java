@@ -13,6 +13,20 @@ public interface Property<T> extends Supplier<T>, Consumer<T> {
         set(get());
     }
 
+    static <T> Property<T> of(Supplier<T> getter, Consumer<T> setter) {
+        return new Property<T>() {
+            @Override
+            public T get() {
+                return getter.get();
+            }
+
+            @Override
+            public void set(T value) {
+                setter.accept(value);
+            }
+        };
+    }
+
     @Override
     @ApiStatus.NonExtendable
     default void accept(T t) {

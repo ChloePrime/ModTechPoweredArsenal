@@ -14,13 +14,13 @@ public record EnergyWeaponData(
         int emptyMagCooldown,
         int refillDelay
 ) {
-    record RuntimeEnergyWeaponData(
+    public record RuntimeEnergyWeaponData(
             EnergyWeaponData energy,
             GunInfo gun
     ) {
     }
 
-    static Optional<RuntimeEnergyWeaponData> runtime(ItemStack stack) {
+    public static Optional<RuntimeEnergyWeaponData> runtime(ItemStack stack) {
         return Gunsmith
                 .getGunInfo(stack)
                 .flatMap(gi -> Optional

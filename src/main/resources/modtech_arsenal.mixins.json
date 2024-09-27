@@ -13,6 +13,7 @@
     "tacz.MixinGun"
   ],
   "client": [
+    "tacz.client.MixinGunHudOverlay"
   ],
   "injectors": {
     "defaultRequire": 1
