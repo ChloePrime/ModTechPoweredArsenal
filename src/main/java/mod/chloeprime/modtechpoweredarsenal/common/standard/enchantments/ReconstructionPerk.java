@@ -6,10 +6,12 @@ import mod.chloeprime.gunsmithlib.api.util.GunInfo;
 import mod.chloeprime.gunsmithlib.api.util.Gunsmith;
 import mod.chloeprime.modtechpoweredarsenal.MTPA;
 import mod.chloeprime.modtechpoweredarsenal.ModTechPoweredArsenal;
+import mod.chloeprime.modtechpoweredarsenal.common.standard.guns.EnergyWeaponBehavior;
 import mod.chloeprime.modtechpoweredarsenal.common.standard.util.GunHelper;
 import mod.chloeprime.modtechpoweredarsenal.common.standard.util.StreamSupportMC;
 import net.minecraft.world.entity.EquipmentSlot;
 import net.minecraft.world.entity.LivingEntity;
+import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.enchantment.EnchantmentCategory;
 import net.minecraftforge.common.MinecraftForge;
 import net.minecraftforge.common.capabilities.ForgeCapabilities;
@@ -17,6 +19,7 @@ import net.minecraftforge.event.TickEvent;
 import net.minecraftforge.items.IItemHandlerModifiable;
 import org.jetbrains.annotations.ApiStatus;
 
+import javax.annotation.Nonnull;
 import java.util.Objects;
 
 /**
@@ -44,6 +47,11 @@ public class ReconstructionPerk extends PerkBase {
     @ApiStatus.Internal
     public static ReconstructionPerk create() {
         return new ReconstructionPerk(Rarity.RARE, MTPA.Enchantments.GUN_PERKS, EquipmentSlot.MAINHAND);
+    }
+
+    @Override
+    public boolean canEnchant(@Nonnull ItemStack stack) {
+        return super.canEnchant(stack) && !EnergyWeaponBehavior.isEnergyWeapon(stack);
     }
 
     private void onPlayerShoot(GunShootEvent event) {
