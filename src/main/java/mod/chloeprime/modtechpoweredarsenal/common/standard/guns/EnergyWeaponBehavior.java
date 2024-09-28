@@ -93,9 +93,11 @@ public class EnergyWeaponBehavior {
         }
 
         var isClient = event.player.level().isClientSide;
+        if (!isClient && !gun.gunItem().useDummyAmmo(gun.gunStack())) {
+            gun.gunItem().setDummyAmmoAmount(gun.gunStack(), 0);
+        }
 
-        var isEmpty = gun.gunItem().getCurrentAmmoCount(gun.gunStack()) == 0
-                && !gun.gunItem().hasBulletInBarrel(gun.gunStack());
+        var isEmpty = GunHelper.getTotalAmmo(gun) == 0;
         var isOverheat = isEmpty && getCoolness(gun) == 0;
         var etaPenalty = isOverheat
                 ? energyData.emptyMagCooldown() - energyData.tacticalCooldown()
@@ -286,11 +288,8 @@ public class EnergyWeaponBehavior {
                     .map(EnergyWeaponData::shootCost)
                     .map(shootCost -> shootCost * Gunsmith
                             .getGunInfo(stack)
-                            .map(gunInfo -> {
-                                var mag = gunInfo.gunItem().getCurrentAmmoCount(gunInfo.gunStack());
-                                var barrel = gunInfo.gunItem().hasBulletInBarrel(gunInfo.gunStack()) ? 1 : 0;
-                                return mag + barrel;
-                            }).orElse(0)
+                            .map(GunHelper::getTotalAmmo)
+                            .orElse(0)
                     ).orElse(0);
         }
 
