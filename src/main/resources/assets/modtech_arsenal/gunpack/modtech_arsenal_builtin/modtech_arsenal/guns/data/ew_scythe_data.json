@@ -147,8 +147,7 @@
   },
   "allow_attachment_types": [
     "scope",
-    "grip",
-    "extended_mag"
+    "grip"
   ],
   "exclusive_attachments": {
   }

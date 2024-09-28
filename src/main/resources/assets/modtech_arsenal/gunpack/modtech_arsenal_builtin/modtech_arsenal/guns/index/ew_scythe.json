@@ -1,7 +1,7 @@
 {
   "name": "modtech_arsenal.gun.ew_scythe.name",
   "tooltip": "modtech_arsenal.gun.ew_scythe.desc",
-  "display": "tacz:m4a1_display",
+  "display": "modtech_arsenal:ew_scythe_display",
   "data": "modtech_arsenal:ew_scythe_data",
   "type": "rifle"
 }
