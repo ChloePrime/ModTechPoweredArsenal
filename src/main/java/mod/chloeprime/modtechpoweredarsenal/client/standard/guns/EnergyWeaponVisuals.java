@@ -24,7 +24,7 @@ public final class EnergyWeaponVisuals {
             var gun = Optional.ofNullable(Minecraft.getInstance().player)
                     .map(LivingEntity::getMainHandItem)
                     .orElse(ItemStack.EMPTY);
-            var isEnergy = EnergyWeaponBehavior.isEnergyWeapon(gun);
+            var isEnergy = false; //EnergyWeaponBehavior.isEnergyWeapon(gun);
 
             if (isEnergy) {
                 gui.pose().pushPose();
@@ -35,7 +35,7 @@ public final class EnergyWeaponVisuals {
 
             if (isEnergy) {
                 gui.pose().popPose();
-                renderHeat(gui, gun, x, y, width, height);
+//                renderHeat(gui, gun, x, y, width, height);
             }
 
             return original;
@@ -49,7 +49,7 @@ public final class EnergyWeaponVisuals {
                 return;
             }
 
-            var curAmmo = GunHelper.getTotalAmmo(gun) + EnergyWeaponBehavior.getCoolness(gun);
+            var curAmmo = GunHelper.getTotalAmmo(gun) + 0;
             var maxAmmo = GunHelper.getTotalMagSize(gun);
 
             gui.pose().pushPose();

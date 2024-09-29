@@ -28,19 +28,11 @@ public class GunHelper {
     }
 
     public static int getTotalAmmo(GunInfo gun) {
-        int mag = gun.gunItem().getCurrentAmmoCount(gun.gunStack());
-        int barrel = gun.index().getGunData().getBolt() == Bolt.OPEN_BOLT
-                ? 0
-                : gun.gunItem().hasBulletInBarrel(gun.gunStack()) ? 1 : 0;
-        return mag + barrel;
+        return gun.getTotalAmmo();
     }
 
     public static int getTotalMagSize(GunInfo gun) {
-        int mag = AttachmentDataUtils.getAmmoCountWithAttachment(gun.gunStack(), gun.index().getGunData());
-        int barrel = gun.index().getGunData().getBolt() == Bolt.OPEN_BOLT
-                ? 0
-                : 1;
-        return mag + barrel;
+        return gun.getTotalMagazineSize();
     }
 
     /**

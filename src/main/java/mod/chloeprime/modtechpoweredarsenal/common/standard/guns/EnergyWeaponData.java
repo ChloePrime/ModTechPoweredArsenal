@@ -15,18 +15,18 @@ public record EnergyWeaponData(
         int refillDelay,
         boolean needsReloadOnFullHeat
 ) {
-    public record RuntimeEnergyWeaponData(
+    public record Runtime(
             EnergyWeaponData energy,
             GunInfo gun
     ) {
     }
 
-    public static Optional<RuntimeEnergyWeaponData> runtime(ItemStack stack) {
+    public static Optional<Runtime> runtime(ItemStack stack) {
         return Gunsmith
                 .getGunInfo(stack)
                 .flatMap(gi -> Optional
                         .ofNullable(EnergyWeaponBehavior.DATA_MAP.get(gi.gunId()))
-                        .map(ei -> new RuntimeEnergyWeaponData(ei, gi))
+                        .map(ei -> new Runtime(ei, gi))
                 );
     }
 }

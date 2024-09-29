@@ -1,18 +1,14 @@
 package mod.chloeprime.modtechpoweredarsenal.common.standard.guns;
 
 import com.tacz.guns.api.event.common.GunReloadEvent;
-import com.tacz.guns.api.event.common.GunShootEvent;
+import com.tacz.guns.resource.pojo.data.gun.Bolt;
+import com.tacz.guns.util.AttachmentDataUtils;
 import mod.chloeprime.gunsmithlib.api.util.GunInfo;
 import mod.chloeprime.gunsmithlib.api.util.Gunsmith;
 import mod.chloeprime.modtechpoweredarsenal.ModTechPoweredArsenal;
 import mod.chloeprime.modtechpoweredarsenal.common.standard.util.GunHelper;
 import net.minecraft.core.Direction;
-import net.minecraft.core.particles.ParticleTypes;
 import net.minecraft.resources.ResourceLocation;
-import net.minecraft.sounds.SoundEvents;
-import net.minecraft.util.Mth;
-import net.minecraft.world.entity.Entity;
-import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.item.ItemStack;
 import net.minecraftforge.common.capabilities.Capability;
 import net.minecraftforge.common.capabilities.ForgeCapabilities;
@@ -28,7 +24,6 @@ import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
 import java.util.Map;
-import java.util.Optional;
 import java.util.concurrent.ConcurrentHashMap;
 
 @Mod.EventBusSubscriber
@@ -44,30 +39,6 @@ public class EnergyWeaponBehavior {
                 .isPresent();
     }
 
-    public static final String TAG_KEY_NEXT_LOAD_ETA = ModTechPoweredArsenal.loc("energy_weapons.last_shoot").toString();
-    public static final String TAG_KEY_COOLNESS = ModTechPoweredArsenal.loc("energy_weapons.coolness").toString();
-
-    /**
-     * 注意：eta 记录的永远是"战术装填"（非空弹匣情况下）的开始装填时间。
-     * 空弹匣额外的装填时间以记录中两者装填时间的插值作为惩罚实现。
-     */
-    @SubscribeEvent(priority = EventPriority.LOWEST)
-    public static void recordLastShoot(GunShootEvent event) {
-        if (event.getLogicalSide().isClient()) {
-            return;
-        }
-        var rgi = EnergyWeaponData.runtime(event.getGunItemStack()).orElse(null);
-        if (rgi == null) {
-            return;
-        }
-        var gun = rgi.gun();
-        var energyData = rgi.energy();
-
-        var now = event.getShooter().level().getGameTime();
-        var delay = energyData.tacticalCooldown();
-        gun.gunStack().getOrCreateTag().putLong(TAG_KEY_NEXT_LOAD_ETA, now + delay);
-    }
-
     @SubscribeEvent(priority = EventPriority.HIGHEST)
     public static void energyWeaponCannotReload(GunReloadEvent event) {
         var disableReload = EnergyWeaponData.runtime(event.getGunItemStack())
@@ -78,9 +49,8 @@ public class EnergyWeaponBehavior {
         }
     }
 
-    public static boolean canEnergyWeaponReload(EnergyWeaponData.RuntimeEnergyWeaponData data) {
-        return data.energy().needsReloadOnFullHeat()
-                && GunHelper.getTotalAmmo(data.gun()) == 0;
+    public static boolean canEnergyWeaponReload(EnergyWeaponData.Runtime data) {
+        return data.energy().needsReloadOnFullHeat() && false;
     }
 
     @SubscribeEvent
@@ -93,7 +63,6 @@ public class EnergyWeaponBehavior {
             return;
         }
         var gun = rgi.gun();
-        var energyData = rgi.energy();
 
         var cap = gun.gunStack().getCapability(ForgeCapabilities.ENERGY).resolve().orElse(null);
         if (cap == null) {
@@ -102,86 +71,27 @@ public class EnergyWeaponBehavior {
 
         var isClient = event.player.level().isClientSide;
         if (!isClient && !gun.gunItem().useDummyAmmo(gun.gunStack())) {
-            gun.gunItem().setDummyAmmoAmount(gun.gunStack(), 0);
+            gun.setDummyAmmoAmount(0);
         }
 
-        var isEmpty = GunHelper.getTotalAmmo(gun) == 0;
-        var isOverheat = isEmpty && getCoolness(gun) == 0;
-        var etaPenalty = isOverheat
-                ? energyData.emptyMagCooldown() - energyData.tacticalCooldown()
-                : 0;
-        var now = event.player.level().getGameTime();
-        var eta = gun.gunStack().hasTag()
-                ? gun.gunStack().getOrCreateTag().getLong(TAG_KEY_NEXT_LOAD_ETA)
-                : 0;
-        if (now < eta + etaPenalty) {
-            if (isOverheat && isClient) {
-                if (now == eta - energyData.tacticalCooldown() + 1) {
-                    playCooldownSound(event.player);
-                }
-                var updateInterval = 2;
-                var salt = event.player.hashCode();
-                if ((now + salt) % updateInterval == 0) {
-                    spawnCooldownSmoke(event.player);
-                }
-            }
-            return;
-        }
         if (!isClient) {
-            var needsReload = isEmpty && energyData.needsReloadOnFullHeat();
-            var loadCount = 1;
-            var loaded = needsReload
-                    ? 0
-                    : GunHelper.magicReload(event.player, gun.gunStack(), loadCount);
-            var coolness = loadCount - loaded;
-            if (coolness == 0) {
-                limitCoolness(gun);
+            var needsReload = canEnergyWeaponReload(rgi);
+            if (needsReload) {
+                // 需要换散热器时，将弹匣转移至备弹
+                var ammo = gun.getTotalAmmo();
+                if (ammo > 0) {
+                    gun.gunItem().setCurrentAmmoCount(gun.gunStack(), 0);
+                    gun.gunItem().setBulletInBarrel(gun.gunStack(), false);
+                    gun.addDummyAmmoAmount(ammo);
+                }
             } else {
-                addCoolness(gun, coolness);
+                // 能开火时，将备弹转移至弹匣
+                if (gun.getTotalAmmo() != gun.getTotalMagazineSize()) {
+                    var ammo = gun.getDummyAmmoAmount();
+                    GunHelper.magicReload(event.player, gun.gunStack(), ammo);
+                }
             }
-            gun.gunStack().getOrCreateTag().putLong(TAG_KEY_NEXT_LOAD_ETA, now + energyData.refillDelay());
         }
-    }
-
-    public static int getCoolness(GunInfo gun) {
-        ItemStack stack = gun.gunStack();
-        return stack.hasTag() ? stack.getOrCreateTag().getInt(TAG_KEY_COOLNESS) : 0;
-    }
-
-    private static void addCoolness(GunInfo gun, int value) {
-        if (value == 0) {
-            return;
-        }
-        var tag = gun.gunStack().getOrCreateTag();
-        tag.putInt(TAG_KEY_COOLNESS, tag.getInt(TAG_KEY_COOLNESS) + value);
-        limitCoolness(gun);
-    }
-
-    private static void limitCoolness(GunInfo gun) {
-        if (!gun.gunStack().hasTag()) {
-            return;
-        }
-        var tag = gun.gunStack().getOrCreateTag();
-        var curAmmo = GunHelper.getTotalAmmo(gun);
-        var magSize = GunHelper.getTotalMagSize(gun);
-        var oldCool = tag.getInt(TAG_KEY_COOLNESS);
-        var newCool = Mth.clamp(oldCool, 0, Math.max(0, magSize - curAmmo));
-        if (oldCool != newCool) {
-            tag.putInt(TAG_KEY_COOLNESS, newCool);
-        }
-    }
-
-    private static void playCooldownSound(Entity shooter) {
-        shooter.playSound(SoundEvents.FIRE_EXTINGUISH, 1, 0.8F);
-    }
-
-    private static void spawnCooldownSmoke(LivingEntity shooter) {
-        var muzzle = Gunsmith.getProximityMuzzlePos(shooter);
-        shooter.level().addParticle(
-                ParticleTypes.POOF,
-                muzzle.x(), muzzle.y(), muzzle.z(),
-                0, 0.25, 0
-        );
     }
 
     @Mod.EventBusSubscriber
@@ -222,23 +132,29 @@ public class EnergyWeaponBehavior {
                 stack.getOrCreateTag().putInt(TAG_ENERGY, value);
                 return;
             }
-            var frontend = getEnergyInFrontend();
-            var backend = value - frontend;
-            if (backend <= 0) {
-                stack.getOrCreateTag().putInt(TAG_ENERGY, backend);
-                return;
-            }
-            var shootCost = data.energy().shootCost();
-            var dummyAmmo = backend / shootCost;
-            // 优先把过冷却转换成枪内的弹药，
-            // 这样可以避免充好电以后枪还是热的的问题
-            var loadToFrontend = Math.min(dummyAmmo, getCoolness(data.gun()));
-            var reallyLoaded = GunHelper.addBullet(data.gun(), loadToFrontend);
-            data.gun().gunItem().setDummyAmmoAmount(data.gun().gunStack(), dummyAmmo - reallyLoaded);
+            var totalAmmoAmount = value / data.energy().shootCost();
+            var rem = value - totalAmmoAmount * data.energy().shootCost();
 
-            stack.getOrCreateTag().putInt(TAG_ENERGY, backend - dummyAmmo * shootCost);
-            stack.getOrCreateTag().putInt(TAG_CACHED_TOTAL_ENERGY, value);
-            limitCoolness(data.gun());
+            var needsReload = canEnergyWeaponReload(data);
+            if (needsReload || totalAmmoAmount == 0) {
+                data.gun().gunItem().setCurrentAmmoCount(data.gun().gunStack(), 0);
+                data.gun().gunItem().setBulletInBarrel(data.gun().gunStack(), false);
+                data.gun().setDummyAmmoAmount(totalAmmoAmount);
+            } else {
+                var hasBarrel = data.gun().index().getGunData().getBolt() != Bolt.OPEN_BOLT;
+                if (hasBarrel) {
+                    data.gun().gunItem().setBulletInBarrel(data.gun().gunStack(), true);
+                }
+                var totalBulletExcludeBarrel = totalAmmoAmount - (hasBarrel ? 1 : 0);
+                var gunpackMagSize = AttachmentDataUtils.getAmmoCountWithAttachment(data.gun().gunStack(), data.gun().index().getGunData());
+                var magAmmoAmount = Math.min(totalBulletExcludeBarrel, gunpackMagSize);
+                var batAmmoAmount = Math.max(totalBulletExcludeBarrel - magAmmoAmount, 0);
+
+                data.gun().gunItem().setCurrentAmmoCount(data.gun().gunStack(), magAmmoAmount);
+                data.gun().setDummyAmmoAmount(batAmmoAmount);
+            }
+
+            stack.getOrCreateTag().putInt(TAG_ENERGY, rem);
         }
 
         public int getMaxReceive() {
@@ -285,29 +201,22 @@ public class EnergyWeaponBehavior {
         }
 
         private int getEnergyInBackend() {
-            return Optional.ofNullable(DATA_MAP.get(gunId))
-                    .map(EnergyWeaponData::shootCost)
-                    .map(shootCost -> shootCost * Gunsmith
-                            .getGunInfo(stack)
-                            .map(gunInfo -> gunInfo.gunItem().getDummyAmmoAmount(gunInfo.gunStack()))
-                            .orElse(0)
-                    ).orElse(0);
+            return EnergyWeaponData.runtime(stack)
+                    .map(data -> data.energy().shootCost() * data.gun().gunItem().getDummyAmmoAmount(data.gun().gunStack()))
+                    .orElse(0);
         }
 
         private int getEnergyInFrontend() {
-            return Optional.ofNullable(DATA_MAP.get(gunId))
-                    .map(EnergyWeaponData::shootCost)
-                    .map(shootCost -> shootCost * Gunsmith
-                            .getGunInfo(stack)
-                            .map(GunHelper::getTotalAmmo)
-                            .orElse(0)
-                    ).orElse(0);
+            return EnergyWeaponData.runtime(stack)
+                    .map(data -> data.energy().shootCost() * GunHelper.getTotalAmmo(data.gun()))
+                    .orElse(0);
         }
 
         @Override
         public int getMaxEnergyStored() {
-            var data = DATA_MAP.get(gunId);
-            return data != null ? data.batterySize() : 0;
+            return EnergyWeaponData.runtime(stack)
+                    .map(data -> data.energy().shootCost() * GunHelper.getTotalMagSize(data.gun()))
+                    .orElse(0);
         }
 
         @Override
