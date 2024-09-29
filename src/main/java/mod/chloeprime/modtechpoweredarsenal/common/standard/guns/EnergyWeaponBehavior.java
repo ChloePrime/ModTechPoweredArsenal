@@ -1,8 +1,10 @@
 package mod.chloeprime.modtechpoweredarsenal.common.standard.guns;
 
+import com.tacz.guns.api.entity.IGunOperator;
 import com.tacz.guns.api.event.common.GunReloadEvent;
 import com.tacz.guns.resource.pojo.data.gun.Bolt;
 import com.tacz.guns.util.AttachmentDataUtils;
+import mod.chloeprime.gunsmithlib.api.common.GunReloadFeedEvent;
 import mod.chloeprime.gunsmithlib.api.util.GunInfo;
 import mod.chloeprime.gunsmithlib.api.util.Gunsmith;
 import mod.chloeprime.modtechpoweredarsenal.ModTechPoweredArsenal;
@@ -46,6 +48,14 @@ public class EnergyWeaponBehavior {
                 .isPresent();
         if (disableReload) {
             event.setCanceled(true);
+        }
+    }
+
+    @SubscribeEvent
+    public static void preventCreativeOverheatOverflow(GunReloadFeedEvent event) {
+        // 防止创造模式下弹药溢出
+        if (!IGunOperator.fromLivingEntity(event.getEntity()).needCheckAmmo()) {
+            event.getGunInfo().setDummyAmmoAmount(0);
         }
     }
 
