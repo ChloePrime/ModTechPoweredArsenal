@@ -1,10 +1,10 @@
 {
   "ammo": "tacz:556x45",
-  "ammo_amount": 90,
+  "ammo_amount": 180,
   "extended_mag_ammo_amount": [
-    120,
-    150,
-    180
+    240,
+    300,
+    360
   ],
   "bolt": "open_bolt",
   "rpm": 810,
