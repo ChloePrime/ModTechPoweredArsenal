@@ -20,8 +20,7 @@ public record OverheatData(
         int partialHeatDelay,
         int fullHeatDelay,
         int coolDelay,
-        int coolCount,
-        boolean needsReloadAfterOverheat
+        int coolCount
 ) {
     public record Runtime(
             OverheatData overheat,
@@ -44,8 +43,7 @@ public record OverheatData(
                     Codec.INT.fieldOf("partial_heat_delay").forGetter(OverheatData::partialHeatDelay),
                     Codec.INT.fieldOf("full_heat_delay").forGetter(OverheatData::fullHeatDelay),
                     Codec.INT.fieldOf("cool_delay").forGetter(OverheatData::coolDelay),
-                    Codec.INT.fieldOf("cool_count").forGetter(OverheatData::coolCount),
-                    Codec.BOOL.fieldOf("needs_reload_after_overheat").forGetter(OverheatData::needsReloadAfterOverheat)
+                    Codec.INT.fieldOf("cool_count").forGetter(OverheatData::coolCount)
             )
             .apply(inst, OverheatData::new));
 }

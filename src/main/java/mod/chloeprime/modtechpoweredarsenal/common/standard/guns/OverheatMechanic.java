@@ -25,7 +25,7 @@ import java.util.function.BiConsumer;
 @Mod.EventBusSubscriber
 public class OverheatMechanic {
     public static final Map<ResourceLocation, OverheatData> DATA_MAP = new ConcurrentHashMap<>(Map.of(
-            ModTechPoweredArsenal.loc("ew_scythe"), new OverheatData(30, 20, 60, 1, 1, true)
+            ModTechPoweredArsenal.loc("ew_scythe"), new OverheatData(30, 20, 60, 1, 1)
     ));
     public static final String TAG_KEY_NEXT_LOAD_ETA = "%s:overheat.last_shoot".formatted(ModTechPoweredArsenal.MODID);
     public static final String TAG_KEY_HEAT = "%s:overheat.heat".formatted(ModTechPoweredArsenal.MODID);
@@ -35,6 +35,16 @@ public class OverheatMechanic {
         if (getHeat(event.getGunInfo().gunStack()) > 0) {
             setHeat(event.getGunInfo().gunStack(), 0);
         }
+    }
+
+    /**
+     * 暂时只有能量武器支持换弹散热（
+     */
+    public static boolean needsReloadAfterOverheat(ItemStack stack) {
+        return EnergyWeaponData.runtime(stack)
+                .map(EnergyWeaponData.Runtime::energy)
+                .filter(EnergyWeaponData::needsReloadOnFullHeat)
+                .isPresent();
     }
 
     @SubscribeEvent(priority = EventPriority.HIGHEST)
@@ -133,7 +143,7 @@ public class OverheatMechanic {
             }
 
             if (!isClient) {
-                if (isOverheat && overheatData.needsReloadAfterOverheat()) {
+                if (isOverheat && needsReloadAfterOverheat(gun.gunStack())) {
                     return;
                 }
                 var newHeat = Math.max(0, oldHeat - overheatData.coolCount());
