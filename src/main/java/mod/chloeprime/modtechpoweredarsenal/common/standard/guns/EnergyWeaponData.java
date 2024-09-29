@@ -12,7 +12,8 @@ public record EnergyWeaponData(
         int chargePower,
         int tacticalCooldown,
         int emptyMagCooldown,
-        int refillDelay
+        int refillDelay,
+        boolean needsReloadOnFullHeat
 ) {
     public record RuntimeEnergyWeaponData(
             EnergyWeaponData energy,

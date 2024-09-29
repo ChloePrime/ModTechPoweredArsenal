@@ -34,7 +34,7 @@ import java.util.concurrent.ConcurrentHashMap;
 @Mod.EventBusSubscriber
 public class EnergyWeaponBehavior {
     public static final Map<ResourceLocation, EnergyWeaponData> DATA_MAP = new ConcurrentHashMap<>(Map.of(
-            ModTechPoweredArsenal.loc("ew_scythe"), new EnergyWeaponData(200, 200 * 30 * 3, 600, 20, 60, 1)
+            ModTechPoweredArsenal.loc("ew_scythe"), new EnergyWeaponData(200, 200 * 30 * 3, 600, 20, 60, 1, true)
     ));
 
     public static boolean isEnergyWeapon(ItemStack stack) {
@@ -70,9 +70,17 @@ public class EnergyWeaponBehavior {
 
     @SubscribeEvent(priority = EventPriority.HIGHEST)
     public static void energyWeaponCannotReload(GunReloadEvent event) {
-        if (EnergyWeaponData.runtime(event.getGunItemStack()).isPresent()) {
+        var disableReload = EnergyWeaponData.runtime(event.getGunItemStack())
+                .filter(data -> !canEnergyWeaponReload(data))
+                .isPresent();
+        if (disableReload) {
             event.setCanceled(true);
         }
+    }
+
+    public static boolean canEnergyWeaponReload(EnergyWeaponData.RuntimeEnergyWeaponData data) {
+        return data.energy().needsReloadOnFullHeat()
+                && GunHelper.getTotalAmmo(data.gun()) == 0;
     }
 
     @SubscribeEvent
@@ -120,8 +128,11 @@ public class EnergyWeaponBehavior {
             return;
         }
         if (!isClient) {
+            var needsReload = isEmpty && energyData.needsReloadOnFullHeat();
             var loadCount = 1;
-            var loaded = GunHelper.magicReload(event.player, gun.gunStack(), loadCount);
+            var loaded = needsReload
+                    ? 0
+                    : GunHelper.magicReload(event.player, gun.gunStack(), loadCount);
             var coolness = loadCount - loaded;
             if (coolness == 0) {
                 limitCoolness(gun);
@@ -151,7 +162,7 @@ public class EnergyWeaponBehavior {
             return;
         }
         var tag = gun.gunStack().getOrCreateTag();
-        var curAmmo = GunHelper.getTotalAmmo(gun) + gun.gunItem().getDummyAmmoAmount(gun.gunStack());
+        var curAmmo = GunHelper.getTotalAmmo(gun);
         var magSize = GunHelper.getTotalMagSize(gun);
         var oldCool = tag.getInt(TAG_KEY_COOLNESS);
         var newCool = Mth.clamp(oldCool, 0, Math.max(0, magSize - curAmmo));
