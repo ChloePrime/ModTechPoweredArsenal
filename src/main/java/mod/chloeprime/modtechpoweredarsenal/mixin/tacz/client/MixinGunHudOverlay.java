@@ -6,6 +6,7 @@ import com.tacz.guns.api.item.IGun;
 import com.tacz.guns.client.gui.overlay.GunHudOverlay;
 import com.tacz.guns.client.resource.index.ClientGunIndex;
 import mod.chloeprime.modtechpoweredarsenal.client.standard.guns.EnergyWeaponVisuals;
+import mod.chloeprime.modtechpoweredarsenal.client.standard.guns.OverheatVisuals;
 import mod.chloeprime.modtechpoweredarsenal.common.standard.util.Property;
 import net.minecraft.client.gui.Font;
 import net.minecraft.client.gui.GuiGraphics;
@@ -40,6 +41,11 @@ public class MixinGunHudOverlay {
     @Inject(method = "handleCacheCount", at = @At("TAIL"))
     private static void energyWeaponShowTotalAmmo(LocalPlayer player, ItemStack stack, ClientGunIndex gunIndex, IGun iGun, CallbackInfo ci) {
         EnergyWeaponVisuals.HUD.modifyBackupAmmoDisplay(stack, Property.of(() -> cacheInventoryAmmoCount, v -> cacheInventoryAmmoCount = v));
+    }
+
+    @Inject(method = "render", at = @At("TAIL"))
+    private void renderOverheatAfterRenderingFireMode(ForgeGui gui, GuiGraphics graphics, float partialTick, int width, int height, CallbackInfo ci) {
+        OverheatVisuals.HUD.render(graphics, width, height);
     }
 
     @Shadow private static int cacheInventoryAmmoCount;

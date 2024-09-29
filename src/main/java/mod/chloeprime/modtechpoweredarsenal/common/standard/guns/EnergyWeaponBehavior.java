@@ -50,7 +50,7 @@ public class EnergyWeaponBehavior {
     }
 
     public static boolean canEnergyWeaponReload(EnergyWeaponData.Runtime data) {
-        return data.energy().needsReloadOnFullHeat() && false;
+        return data.energy().needsReloadOnFullHeat() && OverheatMechanic.isOverheat(data.gun().gunStack());
     }
 
     @SubscribeEvent
@@ -118,7 +118,6 @@ public class EnergyWeaponBehavior {
 
         public static final Capability<IEnergyStorage> ENERGY_CAP = ForgeCapabilities.ENERGY;
         public static final String TAG_ENERGY = ModTechPoweredArsenal.loc("energy_stored").toString();
-        public static final String TAG_CACHED_TOTAL_ENERGY = ModTechPoweredArsenal.loc("energy_stored_cache").toString();
         private final LazyOptional<IEnergyStorage> CAP_INSTANCE = LazyOptional.of(() -> this);
 
         @Override
