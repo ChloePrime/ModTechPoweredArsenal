@@ -29,7 +29,7 @@ import java.util.concurrent.ConcurrentHashMap;
 @Mod.EventBusSubscriber
 public class EnergyWeaponBehavior {
     public static final Map<ResourceLocation, EnergyWeaponData> DATA_MAP = new ConcurrentHashMap<>(Map.of(
-            ModTechPoweredArsenal.loc("ew_scythe"), new EnergyWeaponData(200, 200 * 30 * 3, 600, 20, 60, 1, true)
+            ModTechPoweredArsenal.loc("ew_scythe"), new EnergyWeaponData(200, 600, true)
     ));
 
     public static boolean isEnergyWeapon(ItemStack stack) {
@@ -132,8 +132,8 @@ public class EnergyWeaponBehavior {
                 stack.getOrCreateTag().putInt(TAG_ENERGY, value);
                 return;
             }
-            var totalAmmoAmount = value / data.energy().shootCost();
-            var rem = value - totalAmmoAmount * data.energy().shootCost();
+            var totalAmmoAmount = value / data.energy().energyPerShot();
+            var rem = value - totalAmmoAmount * data.energy().energyPerShot();
 
             var needsReload = canEnergyWeaponReload(data);
             if (needsReload || totalAmmoAmount == 0) {
@@ -202,20 +202,20 @@ public class EnergyWeaponBehavior {
 
         private int getEnergyInBackend() {
             return EnergyWeaponData.runtime(stack)
-                    .map(data -> data.energy().shootCost() * data.gun().gunItem().getDummyAmmoAmount(data.gun().gunStack()))
+                    .map(data -> data.energy().energyPerShot() * data.gun().gunItem().getDummyAmmoAmount(data.gun().gunStack()))
                     .orElse(0);
         }
 
         private int getEnergyInFrontend() {
             return EnergyWeaponData.runtime(stack)
-                    .map(data -> data.energy().shootCost() * GunHelper.getTotalAmmo(data.gun()))
+                    .map(data -> data.energy().energyPerShot() * GunHelper.getTotalAmmo(data.gun()))
                     .orElse(0);
         }
 
         @Override
         public int getMaxEnergyStored() {
             return EnergyWeaponData.runtime(stack)
-                    .map(data -> data.energy().shootCost() * GunHelper.getTotalMagSize(data.gun()))
+                    .map(data -> data.energy().energyPerShot() * GunHelper.getTotalMagSize(data.gun()))
                     .orElse(0);
         }
 

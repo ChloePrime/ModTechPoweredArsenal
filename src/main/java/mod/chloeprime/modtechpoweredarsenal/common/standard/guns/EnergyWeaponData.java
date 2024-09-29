@@ -7,12 +7,8 @@ import net.minecraft.world.item.ItemStack;
 import java.util.Optional;
 
 public record EnergyWeaponData(
-        int shootCost,
-        int batterySize,
+        int energyPerShot,
         int chargePower,
-        int tacticalCooldown,
-        int emptyMagCooldown,
-        int refillDelay,
         boolean needsReloadOnFullHeat
 ) {
     public record Runtime(

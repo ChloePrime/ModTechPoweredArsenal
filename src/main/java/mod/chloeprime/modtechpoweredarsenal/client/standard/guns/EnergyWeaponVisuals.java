@@ -90,7 +90,7 @@ public final class EnergyWeaponVisuals {
 
             gun.getCapability(ForgeCapabilities.ENERGY).ifPresent(battery -> {
                 EnergyWeaponData.runtime(gun).ifPresent(info -> {
-                    field.set(battery.getEnergyStored() / info.energy().shootCost());
+                    field.set(battery.getEnergyStored() / info.energy().energyPerShot());
                 });
             });
         }
