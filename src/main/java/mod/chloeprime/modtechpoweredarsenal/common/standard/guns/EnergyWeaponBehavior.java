@@ -42,7 +42,11 @@ public class EnergyWeaponBehavior {
     }
 
     @SubscribeEvent(priority = EventPriority.HIGHEST)
-    public static void energyWeaponCannotReload(GunReloadEvent event) {
+    public static void energyWeaponCannotReloadUnlessInCreative(GunReloadEvent event) {
+        var isCreative = !IGunOperator.fromLivingEntity(event.getEntity()).needCheckAmmo();
+        if (isCreative) {
+            return;
+        }
         var disableReload = EnergyWeaponData.runtime(event.getGunItemStack())
                 .filter(data -> !canEnergyWeaponReload(data))
                 .isPresent();
