@@ -1,0 +1,7 @@
+{
+  "name": "modtech_arsenal.gun.ew_hammer.name",
+  "tooltip": "modtech_arsenal.gun.ew_hammer.desc",
+  "display": "tacz:cz75_display",
+  "data": "modtech_arsenal:ew_hammer_data",
+  "type": "pistol"
+}

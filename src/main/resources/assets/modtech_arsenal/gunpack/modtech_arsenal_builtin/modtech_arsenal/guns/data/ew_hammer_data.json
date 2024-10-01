@@ -1,0 +1,95 @@
+{
+  "ammo": "tacz:9mm",
+  "rpm": 600,
+  "bullet": {
+    "life": 0.20,
+    "bullet_amount": 6,
+    "damage": 24,
+    "tracer_count_interval": 0,
+    "extra_damage": {
+      "armor_ignore": 0.20,
+      "head_shot_multiplier": 1.30,
+      "damage_adjust": [
+        {"distance": 4, "damage": 24},
+        {"distance": 10, "damage": 21},
+        {"distance": "infinite", "damage": 18}
+      ]
+    },
+    "speed": 100,
+    "gravity": 0.05,
+    "knockback": 0.25,
+    "friction": 0.025,
+    "ignite": false,
+    "pierce": 0
+  },
+  "ammo_amount": 32,
+  "extended_mag_ammo_amount": [
+    40,
+    48,
+    56
+  ],
+  "overheat": {
+    "shots_before_overheat": 8,
+    "cd_delay_when_partially_overheat": 60,
+    "cd_delay_when_fully_overheat":  60,
+    "cool_delay": 2,
+    "cool_count":  1
+  },
+  "battery": {
+    "energy_per_shot": 12000,
+    "charge_power": 500,
+    "needs_reload_on_full_heat": false
+  },
+  "bolt": "open_bolt",
+  "reload": {
+    "type": "magazine",
+    "feed": {
+      "empty": 1.75,
+      "tactical": 1
+    },
+    "cooldown": {
+      "empty": 2.15,
+      "tactical": 1.45
+    }
+  },
+  "draw_time": 0.3,
+  "put_away_time": 0.3,
+  "aim_time": 0.125,
+  "sprint_time": 0.08,
+  "weight": 1.1,
+  "movement_speed": {
+    "base": 0.0,
+    "aim": 0,
+    "reload": 0.1
+  },
+  "crawl_recoil_multiplier": 0.75,
+  "fire_mode": [
+    "auto",
+    "semi"
+  ],
+  "allow_attachment_types": [
+    "scope",
+    "extended_mag"
+  ],
+  "recoil": {
+    "pitch": [
+      {"time": 0, "value": [0.375, 0.375]},
+      {"time": 0.25, "value": [0.375, 0.375]},
+      {"time": 0.5, "value": [-0.125, -0.125]},
+      {"time": 0.7, "value": [0.05, 0.05]},
+      {"time": 1.0, "value": [0, 0]}
+    ],
+    "yaw": [
+      {"time": 0, "value": [-0.45, 0.15]},
+      {"time": 0.25, "value": [-0.45, 0.15]},
+      {"time": 1, "value": [0, 0]}
+    ]
+  },
+  "inaccuracy": {
+    "stand": 4.5,
+    "move": 4.75,
+    "sneak": 4,
+    "lie": 4,
+    "aim": 4
+  }
+}
