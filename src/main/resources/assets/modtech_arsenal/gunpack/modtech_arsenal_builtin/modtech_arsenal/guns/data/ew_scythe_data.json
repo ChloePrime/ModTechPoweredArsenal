@@ -30,11 +30,11 @@
     "pierce": 1
   },
   "overheat": {
-    "shots_before_overheat": 30,
+    "shots_before_overheat": 60,
     "cd_delay_when_partially_overheat": 20,
     "cd_delay_when_fully_overheat":  60,
     "cool_delay": 1,
-    "cool_count":  1
+    "cool_count":  2
   },
   "battery": {
     "energy_per_shot": 200,
