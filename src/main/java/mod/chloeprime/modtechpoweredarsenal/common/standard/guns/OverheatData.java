@@ -1,9 +1,11 @@
 package mod.chloeprime.modtechpoweredarsenal.common.standard.guns;
 
+import com.google.gson.annotations.SerializedName;
 import com.mojang.serialization.Codec;
 import com.mojang.serialization.codecs.RecordCodecBuilder;
 import mod.chloeprime.gunsmithlib.api.util.GunInfo;
 import mod.chloeprime.gunsmithlib.api.util.Gunsmith;
+import mod.chloeprime.modtechpoweredarsenal.common.api.standard.EnhancedGunData;
 import net.minecraft.world.item.ItemStack;
 
 import java.util.Optional;
@@ -16,10 +18,15 @@ import java.util.Optional;
  * @param coolCount Cool amount per cooling calculate, in shots
  */
 public record OverheatData(
+        @SerializedName("shots_before_overheat")
         int shotsBeforeOverheat,
+        @SerializedName("cd_delay_when_partially_overheat")
         int partialHeatDelay,
+        @SerializedName("cd_delay_when_fully_overheat")
         int fullHeatDelay,
+        @SerializedName("cool_delay")
         int coolDelay,
+        @SerializedName("cool_count")
         int coolCount
 ) {
     public record Runtime(
@@ -31,8 +38,8 @@ public record OverheatData(
     public static Optional<Runtime> runtime(ItemStack stack) {
         return Gunsmith
                 .getGunInfo(stack)
-                .flatMap(gi -> Optional
-                        .ofNullable(OverheatMechanic.DATA_MAP.get(gi.gunId()))
+                .flatMap(gi -> ((EnhancedGunData) gi.index().getGunData())
+                        .getOverheatData()
                         .map(ei -> new Runtime(ei, gi))
                 );
     }

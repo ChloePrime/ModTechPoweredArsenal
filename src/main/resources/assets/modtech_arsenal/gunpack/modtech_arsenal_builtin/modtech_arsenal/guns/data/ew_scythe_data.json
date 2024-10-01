@@ -29,6 +29,18 @@
     "ignite": false,
     "pierce": 1
   },
+  "overheat": {
+    "shots_before_overheat": 30,
+    "cd_delay_when_partially_overheat": 20,
+    "cd_delay_when_fully_overheat":  60,
+    "cool_delay": 1,
+    "cool_count":  1
+  },
+  "battery": {
+    "energy_per_shot": 200,
+    "charge_power": 600,
+    "needs_reload_on_full_heat": true
+  },
   "reload": {
     "type": "magazine",
     "feed": {
@@ -55,53 +67,6 @@
     "auto",
     "semi"
   ],
-  // 开火模式调整（如无调整可不写）
-  /*
-  "fire_mode_adjust": {
-    // 全自动状态的数值调整，如无调整可不写
-    "auto": {
-      // 加算，全自动模式的开火数值调整，如无调整可不写
-      "damage": 0,
-      "rpm": 0,
-      "speed": 0,
-      "knockback": 0,
-      "armor_ignore": 0,
-      "head_shot_multiplier": 0,
-      "aim_inaccuracy": 0,
-      "other_inaccuracy": 0
-    },
-    // 半自动状态的数值调整，如无调整可不写
-    "semi": {
-      // 加算，半自动模式的开火数值调整，如无调整可不写
-      "damage": 9,
-      "rpm": -400,
-      "speed": 20,
-      "knockback": 0.1,
-      "armor_ignore": 0.1,
-      "head_shot_multiplier": 0.1,
-      "aim_inaccuracy": -0.1,
-      "other_inaccuracy": -0.5
-    }
-    // 多连发状态的数值调整，如无调整可不写
-    // "burst": {
-    // 加算，多连发模式的开火数值调整，如无调整可不写
-    // "damage": 0,
-    // "rpm": 0,
-    // "speed": 0,
-    // "knockback": 0,
-    // "armor_ignore": 0,
-    // "head_shot_multiplier": 0,
-    // "aim_inaccuracy": 0,
-    // "other_inaccuracy": 0
-    // }
-  },
-  "burst_data": {
-    "continuous_shoot": false,
-    "count": 3,
-    "bpm": 900,
-    "min_interval": 0.3
-  },
-  */
   "recoil": {
     "pitch": [
       {"time": 0, "value": [0.55, 0.55]},

@@ -2,7 +2,6 @@ package mod.chloeprime.modtechpoweredarsenal.common.standard.guns;
 
 import com.tacz.guns.api.event.common.GunShootEvent;
 import mod.chloeprime.gunsmithlib.api.common.GunReloadFeedEvent;
-import mod.chloeprime.gunsmithlib.api.util.GunInfo;
 import mod.chloeprime.gunsmithlib.api.util.Gunsmith;
 import mod.chloeprime.modtechpoweredarsenal.ModTechPoweredArsenal;
 import net.minecraft.core.particles.ParticleTypes;
@@ -17,10 +16,8 @@ import net.minecraftforge.eventbus.api.SubscribeEvent;
 import net.minecraftforge.fml.common.Mod;
 
 import java.util.Map;
-import java.util.Optional;
 import java.util.OptionalInt;
 import java.util.concurrent.ConcurrentHashMap;
-import java.util.function.BiConsumer;
 
 @Mod.EventBusSubscriber
 public class OverheatMechanic {
@@ -113,44 +110,48 @@ public class OverheatMechanic {
             return;
         }
         var isClient = event.player.level().isClientSide;
-        ifPresent(event.player.getMainHandItem(), (gun, overheatData) -> {
-            var tag = gun.gunStack().getOrCreateTag();
-            var oldHeat = tag.getInt(TAG_KEY_HEAT);
-            var maxHeat = overheatData.shotsBeforeOverheat();
-            var isOverheat = oldHeat >= maxHeat;
+        var rgi = OverheatData.runtime(event.player.getMainHandItem()).orElse(null);
+        if (rgi == null) {
+            return;
+        }
+        var gun = rgi.gun();
+        var overheatData = rgi.overheat();
+        var tag = gun.gunStack().getOrCreateTag();
+        var oldHeat = tag.getInt(TAG_KEY_HEAT);
+        var maxHeat = overheatData.shotsBeforeOverheat();
+        var isOverheat = oldHeat >= maxHeat;
 
-            var etaPenalty = isOverheat
-                    ? overheatData.fullHeatDelay() - overheatData.partialHeatDelay()
-                    : 0;
+        var etaPenalty = isOverheat
+                ? overheatData.fullHeatDelay() - overheatData.partialHeatDelay()
+                : 0;
 
-            var now = event.player.level().getGameTime();
-            var eta = gun.gunStack().hasTag()
-                    ? gun.gunStack().getOrCreateTag().getLong(TAG_KEY_NEXT_LOAD_ETA)
-                    : 0;
+        var now = event.player.level().getGameTime();
+        var eta = gun.gunStack().hasTag()
+                ? gun.gunStack().getOrCreateTag().getLong(TAG_KEY_NEXT_LOAD_ETA)
+                : 0;
 
-            if (now < eta + etaPenalty) {
-                if (isOverheat && isClient) {
-                    if (now == eta - overheatData.partialHeatDelay() + 1) {
-                        playCooldownSound(event.player);
-                    }
-                    var updateInterval = 2;
-                    var salt = event.player.hashCode();
-                    if ((now + salt) % updateInterval == 0) {
-                        spawnCooldownSmoke(event.player);
-                    }
+        if (now < eta + etaPenalty) {
+            if (isOverheat && isClient) {
+                if (now == eta - overheatData.partialHeatDelay() + 1) {
+                    playCooldownSound(event.player);
                 }
+                var updateInterval = 2;
+                var salt = event.player.hashCode();
+                if ((now + salt) % updateInterval == 0) {
+                    spawnCooldownSmoke(event.player);
+                }
+            }
+            return;
+        }
+
+        if (!isClient) {
+            if (isOverheat && needsReloadAfterOverheat(gun.gunStack())) {
                 return;
             }
-
-            if (!isClient) {
-                if (isOverheat && needsReloadAfterOverheat(gun.gunStack())) {
-                    return;
-                }
-                var newHeat = Math.max(0, oldHeat - overheatData.coolCount());
-                setHeat(gun.gunStack(), newHeat);
-                tag.putLong(TAG_KEY_NEXT_LOAD_ETA, now + overheatData.coolDelay());
-            }
-        });
+            var newHeat = Math.max(0, oldHeat - overheatData.coolCount());
+            setHeat(gun.gunStack(), newHeat);
+            tag.putLong(TAG_KEY_NEXT_LOAD_ETA, now + overheatData.coolDelay());
+        }
     }
 
     private static void playCooldownSound(Entity shooter) {
@@ -166,9 +167,4 @@ public class OverheatMechanic {
         );
     }
 
-    private static void ifPresent(ItemStack gun, BiConsumer<GunInfo, OverheatData> code) {
-        Gunsmith.getGunInfo(gun).ifPresent(gunInfo -> Optional.ofNullable(DATA_MAP.get(gunInfo.gunId())).ifPresent(overheatData -> {
-            code.accept(gunInfo, overheatData);
-        }));
-    }
 }

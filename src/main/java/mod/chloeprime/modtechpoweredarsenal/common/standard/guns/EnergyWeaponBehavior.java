@@ -1,13 +1,16 @@
 package mod.chloeprime.modtechpoweredarsenal.common.standard.guns;
 
+import com.tacz.guns.api.TimelessAPI;
 import com.tacz.guns.api.entity.IGunOperator;
 import com.tacz.guns.api.event.common.GunReloadEvent;
+import com.tacz.guns.resource.index.CommonGunIndex;
 import com.tacz.guns.resource.pojo.data.gun.Bolt;
 import com.tacz.guns.util.AttachmentDataUtils;
 import mod.chloeprime.gunsmithlib.api.common.GunReloadFeedEvent;
 import mod.chloeprime.gunsmithlib.api.util.GunInfo;
 import mod.chloeprime.gunsmithlib.api.util.Gunsmith;
 import mod.chloeprime.modtechpoweredarsenal.ModTechPoweredArsenal;
+import mod.chloeprime.modtechpoweredarsenal.common.api.standard.EnhancedGunData;
 import mod.chloeprime.modtechpoweredarsenal.common.standard.util.GunHelper;
 import net.minecraft.core.Direction;
 import net.minecraft.resources.ResourceLocation;
@@ -36,8 +39,10 @@ public class EnergyWeaponBehavior {
 
     public static boolean isEnergyWeapon(ItemStack stack) {
         return Gunsmith.getGunInfo(stack)
-                .map(GunInfo::gunId)
-                .filter(DATA_MAP::containsKey)
+                .map(GunInfo::index)
+                .map(CommonGunIndex::getGunData)
+                .map(gd -> (EnhancedGunData) gd)
+                .flatMap(EnhancedGunData::getEnergyWeaponData)
                 .isPresent();
     }
 
@@ -114,9 +119,11 @@ public class EnergyWeaponBehavior {
 
         @SubscribeEvent
         public static void onAttachCaps(AttachCapabilitiesEvent<ItemStack> event) {
+            if (!isEnergyWeapon(event.getObject())) {
+                return;
+            }
             Gunsmith
                     .getGunInfo(event.getObject())
-                    .filter(gunInfo -> DATA_MAP.containsKey(gunInfo.gunId()))
                     .ifPresent(gunInfo -> event.addCapability(CAP_ID, new CapProvider(gunInfo)));
         }
     }
@@ -179,8 +186,12 @@ public class EnergyWeaponBehavior {
         }
 
         private int getChargePower() {
-            var data = DATA_MAP.get(gunId);
-            return data != null ? data.chargePower() : 0;
+            return TimelessAPI.getCommonGunIndex(gunId)
+                    .map(CommonGunIndex::getGunData)
+                    .map(gd -> (EnhancedGunData) gd)
+                    .flatMap(EnhancedGunData::getEnergyWeaponData)
+                    .map(EnergyWeaponData::chargePower)
+                    .orElse(0);
         }
 
         @Override

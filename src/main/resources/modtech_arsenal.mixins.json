@@ -10,7 +10,8 @@
     "minecraft.MixinEvokerFang",
     "minecraft.PerkEnchantmentLimitMixin",
     "tacz.KineticBulletAccessor",
-    "tacz.MixinGun"
+    "tacz.MixinGun",
+    "tacz.gunpack.MixinGunData"
   ],
   "client": [
     "tacz.client.MixinGunHudOverlay"
