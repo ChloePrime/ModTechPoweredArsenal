@@ -46,6 +46,8 @@ public final class ModTechPoweredArsenal {
             .icon(CREATIVE_TAB_ICON)
             .displayItems((parameters, output) -> {
                 output.accept(MTPA.Items.ANTI_MAGIC_COMPOUND.get());
+                output.accept(MTPA.gun("ew_scythe"));
+                output.accept(MTPA.gun("ew_hammer"));
                 output.accept(MTPA.gun("gl_shark"));
                 output.accept(MTPA.gun("gl_deafening_whisper"));
                 output.accept(MTPA.gun(MtpaL2Module.ID, "albert_01"));
