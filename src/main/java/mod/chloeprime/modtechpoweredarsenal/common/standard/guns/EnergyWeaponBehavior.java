@@ -28,15 +28,8 @@ import net.minecraftforge.fml.common.Mod;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
-import java.util.Map;
-import java.util.concurrent.ConcurrentHashMap;
-
 @Mod.EventBusSubscriber
 public class EnergyWeaponBehavior {
-    public static final Map<ResourceLocation, EnergyWeaponData> DATA_MAP = new ConcurrentHashMap<>(Map.of(
-            ModTechPoweredArsenal.loc("ew_scythe"), new EnergyWeaponData(200, 600, true)
-    ));
-
     public static boolean isEnergyWeapon(ItemStack stack) {
         return Gunsmith.getGunInfo(stack)
                 .map(GunInfo::index)

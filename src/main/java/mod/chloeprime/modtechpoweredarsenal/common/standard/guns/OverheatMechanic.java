@@ -5,7 +5,6 @@ import mod.chloeprime.gunsmithlib.api.common.GunReloadFeedEvent;
 import mod.chloeprime.gunsmithlib.api.util.Gunsmith;
 import mod.chloeprime.modtechpoweredarsenal.ModTechPoweredArsenal;
 import net.minecraft.core.particles.ParticleTypes;
-import net.minecraft.resources.ResourceLocation;
 import net.minecraft.sounds.SoundEvents;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.LivingEntity;
@@ -15,15 +14,10 @@ import net.minecraftforge.eventbus.api.EventPriority;
 import net.minecraftforge.eventbus.api.SubscribeEvent;
 import net.minecraftforge.fml.common.Mod;
 
-import java.util.Map;
 import java.util.OptionalInt;
-import java.util.concurrent.ConcurrentHashMap;
 
 @Mod.EventBusSubscriber
 public class OverheatMechanic {
-    public static final Map<ResourceLocation, OverheatData> DATA_MAP = new ConcurrentHashMap<>(Map.of(
-            ModTechPoweredArsenal.loc("ew_scythe"), new OverheatData(30, 20, 60, 1, 1)
-    ));
     public static final String TAG_KEY_NEXT_LOAD_ETA = "%s:overheat.last_shoot".formatted(ModTechPoweredArsenal.MODID);
     public static final String TAG_KEY_HEAT = "%s:overheat.heat".formatted(ModTechPoweredArsenal.MODID);
 
