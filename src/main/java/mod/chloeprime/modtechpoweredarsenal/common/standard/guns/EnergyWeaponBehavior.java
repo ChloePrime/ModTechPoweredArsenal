@@ -54,7 +54,10 @@ public class EnergyWeaponBehavior {
     }
 
     @SubscribeEvent
-    public static void preventCreativeOverheatOverflow(GunReloadFeedEvent event) {
+    public static void preventCreativeOverheatOverflow(GunReloadFeedEvent.Post event) {
+        if (!isEnergyWeapon(event.getGunInfo().gunStack())) {
+            return;
+        }
         // 防止创造模式下弹药溢出
         if (!IGunOperator.fromLivingEntity(event.getEntity()).needCheckAmmo()) {
             event.getGunInfo().setDummyAmmoAmount(0);
