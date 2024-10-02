@@ -1,7 +1,7 @@
 {
-  "slot": "tacz:attachment/slot/stock_carbon_bone_c5",
-  "model": "tacz:attachment/stock_carbon_bone_c5_geo",
-  "texture": "tacz:attachment/uv/stock_carbon_bone_c5",
+  "slot": "modtech_arsenal:attachment/slot/stock_bumpfire",
+  "model": "modtech_arsenal:attachment/stock_bumpfire_geo",
+  "texture": "modtech_arsenal:attachment/uv/stock_bumpfire",
   "adapter": "ar_stock_adapter",
   "sounds": {
     "install": "tacz:attachments/attachment_general_a",
