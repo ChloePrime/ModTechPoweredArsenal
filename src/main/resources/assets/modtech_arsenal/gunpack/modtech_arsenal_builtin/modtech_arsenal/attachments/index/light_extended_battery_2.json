@@ -1,0 +1,6 @@
+{
+  "name": "modtech_arsenal.attachment.light_extended_battery_2.name",
+  "display": "modtech_arsenal:light_extended_battery_2_display",
+  "data": "modtech_arsenal:light_extended_battery_2_data",
+  "type": "extended_mag"
+}

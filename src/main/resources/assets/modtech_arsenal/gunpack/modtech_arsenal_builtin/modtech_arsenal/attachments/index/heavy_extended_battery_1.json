@@ -1,0 +1,6 @@
+{
+  "name": "modtech_arsenal.attachment.heavy_extended_battery_1.name",
+  "display": "modtech_arsenal:heavy_extended_battery_1_display",
+  "data": "modtech_arsenal:heavy_extended_battery_1_data",
+  "type": "extended_mag"
+}

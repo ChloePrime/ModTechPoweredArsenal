@@ -2,6 +2,7 @@ package mod.chloeprime.modtechpoweredarsenal.common.standard.guns;
 
 import com.tacz.guns.api.TimelessAPI;
 import com.tacz.guns.api.entity.IGunOperator;
+import com.tacz.guns.api.event.common.AttachmentPropertyEvent;
 import com.tacz.guns.api.event.common.GunReloadEvent;
 import com.tacz.guns.resource.index.CommonGunIndex;
 import com.tacz.guns.resource.pojo.data.gun.Bolt;
@@ -14,6 +15,7 @@ import mod.chloeprime.modtechpoweredarsenal.common.api.standard.EnhancedGunData;
 import mod.chloeprime.modtechpoweredarsenal.common.standard.util.GunHelper;
 import net.minecraft.core.Direction;
 import net.minecraft.resources.ResourceLocation;
+import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.item.ItemStack;
 import net.minecraftforge.common.capabilities.Capability;
 import net.minecraftforge.common.capabilities.ForgeCapabilities;
@@ -27,6 +29,8 @@ import net.minecraftforge.eventbus.api.SubscribeEvent;
 import net.minecraftforge.fml.common.Mod;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
+
+import javax.xml.validation.Validator;
 
 @Mod.EventBusSubscriber
 public class EnergyWeaponBehavior {
@@ -54,7 +58,38 @@ public class EnergyWeaponBehavior {
     }
 
     @SubscribeEvent
-    public static void preventCreativeOverheatOverflow(GunReloadFeedEvent.Post event) {
+    public static void preventAttachmentBatteryOverflow(AttachmentPropertyEvent event) {
+        EnergyWeaponData.runtime(event.getGunItem()).ifPresent(runtime -> {
+            var gun = runtime.gun();
+            int bulletInMag = gun.getTotalAmmo();
+            var bullet = bulletInMag + gun.getDummyAmmoAmount();
+            var max = gun.getTotalMagazineSize();
+
+            if (bullet > max) {
+                setTotalAmmo(gun, max);
+            }
+        });
+    }
+
+    public static void setTotalAmmo(GunInfo gun, int value) {
+        gun.gunItem().setBulletInBarrel(gun.gunStack(), false);
+        gun.gunItem().setCurrentAmmoCount(gun.gunStack(), 0);
+        gun.setDummyAmmoAmount(0);
+
+        if (value > 0) {
+            gun.gunItem().setBulletInBarrel(gun.gunStack(), true);
+            value -= 1;
+        }
+
+        if (value > 0) {
+            var magSize = AttachmentDataUtils.getAmmoCountWithAttachment(gun.gunStack(), gun.index().getGunData());
+            var inMag = Math.max(value, magSize);
+            gun.gunItem().setCurrentAmmoCount(gun.gunStack(), inMag);
+        }
+    }
+
+    @SubscribeEvent
+    public static void preventCreativeBatteryOverflow(GunReloadFeedEvent.Post event) {
         if (!isEnergyWeapon(event.getGunInfo().gunStack())) {
             return;
         }

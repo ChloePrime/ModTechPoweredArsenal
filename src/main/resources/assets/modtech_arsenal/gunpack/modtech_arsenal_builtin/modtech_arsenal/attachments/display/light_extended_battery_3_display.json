@@ -1,0 +1,7 @@
+{
+  "slot": "modtech_arsenal:attachment/slot/light_extended_battery_3",
+  "sounds": {
+    "install": "tacz:attachments/extended_mag_install",
+    "uninstall": "tacz:attachments/extended_mag_uninstall"
+  }
+}
