@@ -15,7 +15,6 @@ import mod.chloeprime.modtechpoweredarsenal.common.api.standard.EnhancedGunData;
 import mod.chloeprime.modtechpoweredarsenal.common.standard.util.GunHelper;
 import net.minecraft.core.Direction;
 import net.minecraft.resources.ResourceLocation;
-import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.item.ItemStack;
 import net.minecraftforge.common.capabilities.Capability;
 import net.minecraftforge.common.capabilities.ForgeCapabilities;
@@ -29,8 +28,6 @@ import net.minecraftforge.eventbus.api.SubscribeEvent;
 import net.minecraftforge.fml.common.Mod;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
-
-import javax.xml.validation.Validator;
 
 @Mod.EventBusSubscriber
 public class EnergyWeaponBehavior {
