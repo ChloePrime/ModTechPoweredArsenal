@@ -1,0 +1,7 @@
+{
+  "slot": "modtech_arsenal:attachment/slot/energy_mod_wave",
+  "sounds": {
+    "install": "tacz:attachments/extended_mag_install",
+    "uninstall": "tacz:attachments/extended_mag_uninstall"
+  }
+}

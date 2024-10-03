@@ -17,6 +17,8 @@
   "modtech_arsenal.attachment.heavy_extended_battery_1.name": "60W·h 重型扩容电池",
   "modtech_arsenal.attachment.heavy_extended_battery_2.name": "§980W·h 重型扩容电池",
   "modtech_arsenal.attachment.heavy_extended_battery_3.name": "§d99.9W·h 重型扩容电池",
+  "modtech_arsenal.attachment.energy_mod_wave.name": "电磁脉冲射弹",
+  "modtech_arsenal.attachment.energy_mod_plasma.name": "高能电浆射弹",
   "modtech_arsenal.attachment.ammo_mod_antimagic.name": "§e起源弹",
   "modtech_arsenal.attachment.ammo_mod_antimagic.desc": "反魔法弹头\n§a+ 穿透魔法防御",
   "modtech_arsenal.attachment.ammo_trait_chain_action.name": "连锁反应",

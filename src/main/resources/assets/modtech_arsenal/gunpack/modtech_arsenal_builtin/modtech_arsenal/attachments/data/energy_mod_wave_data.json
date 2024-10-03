@@ -1,0 +1,38 @@
+{
+  "weight": 0.6,
+  "ads": {
+    "addend": 0.02
+  },
+  "// 大幅改善弹道性能": {},
+  "rpm": {
+    "multiplier": 1.5
+  },
+  "inaccuracy": {
+    "multiplier": 0
+  },
+  "recoil": {
+    "pitch": {
+      "multiplier": 0.1
+    },
+    "yaw": {
+      "multiplier": 0.1
+    }
+  },
+  "ammo_speed": {
+    "multiplier": 2
+  },
+  "effective_range": {
+    "function": "y = 2048 - x"
+  },
+  "extended_mag_level": 3,
+  "// 代价：无法穿透怪物，基础伤害降低，爆头倍率降低": {},
+  "damage": {
+    "multiplier": 0.9
+  },
+  "head_shot":{
+    "multiplier": 0.6
+  },
+  "pierce": {
+    "multiplier": 0
+  }
+}

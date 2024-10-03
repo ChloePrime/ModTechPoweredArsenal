@@ -1,0 +1,27 @@
+{
+  "weight": 0.6,
+  "ads": {
+    "addend": 0.02
+  },
+  "pierce": {
+    "function": "y = 500"
+  },
+  "armor_ignore": {
+    "function": "y = 1"
+  },
+  "damage": {
+    "multiplier": 3
+  },
+  "// 代价：RPM大幅降低，后座变大": {},
+  "rpm": {
+    "multiplier": 0.25
+  },
+  "recoil": {
+    "pitch": {
+      "multiplier": 4
+    },
+    "yaw": {
+      "multiplier": 4
+    }
+  }
+}

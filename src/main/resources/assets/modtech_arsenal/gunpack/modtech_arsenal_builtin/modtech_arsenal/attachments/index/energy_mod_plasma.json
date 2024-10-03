@@ -1,0 +1,6 @@
+{
+  "name": "modtech_arsenal.attachment.energy_mod_plasma.name",
+  "display": "modtech_arsenal:energy_mod_plasma_display",
+  "data": "modtech_arsenal:energy_mod_plasma_data",
+  "type": "extended_mag"
+}
