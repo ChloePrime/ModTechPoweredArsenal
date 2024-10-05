@@ -27,7 +27,7 @@ public final class ModNetwork {
     private static int id = 1;
 
     public static void init() {
-        CHANNEL.registerMessage(id++, S2COriginBulletHitBlock.class, S2COriginBulletHitBlock::encode, S2COriginBulletHitBlock::decode, S2COriginBulletHitBlock::handle);
+        CHANNEL.registerMessage(id++, S2CPlasmaHitBlock.class, S2CPlasmaHitBlock::encode, S2CPlasmaHitBlock::decode, S2CPlasmaHitBlock::handle);
         CHANNEL.registerMessage(id++, S2CEnchantedHit.class, S2CEnchantedHit::encode, S2CEnchantedHit::decode, S2CEnchantedHit::handle);
     }
 
