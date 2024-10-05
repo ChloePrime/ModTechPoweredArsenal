@@ -28,5 +28,6 @@ public record S2CPlasmaHitBlock(
 
     public void handle(Supplier<NetworkEvent.Context> context) {
         context.get().enqueueWork(() -> ClientNetHandler.handlePlasmaHitBlock(this, context.get()));
+        context.get().setPacketHandled(true);
     }
 }

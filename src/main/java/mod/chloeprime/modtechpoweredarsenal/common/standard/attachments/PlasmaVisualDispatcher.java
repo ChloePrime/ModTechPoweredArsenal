@@ -41,6 +41,9 @@ public class PlasmaVisualDispatcher {
 
     @SubscribeEvent(priority = EventPriority.LOWEST)
     public static void onAmmoHitBlock(AmmoHitBlockEvent event) {
+        if (event.getLevel().isClientSide) {
+            return;
+        }
         if (event.getAmmo().getPersistentData().getBoolean(PDK_HAS_PLASMA_VISUAL)) {
             ModNetwork.sendToNearby(
                     new S2CPlasmaHitBlock(event.getHitResult().getLocation(), event.getHitResult().getDirection()),

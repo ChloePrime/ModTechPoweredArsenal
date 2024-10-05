@@ -20,5 +20,6 @@ public record S2CEnchantedHit(
 
     public void handle(Supplier<NetworkEvent.Context> context) {
         context.get().enqueueWork(() -> ClientNetHandler.handleEnchantedHit(this, context.get()));
+        context.get().setPacketHandled(true);
     }
 }

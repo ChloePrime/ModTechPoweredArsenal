@@ -2,10 +2,13 @@ package mod.chloeprime.modtechpoweredarsenal.network;
 
 import mod.chloeprime.modtechpoweredarsenal.ModTechPoweredArsenal;
 import net.minecraft.world.entity.Entity;
+import net.minecraftforge.network.NetworkDirection;
 import net.minecraftforge.network.NetworkRegistry;
 import net.minecraftforge.network.PacketDistributor;
 import net.minecraftforge.network.simple.SimpleChannel;
 
+import java.util.Optional;
+import java.util.concurrent.atomic.AtomicInteger;
 import java.util.function.Supplier;
 
 public final class ModNetwork {
@@ -24,11 +27,11 @@ public final class ModNetwork {
         CHANNEL.send(PacketDistributor.TRACKING_ENTITY.with(center), message);
     }
 
-    private static int id = 1;
+    private static final AtomicInteger ID_COUNT = new AtomicInteger(1);
 
     public static void init() {
-        CHANNEL.registerMessage(id++, S2CPlasmaHitBlock.class, S2CPlasmaHitBlock::encode, S2CPlasmaHitBlock::decode, S2CPlasmaHitBlock::handle);
-        CHANNEL.registerMessage(id++, S2CEnchantedHit.class, S2CEnchantedHit::encode, S2CEnchantedHit::decode, S2CEnchantedHit::handle);
+        CHANNEL.registerMessage(ID_COUNT.getAndIncrement(), S2CPlasmaHitBlock.class, S2CPlasmaHitBlock::encode, S2CPlasmaHitBlock::decode, S2CPlasmaHitBlock::handle, Optional.of(NetworkDirection.PLAY_TO_CLIENT));
+        CHANNEL.registerMessage(ID_COUNT.getAndIncrement(), S2CEnchantedHit.class, S2CEnchantedHit::encode, S2CEnchantedHit::decode, S2CEnchantedHit::handle, Optional.of(NetworkDirection.PLAY_TO_CLIENT));
     }
 
     private ModNetwork() {}
