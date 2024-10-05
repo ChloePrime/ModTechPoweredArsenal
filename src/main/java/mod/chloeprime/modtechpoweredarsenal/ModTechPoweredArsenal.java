@@ -54,6 +54,14 @@ public final class ModTechPoweredArsenal {
                 output.accept(MTPA.ammo(MtpaL2Module.ID, "9mm_antiregen"));
                 output.accept(MTPA.attachment("stock_bumpfire"));
                 output.accept(MTPA.attachment(MtpaL2Module.ID, "muzzle_mod_void_amp"));
+                output.accept(MTPA.attachment("light_extended_battery_1"));
+                output.accept(MTPA.attachment("light_extended_battery_2"));
+                output.accept(MTPA.attachment("light_extended_battery_3"));
+                output.accept(MTPA.attachment("heavy_extended_battery_1"));
+                output.accept(MTPA.attachment("heavy_extended_battery_2"));
+                output.accept(MTPA.attachment("heavy_extended_battery_3"));
+                output.accept(MTPA.attachment("energy_mod_wave"));
+                output.accept(MTPA.attachment("energy_mod_plasma"));
                 output.accept(MTPA.attachment("ammo_mod_antimagic"));
                 output.accept(MTPA.attachment("ammo_trait_greed_of_ussr"));
                 output.accept(MTPA.attachment("ammo_trait_chain_action"));
