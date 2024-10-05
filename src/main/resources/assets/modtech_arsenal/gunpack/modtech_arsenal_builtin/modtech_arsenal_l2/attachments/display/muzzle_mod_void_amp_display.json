@@ -1,0 +1,9 @@
+{
+  "slot": "modtech_arsenal_l2:attachment/slot/muzzle_mod_void_amp",
+  "model": "modtech_arsenal_l2:attachment/muzzle_mod_void_amp_geo",
+  "texture": "modtech_arsenal_l2:attachment/uv/muzzle_mod_void_amp",
+  "sounds": {
+    "install": "tacz:attachments/attachment_general_a",
+    "uninstall": "tacz:attachments/attachment_general_uninstall"
+  }
+}

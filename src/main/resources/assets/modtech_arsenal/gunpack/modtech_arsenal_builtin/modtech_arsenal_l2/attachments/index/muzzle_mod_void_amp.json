@@ -1,7 +1,7 @@
 {
   "name": "modtech_arsenal_l2.attachment.muzzle_mod_void_amp.name",
   "tooltip": "modtech_arsenal_l2.attachment.muzzle_mod_void_amp.desc",
-  "display": "tacz:muzzle_brake_trex_display",
+  "display": "modtech_arsenal_l2:muzzle_mod_void_amp_display",
   "data": "modtech_arsenal_l2:muzzle_mod_void_amp_data",
   "type": "muzzle"
 }
