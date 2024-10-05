@@ -35,7 +35,7 @@ public class ClientNetHandler {
         player.level().playLocalSound(
                 packet.pos().x(), packet.pos().y(), packet.pos().z(),
                 SoundEvents.FIRE_EXTINGUISH, SoundSource.PLAYERS,
-                1, pitch, true
+                1, pitch, false
         );
         var pos = packet.pos().add(Vec3.atLowerCornerOf(packet.normal().getNormal()).scale(1F / 64));
         ((ParticleEngineAccessor) ConstHolder.MC.particleEngine).getTrackingEmitters().add(new ParticleEmitter(
