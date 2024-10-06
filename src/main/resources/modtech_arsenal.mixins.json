@@ -11,11 +11,13 @@
     "minecraft.PerkEnchantmentLimitMixin",
     "tacz.KineticBulletAccessor",
     "tacz.MixinGun",
+    "tacz.PlasmaBulletHoleDoNotUseServerDispatchMixin",
     "tacz.gunpack.MixinGunData"
   ],
   "client": [
     "minecraft.client.ParticleEngineAccessor",
     "tacz.client.GunTooltipRestrictionLifterMixin",
+    "tacz.client.MixinBulletHoleParticle",
     "tacz.client.MixinGunHudOverlay"
   ],
   "injectors": {
