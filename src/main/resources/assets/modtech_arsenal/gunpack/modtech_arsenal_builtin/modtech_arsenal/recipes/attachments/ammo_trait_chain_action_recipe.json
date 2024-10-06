@@ -1,0 +1,19 @@
+{
+  "materials": [
+    {
+      "item": {
+        "item": "minecraft:book"
+      }
+    },
+    {
+      "item": {
+        "item": "minecraft:tnt"
+      },
+      "count": 9
+    }
+  ],
+  "result": {
+    "type": "attachment",
+    "id": "modtech_arsenal:ammo_trait_chain_action"
+  }
+}

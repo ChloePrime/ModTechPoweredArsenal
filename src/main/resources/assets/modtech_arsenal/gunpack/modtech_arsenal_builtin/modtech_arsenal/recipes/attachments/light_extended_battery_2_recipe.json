@@ -1,0 +1,25 @@
+{
+  "materials": [
+    {
+      "item": {
+        "tag": "forge:ingots/iron"
+      },
+      "count": 3
+    },
+    {
+      "item": {
+        "tag": "forge:storage_blocks/redstone"
+      }
+    },
+    {
+      "item": {
+        "tag": "minecraft:coals"
+      },
+      "count": 3
+    }
+  ],
+  "result": {
+    "type": "attachment",
+    "id": "modtech_arsenal:light_extended_battery_2"
+  }
+}

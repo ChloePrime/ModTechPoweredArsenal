@@ -1,0 +1,24 @@
+{
+  "materials": [
+    {
+      "item": {
+        "item": "minecraft:book"
+      }
+    },
+    {
+      "item": {
+        "tag": "forge:storage_blocks/redstone"
+      },
+      "count": 4
+    },
+    {
+      "item": {
+        "tag": "forge:storage_blocks/gold"
+      }
+    }
+  ],
+  "result": {
+    "type": "attachment",
+    "id": "modtech_arsenal:ammo_trait_greed_of_ussr"
+  }
+}

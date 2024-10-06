@@ -1,0 +1,25 @@
+{
+  "materials": [
+    {
+      "item": {
+        "tag": "forge:storage_blocks/gold"
+      }
+    },
+    {
+      "item": {
+        "tag": "forge:storage_blocks/redstone"
+      },
+      "count": 3
+    },
+    {
+      "item": {
+        "tag": "forge:gems/diamond"
+      },
+      "count": 3
+    }
+  ],
+  "result": {
+    "type": "attachment",
+    "id": "modtech_arsenal:heavy_extended_battery_3"
+  }
+}

@@ -1,0 +1,19 @@
+{
+  "materials": [
+    {
+      "item": {
+        "tag": "forge:ingots/iron"
+      },
+      "count": 16
+    },
+    {
+      "item": {
+        "item": "minecraft:piston"
+      }
+    }
+  ],
+  "result": {
+    "type": "attachment",
+    "id": "modtech_arsenal:stock_bumpfire"
+  }
+}
