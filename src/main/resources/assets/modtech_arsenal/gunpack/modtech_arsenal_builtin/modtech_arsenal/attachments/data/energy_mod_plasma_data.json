@@ -21,7 +21,7 @@
       "multiplier": 4
     },
     "yaw": {
-      "multiplier": 4
+      "multiplier": 1.5
     }
   }
 }
