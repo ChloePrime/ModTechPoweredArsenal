@@ -1,5 +1,6 @@
 {
   "name": "modtech_arsenal.attachment.energy_mod_wave.name",
+  "tooltip": "modtech_arsenal.attachment.energy_mod_wave.desc",
   "display": "modtech_arsenal:energy_mod_wave_display",
   "data": "modtech_arsenal:energy_mod_wave_data",
   "type": "extended_mag"

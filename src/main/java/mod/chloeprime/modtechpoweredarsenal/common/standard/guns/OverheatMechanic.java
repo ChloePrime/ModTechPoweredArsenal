@@ -2,19 +2,27 @@ package mod.chloeprime.modtechpoweredarsenal.common.standard.guns;
 
 import com.tacz.guns.api.event.common.GunShootEvent;
 import mod.chloeprime.gunsmithlib.api.common.GunReloadFeedEvent;
+import mod.chloeprime.gunsmithlib.api.util.GunInfo;
 import mod.chloeprime.gunsmithlib.api.util.Gunsmith;
 import mod.chloeprime.modtechpoweredarsenal.ModTechPoweredArsenal;
+import mod.chloeprime.modtechpoweredarsenal.common.api.standard.events.GunCoolEvent;
+import mod.chloeprime.modtechpoweredarsenal.common.api.standard.events.GunHeatEvent;
+import mod.chloeprime.modtechpoweredarsenal.common.standard.attachments.WaveShotBehavior;
+import mod.chloeprime.modtechpoweredarsenal.common.standard.util.GunHelper;
 import net.minecraft.core.particles.ParticleTypes;
 import net.minecraft.sounds.SoundEvents;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.item.ItemStack;
+import net.minecraftforge.common.MinecraftForge;
 import net.minecraftforge.event.TickEvent;
 import net.minecraftforge.eventbus.api.EventPriority;
 import net.minecraftforge.eventbus.api.SubscribeEvent;
 import net.minecraftforge.fml.common.Mod;
 
 import java.util.OptionalInt;
+
+import static net.minecraftforge.eventbus.api.Event.Result.*;
 
 @Mod.EventBusSubscriber
 public class OverheatMechanic {
@@ -88,14 +96,55 @@ public class OverheatMechanic {
         if (runtime == null) {
             return;
         }
-            var now = event.getShooter().level().getGameTime();
-            var delay = runtime.overheat().partialHeatDelay();
-            var tag = runtime.gun().gunStack().getOrCreateTag();
-            var oldHeat = tag.getInt(TAG_KEY_HEAT);
-            var maxHeat = runtime.overheat().shotsBeforeOverheat();
-            var newHeat = Math.min(oldHeat + 1, maxHeat);
-            tag.putLong(TAG_KEY_NEXT_LOAD_ETA, now + delay);
-            tag.putInt(TAG_KEY_HEAT, newHeat);
+        var now = event.getShooter().level().getGameTime();
+        var delay = runtime.overheat().partialHeatDelay();
+        var tag = runtime.gun().gunStack().getOrCreateTag();
+        tag.putLong(TAG_KEY_NEXT_LOAD_ETA, now + delay);
+
+        var oldHeat = tag.getInt(TAG_KEY_HEAT);
+        var maxHeat = runtime.overheat().shotsBeforeOverheat();
+        var newHeat = Math.min(oldHeat + 1, maxHeat);
+        if (oldHeat == newHeat) {
+            return;
+        }
+
+        var preEvent = new GunHeatEvent.Pre(event.getShooter(), runtime.gun(), oldHeat, newHeat);
+        MinecraftForge.EVENT_BUS.post(preEvent);
+        if (event.getResult() == DENY || (event.getResult() == DEFAULT && defaultSkipHeat(preEvent))) {
+            return;
+        }
+
+        newHeat = preEvent.getNewHeat();
+        tag.putInt(TAG_KEY_HEAT, newHeat);
+
+        var postEvent = new GunHeatEvent.Post(event.getShooter(), runtime.gun(), oldHeat, newHeat);
+        MinecraftForge.EVENT_BUS.post(postEvent);
+    }
+
+    private static boolean defaultSkipHeat(GunHeatEvent.Pre event) {
+        var delta = event.getNewHeat() - event.getOldHeat();
+        if (delta <= 0) {
+            return true;
+        }
+
+        var thermalCap = WaveShotBehavior.isWaveWeapon(event.getGun().gunStack()) ? 2 : 0;
+        var skipRatio = thermalCap * 0.25;
+        if (skipRatio <= 0) {
+            return false;
+        }
+        if (skipRatio >= 1) {
+            return true;
+        }
+
+        var newDelta = 0;
+        var rng = event.getEntity().getRandom();
+        for (int i = 0; i < delta; i++) {
+            if (rng.nextDouble() <= skipRatio) {
+                newDelta++;
+            }
+        }
+        event.setNewHeat(event.getOldHeat() + newDelta);
+        return newDelta <= 0;
     }
 
     @SubscribeEvent
@@ -143,9 +192,23 @@ public class OverheatMechanic {
                 return;
             }
             var newHeat = Math.max(0, oldHeat - overheatData.coolCount());
+            var preEvent = new GunCoolEvent.Pre(event.player, gun, oldHeat, newHeat);
+            MinecraftForge.EVENT_BUS.post(preEvent);
+            if (preEvent.getResult() == DENY || (preEvent.getResult() == DEFAULT && defaultSkipCooldown(gun))) {
+                return;
+            }
+
+            newHeat = preEvent.getNewHeat();
             setHeat(gun.gunStack(), newHeat);
             tag.putLong(TAG_KEY_NEXT_LOAD_ETA, now + overheatData.coolDelay());
+
+            var postEvent = new GunCoolEvent.Post(event.player, gun, oldHeat, newHeat);
+            MinecraftForge.EVENT_BUS.post(postEvent);
         }
+    }
+
+    private static boolean defaultSkipCooldown(GunInfo gun) {
+        return false;
     }
 
     private static void playCooldownSound(Entity shooter) {

@@ -18,6 +18,7 @@
   "modtech_arsenal.attachment.heavy_extended_battery_2.name": "§980W·h Heavy Extended Battery",
   "modtech_arsenal.attachment.heavy_extended_battery_3.name": "§d99.9W·h Heavy Extended Battery",
   "modtech_arsenal.attachment.energy_mod_wave.name": "Wave Shot",
+  "modtech_arsenal.attachment.energy_mod_wave.desc": "§a+ Thermal Durability II",
   "modtech_arsenal.attachment.energy_mod_plasma.name": "Plasma Shot",
   "modtech_arsenal.attachment.ammo_mod_antimagic.name": "§eOrigin Bullet",
   "modtech_arsenal.attachment.ammo_mod_antimagic.desc": "Hexed warheads.\n§a+ Bypasses magical protection",

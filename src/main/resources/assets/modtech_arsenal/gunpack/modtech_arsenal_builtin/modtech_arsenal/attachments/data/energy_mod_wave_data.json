@@ -21,16 +21,18 @@
   "ammo_speed": {
     "multiplier": 2
   },
-  "effective_range": {
-    "function": "y = 2048 - x"
-  },
   "extended_mag_level": 3,
+  "// 静音": {},
+  "silence": {
+    "distance_addend": -1024,
+    "use_silence_sound": true
+  },
   "// 代价：无法穿透怪物，基础伤害降低，爆头倍率降低": {},
   "damage": {
     "multiplier": 0.9
   },
   "head_shot":{
-    "multiplier": 0.6
+    "multiplier": 0.9
   },
   "pierce": {
     "multiplier": 0
