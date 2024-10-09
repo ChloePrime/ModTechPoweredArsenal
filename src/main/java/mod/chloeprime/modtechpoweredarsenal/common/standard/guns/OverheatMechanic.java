@@ -2,13 +2,11 @@ package mod.chloeprime.modtechpoweredarsenal.common.standard.guns;
 
 import com.tacz.guns.api.event.common.GunShootEvent;
 import mod.chloeprime.gunsmithlib.api.common.GunReloadFeedEvent;
-import mod.chloeprime.gunsmithlib.api.util.GunInfo;
 import mod.chloeprime.gunsmithlib.api.util.Gunsmith;
 import mod.chloeprime.modtechpoweredarsenal.ModTechPoweredArsenal;
 import mod.chloeprime.modtechpoweredarsenal.common.api.standard.events.GunCoolEvent;
 import mod.chloeprime.modtechpoweredarsenal.common.api.standard.events.GunHeatEvent;
 import mod.chloeprime.modtechpoweredarsenal.common.standard.attachments.WaveShotBehavior;
-import mod.chloeprime.modtechpoweredarsenal.common.standard.util.GunHelper;
 import net.minecraft.core.particles.ParticleTypes;
 import net.minecraft.sounds.SoundEvents;
 import net.minecraft.world.entity.Entity;
@@ -194,7 +192,7 @@ public class OverheatMechanic {
             var newHeat = Math.max(0, oldHeat - overheatData.coolCount());
             var preEvent = new GunCoolEvent.Pre(event.player, gun, oldHeat, newHeat);
             MinecraftForge.EVENT_BUS.post(preEvent);
-            if (preEvent.getResult() == DENY || (preEvent.getResult() == DEFAULT && defaultSkipCooldown(gun))) {
+            if (preEvent.getResult() == DENY || (preEvent.getResult() == DEFAULT && defaultSkipCooldown(preEvent))) {
                 return;
             }
 
@@ -207,7 +205,7 @@ public class OverheatMechanic {
         }
     }
 
-    private static boolean defaultSkipCooldown(GunInfo gun) {
+    private static boolean defaultSkipCooldown(GunCoolEvent.Pre event) {
         return false;
     }
 
