@@ -11,6 +11,13 @@
         "item": "minecraft:sculk"
       },
       "count": 5
+    },
+    {
+      "item": {
+        "type": "forge:partial_nbt",
+        "item": "tacz:attachment",
+        "nbt": "{AttachmentId:\"modtech_arsenal:heavy_extended_battery_3\"}"
+      }
     }
   ],
   "result": {
