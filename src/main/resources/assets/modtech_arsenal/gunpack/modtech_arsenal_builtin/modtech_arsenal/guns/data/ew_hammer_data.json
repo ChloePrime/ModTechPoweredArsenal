@@ -1,5 +1,5 @@
 {
-  "ammo": "tacz:9mm",
+  "ammo": "modtech_arsenal:battery",
   "rpm": 600,
   "bullet": {
     "life": 0.20,

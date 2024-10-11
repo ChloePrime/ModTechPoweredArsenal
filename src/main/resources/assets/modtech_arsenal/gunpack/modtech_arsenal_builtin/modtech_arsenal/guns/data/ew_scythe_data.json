@@ -1,5 +1,5 @@
 {
-  "ammo": "tacz:556x45",
+  "ammo": "modtech_arsenal:battery",
   "ammo_amount": 180,
   "extended_mag_ammo_amount": [
     240,
