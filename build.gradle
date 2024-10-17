@@ -133,6 +133,8 @@ mixin {
 sourceSets.main.resources { srcDir 'src/generated/resources' }
 
 repositories {
+    // NeoForge
+    maven { url "https://maven.neoforged.net/releases/" }
     // Curse maven
     maven {
         name = "Curse Maven"

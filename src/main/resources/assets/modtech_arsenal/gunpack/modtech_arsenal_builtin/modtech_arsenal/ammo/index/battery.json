@@ -1,5 +1,6 @@
 {
   "name": "modtech_arsenal.ammo.battery.name",
+  "tooltip": "modtech_arsenal.ammo.battery.desc",
   "display": "modtech_arsenal:battery_display",
   "stack_size": 60
 }
