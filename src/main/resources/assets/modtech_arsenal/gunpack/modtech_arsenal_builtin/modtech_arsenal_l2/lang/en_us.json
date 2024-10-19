@@ -4,6 +4,8 @@
   "modtech_arsenal_l2.gun.albert_01.name": "Albert-01",
   "modtech_arsenal_l2.gun.albert_01.desc": "Use this, Ethan!\n§a+ Smite V\n§6+ Anti-Regen Toxin§8*",
   "modtech_arsenal_l2.ammo.9mm_antiregen.name": "§bBlueUmbrella® Anti-Regen Ammo",
+  "modtech_arsenal_l2.attachment.ammo_mod_soul_fuel.name": "Napalm of Soul",
+  "modtech_arsenal_l2.attachment.ammo_mod_soul_fuel.desc": "§a+ Deals Magic Damage\n§6+ Soul Burner§8*",
   "modtech_arsenal_l2.attachment.muzzle_mod_void_amp.name": "Void Amp",
   "modtech_arsenal_l2.attachment.muzzle_mod_void_amp.desc": "§a+ 30%% extra void damage\n§6+ Paracesis§8*"
 }

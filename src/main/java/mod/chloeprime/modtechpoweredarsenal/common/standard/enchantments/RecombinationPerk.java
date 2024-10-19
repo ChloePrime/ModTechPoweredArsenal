@@ -62,7 +62,6 @@ public class RecombinationPerk extends PerkBase {
 
     public static final int BUFF_DURATION = 20 * 30; // 30s
     public static final String PDK_IS_SHOOTING = ModTechPoweredArsenal.loc("recombination.is_shooting").toString();
-    public static final TagKey<DamageType> ANY_MAGIC = TagKey.create(Registries.DAMAGE_TYPE, ModTechPoweredArsenal.loc("any_magic"));
 
     @Override
     public boolean canApplyAtEnchantingTable(@Nonnull ItemStack stack) {

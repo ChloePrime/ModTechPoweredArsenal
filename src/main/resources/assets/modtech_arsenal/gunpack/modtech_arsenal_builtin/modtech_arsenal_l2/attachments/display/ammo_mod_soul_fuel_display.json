@@ -1,0 +1,7 @@
+{
+  "slot": "modtech_arsenal_l2:attachment/slot/ammo_mod_soul_fuel",
+  "sounds": {
+    "install": "tacz:attachments/extended_mag_install",
+    "uninstall": "tacz:attachments/extended_mag_uninstall"
+  }
+}

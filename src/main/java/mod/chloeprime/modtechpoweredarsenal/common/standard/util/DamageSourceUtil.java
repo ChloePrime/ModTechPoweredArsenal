@@ -2,7 +2,9 @@ package mod.chloeprime.modtechpoweredarsenal.common.standard.util;
 
 import it.unimi.dsi.fastutil.objects.Object2FloatArrayMap;
 import it.unimi.dsi.fastutil.objects.Object2FloatMap;
+import mod.chloeprime.modtechpoweredarsenal.ModTechPoweredArsenal;
 import mod.chloeprime.modtechpoweredarsenal.common.standard.internal.ClassicDamageSource;
+import net.minecraft.core.registries.Registries;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.tags.TagKey;
 import net.minecraft.world.damagesource.DamageSource;
@@ -12,6 +14,9 @@ import java.util.Collection;
 import java.util.OptionalDouble;
 
 public class DamageSourceUtil {
+    public static final TagKey<DamageType> IS_MAGIC = TagKey.create(Registries.DAMAGE_TYPE, new ResourceLocation("forge", "any_magic"));
+    public static final TagKey<DamageType> ANY_MAGIC = TagKey.create(Registries.DAMAGE_TYPE, ModTechPoweredArsenal.loc("any_magic"));
+
     public static void addTag(DamageSource source, TagKey<DamageType> tag) {
         ((ClassicDamageSource) source).mtpa$addTag(tag);
     }

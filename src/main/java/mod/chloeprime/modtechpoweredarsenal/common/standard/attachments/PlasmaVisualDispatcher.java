@@ -70,12 +70,10 @@ public class PlasmaVisualDispatcher {
     private static final ResourceLocation BULLET_HOLE_ID = new ResourceLocation("tacz", "bullet_hole");
 
     @ApiStatus.Internal
-    public static int onServerSpawnBulletHole(Projectile bullet, ParticleOptions particle, IntSupplier original) {
+    public static boolean disableServerBulletHole(Projectile bullet, ParticleOptions particle) {
         if (bullet.getPersistentData().getBoolean(PDK_HAS_PLASMA_VISUAL)) {
-            if (BULLET_HOLE_ID.equals(ForgeRegistries.PARTICLE_TYPES.getKey(particle.getType()))) {
-                return 0;
-            }
+            return BULLET_HOLE_ID.equals(ForgeRegistries.PARTICLE_TYPES.getKey(particle.getType()));
         }
-        return original.getAsInt();
+        return false;
     }
 }
