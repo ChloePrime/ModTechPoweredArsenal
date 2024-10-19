@@ -9,7 +9,7 @@
   "bolt": "open_bolt",
   "rpm": 600,
   "bullet": {
-    "life": 1.25,
+    "life": 1,
     "bullet_amount": 5,
     "damage": 8,
     "tracer_count_interval": 10000000,
@@ -22,7 +22,7 @@
         {"distance": "infinite", "damage": 7}
       ]
     },
-    "speed": 6,
+    "speed": 7.5,
     "gravity": 0,
     "knockback": 0,
     "friction": 0.03,

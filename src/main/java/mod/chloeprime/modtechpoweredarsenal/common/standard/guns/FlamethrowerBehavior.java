@@ -15,10 +15,8 @@ import mod.chloeprime.modtechpoweredarsenal.common.standard.util.DamageSourceUti
 import mod.chloeprime.modtechpoweredarsenal.mixin.minecraft.DamageSourcesAccessor;
 import net.minecraft.core.particles.ParticleOptions;
 import net.minecraft.resources.ResourceLocation;
-import net.minecraft.tags.DamageTypeTags;
 import net.minecraft.world.damagesource.DamageSource;
 import net.minecraft.world.damagesource.DamageTypes;
-import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.projectile.Projectile;
 import net.minecraftforge.eventbus.api.EventPriority;
@@ -37,6 +35,7 @@ public class FlamethrowerBehavior {
             MtpaL2Module.loc("ammo_mod_soul_fuel")
     ));
     public static final String PDK_BULLET_FLAME_TYPE = ModTechPoweredArsenal.loc("flame_type").toString();
+    public static final String PDK_BULLET_IGNITE_TIME_SCALE = ModTechPoweredArsenal.loc("flame_ignite_time_scale").toString();
     public static final int BULLET_FLAME_TYPE_HEAT = 1;
     public static final int BULLET_FLAME_TYPE_SOUL = 2;
 
@@ -68,13 +67,17 @@ public class FlamethrowerBehavior {
         if (type <= 0) {
             return;
         }
-        event.getBullet().getPersistentData().putInt(PDK_BULLET_FLAME_TYPE, type);
+
+        var pd = event.getBullet().getPersistentData();
+        pd.putInt(PDK_BULLET_FLAME_TYPE, type);
+        if (type == BULLET_FLAME_TYPE_HEAT) {
+            pd.putFloat(PDK_BULLET_IGNITE_TIME_SCALE, gunInfo.get().index().getBulletData().getBulletAmount());
+        }
     }
 
     @SubscribeEvent(priority = EventPriority.HIGH)
     public static void onPreHurt(EntityHurtByGunEvent.Pre event) {
         var source1 = event.getDamageSource(GunDamageSourcePart.NON_ARMOR_PIERCING);
-        var source2 = event.getDamageSource(GunDamageSourcePart.ARMOR_PIERCING);
 
         var bullet = event.getBullet();
         var victim = event.getHurtEntity();
@@ -109,10 +112,12 @@ public class FlamethrowerBehavior {
         if (!(event.getHurtEntity() instanceof LivingEntity victim)) {
             return;
         }
-        int type = event.getBullet().getPersistentData().getInt(PDK_BULLET_FLAME_TYPE);
+        var pd = event.getBullet().getPersistentData();
+        int type = pd.getInt(PDK_BULLET_FLAME_TYPE);
         switch (type) {
             case BULLET_FLAME_TYPE_HEAT -> {
-                victim.setRemainingFireTicks((int) (event.getBaseAmount() * 20));
+                var igniteTimeScale = Math.max(1, pd.getFloat(PDK_BULLET_IGNITE_TIME_SCALE));
+                victim.setRemainingFireTicks((int) (igniteTimeScale * event.getBaseAmount() * 20));
             }
             case BULLET_FLAME_TYPE_SOUL -> {
                 if (ModLoadStatus.L2C_INSTALLED) {
