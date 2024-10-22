@@ -1,5 +1,6 @@
 {
   "name": "modtech_arsenal.gun.flamethrower.name",
+  "tooltip": "modtech_arsenal.gun.flamethrower.desc",
   "display": "tacz:m4a1_display",
   "data": "modtech_arsenal:flamethrower_data",
   "type": "rpg",

@@ -13,11 +13,17 @@ import mod.chloeprime.modtechpoweredarsenal.common.lightland.MtpaL2Module;
 import mod.chloeprime.modtechpoweredarsenal.common.lightland.guns.SoulFlamethrowerBehaviorLCProxy;
 import mod.chloeprime.modtechpoweredarsenal.common.standard.util.DamageSourceUtil;
 import mod.chloeprime.modtechpoweredarsenal.mixin.minecraft.DamageSourcesAccessor;
+import mod.chloeprime.modtechpoweredarsenal.network.ModNetwork;
+import mod.chloeprime.modtechpoweredarsenal.network.S2CEnchantedHit;
 import net.minecraft.core.particles.ParticleOptions;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.damagesource.DamageSource;
 import net.minecraft.world.damagesource.DamageTypes;
+import net.minecraft.world.effect.MobEffectInstance;
+import net.minecraft.world.effect.MobEffects;
+import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.LivingEntity;
+import net.minecraft.world.entity.MobType;
 import net.minecraft.world.entity.projectile.Projectile;
 import net.minecraftforge.eventbus.api.EventPriority;
 import net.minecraftforge.eventbus.api.SubscribeEvent;
@@ -35,7 +41,7 @@ public class FlamethrowerBehavior {
             MtpaL2Module.loc("ammo_mod_soul_fuel")
     ));
     public static final String PDK_BULLET_FLAME_TYPE = ModTechPoweredArsenal.loc("flame_type").toString();
-    public static final String PDK_BULLET_IGNITE_TIME_SCALE = ModTechPoweredArsenal.loc("flame_ignite_time_scale").toString();
+    public static final String PDK_BULLET_SHRAPNEL_COUNT = ModTechPoweredArsenal.loc("flame_shrapnel_count").toString();
     public static final int BULLET_FLAME_TYPE_HEAT = 1;
     public static final int BULLET_FLAME_TYPE_SOUL = 2;
 
@@ -70,9 +76,7 @@ public class FlamethrowerBehavior {
 
         var pd = event.getBullet().getPersistentData();
         pd.putInt(PDK_BULLET_FLAME_TYPE, type);
-        if (type == BULLET_FLAME_TYPE_HEAT) {
-            pd.putFloat(PDK_BULLET_IGNITE_TIME_SCALE, gunInfo.get().index().getBulletData().getBulletAmount());
-        }
+        pd.putInt(PDK_BULLET_SHRAPNEL_COUNT, gunInfo.get().index().getBulletData().getBulletAmount());
     }
 
     @SubscribeEvent(priority = EventPriority.HIGH)
@@ -84,7 +88,12 @@ public class FlamethrowerBehavior {
         if (victim == null || bullet == null) {
             return;
         }
-        var type = bullet.getPersistentData().getInt(PDK_BULLET_FLAME_TYPE);
+
+        var pd = bullet.getPersistentData();
+        var shrapnelCount = Math.max(1, pd.getInt(PDK_BULLET_SHRAPNEL_COUNT));
+        baneOfArthropods(event, victim, shrapnelCount);
+
+        var type = pd.getInt(PDK_BULLET_FLAME_TYPE);
         DamageSource newSource;
         switch (type) {
             case BULLET_FLAME_TYPE_HEAT -> {
@@ -104,6 +113,20 @@ public class FlamethrowerBehavior {
         event.setDamageSource(GunDamageSourcePart.ARMOR_PIERCING, newSource);
     }
 
+    private static void baneOfArthropods(EntityHurtByGunEvent.Pre event, Entity hurtEntity, int shrapnelCount) {
+        if (!(hurtEntity instanceof LivingEntity victim)) {
+            return;
+        }
+        if (victim.getMobType() != MobType.ARTHROPOD) {
+            return;
+        }
+        var damageBonus = 12.5F;
+        var debuffDuration = victim.getRandom().nextIntBetweenInclusive(60, 70);
+        var debuffAmplifier = 4;
+        event.setBaseAmount(event.getBaseAmount() + damageBonus / shrapnelCount);
+        victim.addEffect(new MobEffectInstance(MobEffects.MOVEMENT_SLOWDOWN, debuffDuration, debuffAmplifier));
+    }
+
     @SubscribeEvent
     public static void onPostHurt(EntityHurtByGunEvent.Post event) {
         if (event.getLogicalSide().isClient()) {
@@ -116,8 +139,8 @@ public class FlamethrowerBehavior {
         int type = pd.getInt(PDK_BULLET_FLAME_TYPE);
         switch (type) {
             case BULLET_FLAME_TYPE_HEAT -> {
-                var igniteTimeScale = Math.max(1, pd.getFloat(PDK_BULLET_IGNITE_TIME_SCALE));
-                victim.setRemainingFireTicks((int) (igniteTimeScale * event.getBaseAmount() * 20));
+                var shrapnelCount = Math.max(1, pd.getInt(PDK_BULLET_SHRAPNEL_COUNT));
+                victim.setRemainingFireTicks((int) (shrapnelCount * event.getBaseAmount() * 20));
             }
             case BULLET_FLAME_TYPE_SOUL -> {
                 if (ModLoadStatus.L2C_INSTALLED) {

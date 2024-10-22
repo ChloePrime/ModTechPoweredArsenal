@@ -182,7 +182,7 @@ repositories {
     }
 
     // AAAParticles
-    USE_LOCAL_AAAP = file('../AAAParticles').exists();
+    USE_LOCAL_AAAP = false; // file('../AAAParticles').exists();
     if (USE_LOCAL_AAAP) {
         flatDir {
             dir '../AAAParticles/forge/build/libs'
@@ -219,7 +219,7 @@ dependencies {
     // AAA粒子
     var aaap = USE_LOCAL_AAAP
             ? "libs:aaa_particles:1.20.1-1.4.6.a-forge"
-            : "maven.modrinth:aaa-particles:1.20.1-1.4.5-forge"
+            : "maven.modrinth:aaa-particles:1.20.1-1.4.6-forge"
     implementation(jarJar(fg.deobf(aaap))) {
         jarJar.ranged(it, "[1.20.1-1,)")
     }
