@@ -4,6 +4,7 @@ import com.llamalad7.mixinextras.injector.wrapoperation.Operation;
 import com.llamalad7.mixinextras.injector.wrapoperation.WrapOperation;
 import com.tacz.guns.entity.EntityKineticBullet;
 import mod.chloeprime.modtechpoweredarsenal.common.standard.attachments.PlasmaVisualDispatcher;
+import mod.chloeprime.modtechpoweredarsenal.common.standard.guns.FlamethrowerBehavior;
 import net.minecraft.core.particles.ParticleOptions;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.world.entity.EntityType;
@@ -21,8 +22,13 @@ public abstract class PlasmaBulletHoleDoNotUseServerDispatchMixin extends Projec
                     value = "INVOKE", remap = true,
                     target = "Lnet/minecraft/server/level/ServerLevel;sendParticles(Lnet/minecraft/core/particles/ParticleOptions;DDDIDDDD)I"
             ))
-    private <T extends ParticleOptions> int plasmaBulletHoleDoNotUseServerDispatch(ServerLevel instance, T particle, double v, double pType, double pPosX, int pPosY, double pPosZ, double pParticleCount, double pXOffset, double pYOffset, Operation<Integer> original) {
-        return PlasmaVisualDispatcher.onServerSpawnBulletHole(this, particle, () -> original.call(instance, particle, v, pType, pPosX, pPosY, pPosZ, pParticleCount, pXOffset, pYOffset));
+    private <T extends ParticleOptions> int selectivelyDisableBulletHole(ServerLevel instance, T particle, double v, double pType, double pPosX, int pPosY, double pPosZ, double pParticleCount, double pXOffset, double pYOffset, Operation<Integer> original) {
+        var disable = false;
+        //noinspection ConstantValue
+        disable = disable || PlasmaVisualDispatcher.disableServerBulletHole(this, particle);
+        disable = disable || FlamethrowerBehavior.disableServerBulletHole(this, particle);
+        //noinspection MixinExtrasOperationParameters
+        return disable ? 0 : original.call(instance, particle, v, pType, pPosX, pPosY, pPosZ, pParticleCount, pXOffset, pYOffset);
     }
 
     public PlasmaBulletHoleDoNotUseServerDispatchMixin(EntityType<? extends Projectile> pEntityType, Level pLevel) {

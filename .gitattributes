@@ -70,3 +70,6 @@
 *.rns filter=lfs diff=lfs merge=lfs -text
 *.jar filter=lfs diff=lfs merge=lfs -text
 *.reason filter=lfs diff=lfs merge=lfs -text
+*.efkefc filter=lfs diff=lfs merge=lfs -text
+*.efkmat filter=lfs diff=lfs merge=lfs -text
+*.efkmatd filter=lfs diff=lfs merge=lfs -text

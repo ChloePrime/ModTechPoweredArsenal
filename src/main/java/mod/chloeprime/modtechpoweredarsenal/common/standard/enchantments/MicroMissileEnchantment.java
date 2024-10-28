@@ -65,8 +65,8 @@ public class MicroMissileEnchantment extends Enchantment {
     }
 
     @Override
-    public boolean canEnchant(@Nonnull ItemStack stack) {
-        return super.canEnchant(stack) && isGrenadeLauncher(stack);
+    public boolean canApplyAtEnchantingTable(@Nonnull ItemStack stack) {
+        return super.canApplyAtEnchantingTable(stack) && isGrenadeLauncher(stack);
     }
 
     public static boolean isGrenadeLauncher(ItemStack stack) {

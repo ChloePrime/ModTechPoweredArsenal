@@ -1,0 +1,7 @@
+{
+  "name": "modtech_arsenal_l2.attachment.ammo_mod_soul_fuel.name",
+  "tooltip": "modtech_arsenal_l2.attachment.ammo_mod_soul_fuel.desc",
+  "display": "modtech_arsenal_l2:ammo_mod_soul_fuel_display",
+  "data": "modtech_arsenal_l2:ammo_mod_soul_fuel_data",
+  "type": "extended_mag"
+}
