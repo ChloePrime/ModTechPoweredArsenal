@@ -1,0 +1,28 @@
+{
+  "materials": [
+    {
+      "item": {
+        "item": "minecraft:crying_obsidian"
+      },
+      "count": 2
+    },
+    {
+      "item": {
+        "item": "minecraft:sculk"
+      },
+      "count": 5
+    },
+    {
+      "item": {
+        "type": "forge:partial_nbt",
+        "item": "tacz:attachment",
+        "nbt": "{AttachmentId:\"modtech_arsenal:heavy_extended_battery_3\"}"
+      }
+    }
+  ],
+  "result": {
+    "type": "attachment",
+    "id": "modtech_arsenal:energy_mod_wave"
+  },
+  "type": "tacz:gun_smith_table_crafting"
+}

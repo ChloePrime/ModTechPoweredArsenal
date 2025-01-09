@@ -108,7 +108,7 @@ public final class ModTechPoweredArsenal {
     }
 
     private void addBuiltinGunpacks() {
-        ResourceManager.registerExtraGunPack(getClass(), "/assets/%s/gunpack/%s".formatted(MODID, MODID + "_builtin"));
+        ResourceManager.registerExportResource(getClass(), "/assets/%s/gunpack/%s".formatted(MODID, MODID + "_builtin"));
     }
 
     // Add the example block item to the building blocks tab

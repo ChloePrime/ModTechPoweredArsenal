@@ -61,6 +61,13 @@ description='''${mod_description}'''
    versionRange="${minecraft_version_range}"
    ordering="NONE"
    side="BOTH"
+[[dependencies."${mod_id}"]]
+  modId="tacz"
+  mandatory=true
+  # This version range declares a minimum of the current minecraft version up to but not including the next major version
+  versionRange="${tacz_version_range}"
+  ordering="NONE"
+  side="BOTH"
 
 # L2 Series
 [[dependencies."${mod_id}"]]

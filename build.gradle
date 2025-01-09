@@ -209,7 +209,7 @@ dependencies {
     minecraft "net.minecraftforge:forge:${minecraft_version}-${forge_version}"
 
     // TACZ
-    implementation fg.deobf('curse.maven:timeless-and-classics-zero-1028108:5722050-sources-5724527')
+    implementation fg.deobf('curse.maven:timeless-and-classics-zero-1028108:6058563-sources-6059152');
 
     // GunsmithLib
     implementation(jarJar(fg.deobf('mod.chloeprime:gunsmithlib:1.20.1-1.3.1'))) {
@@ -268,6 +268,8 @@ tasks.named('processResources', ProcessResources).configure {
             loader_version_range: loader_version_range,
             mod_id: mod_id, mod_name: mod_name, mod_license: mod_license, mod_version: mod_version,
             mod_authors: mod_authors, mod_description: mod_description,
+            // 新增的
+            tacz_version_range: tacz_version_range,
     ]
 
     inputs.properties replaceProperties
