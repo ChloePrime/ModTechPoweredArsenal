@@ -14,7 +14,7 @@ import java.util.List;
 @Mixin(value = ModernKineticGunItem.class, remap = false)
 public class MixinGun {
     @ModifyExpressionValue(
-            method = "lambda$fireSelect$4",
+            method = "lambda$fireSelect$19",
             at = @At(value = "INVOKE", target = "Lcom/tacz/guns/resource/pojo/data/gun/GunData;getFireModeSet()Ljava/util/List;"))
     private List<FireMode> bumpfireStock(List<FireMode> original, ItemStack gunItem, CommonGunIndex gunIndex) {
         return BumpfireStockBehavior.injectFireMode(gunItem, gunIndex, original);

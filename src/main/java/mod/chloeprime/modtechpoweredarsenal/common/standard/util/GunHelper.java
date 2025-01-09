@@ -82,7 +82,7 @@ public class GunHelper {
             if (op.getSynReloadState().getCountDown() > 0 || op.getSynDrawCoolDown() != 0) {
                 return 0;
             }
-            if (op.getSynBoltCoolDown() > 0) {
+            if (op.getSynIsBolting()) {
                 return 0;
             }
         }

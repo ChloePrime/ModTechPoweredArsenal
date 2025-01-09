@@ -4,7 +4,7 @@ import com.llamalad7.mixinextras.injector.wrapoperation.Operation;
 import com.llamalad7.mixinextras.injector.wrapoperation.WrapOperation;
 import com.tacz.guns.api.item.IGun;
 import com.tacz.guns.client.gui.overlay.GunHudOverlay;
-import com.tacz.guns.client.resource.index.ClientGunIndex;
+import com.tacz.guns.resource.pojo.data.gun.GunData;
 import mod.chloeprime.modtechpoweredarsenal.client.standard.guns.EnergyWeaponVisuals;
 import mod.chloeprime.modtechpoweredarsenal.client.standard.guns.OverheatVisuals;
 import mod.chloeprime.modtechpoweredarsenal.common.standard.util.Property;
@@ -39,7 +39,7 @@ public class MixinGunHudOverlay {
     }
 
     @Inject(method = "handleCacheCount", at = @At("TAIL"))
-    private static void energyWeaponShowTotalAmmo(LocalPlayer player, ItemStack stack, ClientGunIndex gunIndex, IGun iGun, CallbackInfo ci) {
+    private static void energyWeaponShowTotalAmmo(LocalPlayer player, ItemStack stack, GunData gunData, IGun iGun, CallbackInfo ci) {
         EnergyWeaponVisuals.HUD.modifyBackupAmmoDisplay(stack, Property.of(() -> cacheInventoryAmmoCount, v -> cacheInventoryAmmoCount = v));
     }
 

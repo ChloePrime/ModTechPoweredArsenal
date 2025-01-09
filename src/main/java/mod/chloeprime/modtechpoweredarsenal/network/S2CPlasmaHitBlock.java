@@ -15,7 +15,8 @@ public record S2CPlasmaHitBlock(
         Direction normal,
         BlockPos support,
         ResourceLocation ammoId,
-        ResourceLocation gunId
+        ResourceLocation gunId,
+        ResourceLocation gunDisplayId
 ) {
     public void encode(FriendlyByteBuf buf) {
         buf.writeDouble(pos.x);
@@ -25,6 +26,7 @@ public record S2CPlasmaHitBlock(
         buf.writeBlockPos(support);
         buf.writeResourceLocation(ammoId);
         buf.writeResourceLocation(gunId);
+        buf.writeResourceLocation(gunDisplayId);
     }
 
     public static S2CPlasmaHitBlock decode(FriendlyByteBuf buf) {
@@ -35,7 +37,8 @@ public record S2CPlasmaHitBlock(
         var support = buf.readBlockPos();
         var ammoId = buf.readResourceLocation();
         var gunId = buf.readResourceLocation();
-        return new S2CPlasmaHitBlock(new Vec3(x, y, z), normal, support, ammoId, gunId);
+        var gdsId = buf.readResourceLocation();
+        return new S2CPlasmaHitBlock(new Vec3(x, y, z), normal, support, ammoId, gunId, gdsId);
     }
 
     public void handle(Supplier<NetworkEvent.Context> context) {

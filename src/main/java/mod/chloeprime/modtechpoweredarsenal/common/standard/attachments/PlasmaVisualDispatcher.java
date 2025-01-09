@@ -19,7 +19,6 @@ import net.minecraftforge.registries.ForgeRegistries;
 import org.jetbrains.annotations.ApiStatus;
 
 import java.util.Set;
-import java.util.function.IntSupplier;
 
 @Mod.EventBusSubscriber
 public class PlasmaVisualDispatcher {
@@ -60,7 +59,7 @@ public class PlasmaVisualDispatcher {
             ModNetwork.sendToNearby(
                     new S2CPlasmaHitBlock(
                             hit.getLocation(), hit.getDirection(), hit.getBlockPos(),
-                            bullet.getAmmoId(), bullet.getGunId()
+                            bullet.getAmmoId(), bullet.getGunId(), bullet.getGunDisplayId()
                     ),
                     bullet
             );

@@ -53,7 +53,7 @@ public class ClientNetHandler {
                 player.clientLevel,
                 packet.pos().x(), packet.pos().y(), packet.pos().z(),
                 packet.normal(), packet.support(),
-                packet.ammoId().toString(), packet.gunId().toString()
+                packet.ammoId().toString(), packet.gunId().toString(), packet.gunDisplayId().toString()
         );
         ((MaybePlasmaBulletHoleParticle) bulletHole).mtpa$setPlasma();
         ConstHolder.MC.particleEngine.add(bulletHole);

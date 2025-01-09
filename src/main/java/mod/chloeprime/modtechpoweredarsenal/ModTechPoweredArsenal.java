@@ -2,7 +2,6 @@ package mod.chloeprime.modtechpoweredarsenal;
 
 import com.google.common.base.Suppliers;
 import com.mojang.logging.LogUtils;
-import com.tacz.guns.api.resource.ResourceManager;
 import mod.chloeprime.modtechpoweredarsenal.common.lightland.MtpaL2Module;
 import mod.chloeprime.modtechpoweredarsenal.network.ModNetwork;
 import net.minecraft.core.registries.Registries;
@@ -103,12 +102,7 @@ public final class ModTechPoweredArsenal {
     }
 
     private void commonSetup(final FMLCommonSetupEvent event) {
-        event.enqueueWork(this::addBuiltinGunpacks);
         event.enqueueWork(ModNetwork::init);
-    }
-
-    private void addBuiltinGunpacks() {
-        ResourceManager.registerExportResource(getClass(), "/assets/%s/gunpack/%s".formatted(MODID, MODID + "_builtin"));
     }
 
     // Add the example block item to the building blocks tab
