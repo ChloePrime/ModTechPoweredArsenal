@@ -18,6 +18,7 @@ plugins {
 
 apply plugin: 'org.spongepowered.mixin'
 
+mod_version = "${mod_version}+mc${minecraft_version}+tacz${tacz_version_decl}"
 group = mod_group_id
 version = mod_version
 
