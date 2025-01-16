@@ -1,13 +1,9 @@
 {
-  "model": "tacz:gun/deagle_golden_geo",
-  "texture": "tacz:gun/uv/deagle_golden",
-  "hud": "tacz:gun/hud/deagle_golden",
-  "slot": "tacz:gun/slot/deagle_golden",
-  "lod": {
-    "model": "tacz:gun/lod/deagle_golden",
-    "texture": "tacz:gun/lod/deagle_golden"
-  },
-  "animation": "tacz:deagle_golden",
+  "model": "modtech_arsenal_l2:gun/albert_01_geo",
+  "texture": "modtech_arsenal_l2:gun/uv/albert_01",
+  "hud": "modtech_arsenal_l2:gun/hud/albert_01",
+  "slot": "modtech_arsenal_l2:gun/slot/albert_01",
+  "animation": "modtech_arsenal_l2:albert_01",
   "use_default_animation": "pistol",
   "player_animator_3rd": "tacz:pistol_default.player_animation",
   "transform": {

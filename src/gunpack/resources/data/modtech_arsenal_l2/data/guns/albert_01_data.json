@@ -82,10 +82,10 @@
     ]
   },
   "inaccuracy": {
-    "stand": 4.25,
-    "move": 5,
-    "sneak": 3.5,
-    "lie": 2.5,
+    "stand": 0.125,
+    "move": 0.14,
+    "sneak": 0.1,
+    "lie": 0.1,
     "aim": 0.1
   }
 }
