@@ -1,7 +1,7 @@
 {
   "weight": 0.5,
   "ads": {
-    "addend": 0.025
+    "addend": 0.1
   },
   "effective_range": {
     "multiplier": 0.25
