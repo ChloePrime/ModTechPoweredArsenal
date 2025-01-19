@@ -39,9 +39,9 @@
   "sounds": {
     "reload_empty": "tacz:deagle/deagle_reload_empty",
     "reload_tactical": "tacz:deagle/deagle_reload_tactical",
-    "inspect": "tacz:deagle/deagle_inspect",
-    "inspect_empty": "tacz:deagle/deagle_inspect_empty",
-    "draw": "tacz:deagle/deagle_draw",
+    "inspect": "tacz:glock_17/glock17_inspect",
+    "inspect_empty": "tacz:glock_17/glock17_inspect_empty",
+    "draw": "tacz:glock_17/glock17_draw",
     "shoot": "modtech_arsenal_l2:albert_01/albert_01_shoot",
     "shoot_3p": "modtech_arsenal_l2:albert_01/albert_01_shoot_3p",
     "silence": "modtech_arsenal_l2:albert_01/albert_01_shoot",
