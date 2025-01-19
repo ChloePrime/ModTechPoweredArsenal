@@ -31,7 +31,6 @@ public class Albert01Behavior {
     ));
 
     public static final String PD_KEY = ModTechPoweredArsenal.loc("smite_v").toString();
-    public static final String HE_KEY = ModTechPoweredArsenal.loc("anti_regen_aec").toString();
     public static final int HALF_MINUTE = 20 * 30;
 
     @SubscribeEvent
