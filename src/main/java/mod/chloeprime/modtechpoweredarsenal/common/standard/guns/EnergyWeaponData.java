@@ -26,7 +26,7 @@ public record EnergyWeaponData(
         return Gunsmith
                 .getGunInfo(stack)
                 .flatMap(gi -> ((EnhancedGunData) gi.index().getGunData())
-                        .getEnergyWeaponData()
+                        .mtpa$getEnergyWeaponData()
                         .map(ei -> new Runtime(ei, gi))
                 );
     }

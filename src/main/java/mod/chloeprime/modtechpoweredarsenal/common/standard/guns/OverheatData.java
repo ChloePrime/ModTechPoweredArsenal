@@ -39,7 +39,7 @@ public record OverheatData(
         return Gunsmith
                 .getGunInfo(stack)
                 .flatMap(gi -> ((EnhancedGunData) gi.index().getGunData())
-                        .getOverheatData()
+                        .mtpa$getOverheatData()
                         .map(ei -> new Runtime(ei, gi))
                 );
     }

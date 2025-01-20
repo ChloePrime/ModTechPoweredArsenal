@@ -36,7 +36,7 @@ public class EnergyWeaponBehavior {
                 .map(GunInfo::index)
                 .map(CommonGunIndex::getGunData)
                 .map(gd -> (EnhancedGunData) gd)
-                .flatMap(EnhancedGunData::getEnergyWeaponData)
+                .flatMap(EnhancedGunData::mtpa$getEnergyWeaponData)
                 .isPresent();
     }
 
@@ -217,7 +217,7 @@ public class EnergyWeaponBehavior {
             return TimelessAPI.getCommonGunIndex(gunId)
                     .map(CommonGunIndex::getGunData)
                     .map(gd -> (EnhancedGunData) gd)
-                    .flatMap(EnhancedGunData::getEnergyWeaponData)
+                    .flatMap(EnhancedGunData::mtpa$getEnergyWeaponData)
                     .map(EnergyWeaponData::chargePower)
                     .orElse(0);
         }

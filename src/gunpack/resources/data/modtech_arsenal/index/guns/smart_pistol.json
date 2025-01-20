@@ -1,0 +1,7 @@
+{
+  "name": "modtech_arsenal.gun.smart_pistol.name",
+//  "tooltip": "modtech_arsenal.gun.smart_pistol.desc",
+  "display": "modtech_arsenal:smart_pistol_display",
+  "data": "modtech_arsenal:smart_pistol_data",
+  "type": "pistol"
+}
