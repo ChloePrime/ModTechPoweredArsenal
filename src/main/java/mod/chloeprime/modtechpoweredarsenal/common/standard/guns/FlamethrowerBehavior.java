@@ -13,8 +13,6 @@ import mod.chloeprime.modtechpoweredarsenal.common.lightland.MtpaL2Module;
 import mod.chloeprime.modtechpoweredarsenal.common.lightland.guns.SoulFlamethrowerBehaviorLCProxy;
 import mod.chloeprime.modtechpoweredarsenal.common.standard.util.DamageSourceUtil;
 import mod.chloeprime.modtechpoweredarsenal.mixin.minecraft.DamageSourcesAccessor;
-import mod.chloeprime.modtechpoweredarsenal.network.ModNetwork;
-import mod.chloeprime.modtechpoweredarsenal.network.S2CEnchantedHit;
 import net.minecraft.core.particles.ParticleOptions;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.damagesource.DamageSource;
@@ -91,7 +89,6 @@ public class FlamethrowerBehavior {
 
         var pd = bullet.getPersistentData();
         var shrapnelCount = Math.max(1, pd.getInt(PDK_BULLET_SHRAPNEL_COUNT));
-        baneOfArthropods(event, victim, shrapnelCount);
 
         var type = pd.getInt(PDK_BULLET_FLAME_TYPE);
         DamageSource newSource;
@@ -111,6 +108,7 @@ public class FlamethrowerBehavior {
         }
         event.setDamageSource(GunDamageSourcePart.NON_ARMOR_PIERCING, newSource);
         event.setDamageSource(GunDamageSourcePart.ARMOR_PIERCING, newSource);
+        baneOfArthropods(event, victim, shrapnelCount);
     }
 
     private static void baneOfArthropods(EntityHurtByGunEvent.Pre event, Entity hurtEntity, int shrapnelCount) {
