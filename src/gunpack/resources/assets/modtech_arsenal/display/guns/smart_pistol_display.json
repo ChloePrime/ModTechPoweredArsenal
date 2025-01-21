@@ -1,15 +1,15 @@
 {
-  "model": "tacz:gun/glock_17_geo",
-  "texture": "tacz:gun/uv/glock_17",
+  "model": "modtech_arsenal:gun/smart_pistol_geo",
+  "texture": "modtech_arsenal:gun/uv/smart_pistol",
   "lod": {
-    "model": "tacz:gun/lod/glock_17",
-    "texture": "tacz:gun/lod/glock_17"
+    "model": "modtech_arsenal:gun/lod/smart_pistol",
+    "texture": "modtech_arsenal:gun/lod/smart_pistol"
   },
-  "hud": "tacz:gun/hud/glock_17",
-  "slot": "tacz:gun/slot/glock_17",
-  "animation": "tacz:glock_17",
+  "hud": "modtech_arsenal:gun/hud/smart_pistol",
+  "slot": "modtech_arsenal:gun/slot/smart_pistol",
+  "animation": "modtech_arsenal:smart_pistol",
   "use_default_animation": "pistol",
-  "player_animator_3rd": "tacz:pistol_default.player_animation",
+  "third_person_animation": "default",
   "transform": {
     "scale": {
       "thirdperson": [0.6, 0.6, 0.6],
@@ -17,37 +17,32 @@
       "fixed": [1.2, 1.2, 1.2]
     }
   },
-  "shell": {
-    "initial_velocity": [8.0, 5.0, -0.5],
-    "random_velocity": [2.5, 1.5, 0.25],
-    "acceleration": [0.0, -20, 0.0],
-    "angular_velocity": [360, -720, 90],
-    "living_time": 1.0
-  },
   "muzzle_flash": {
     "texture": "tacz:flash/common_muzzle_flash",
-    "scale": 0.4
+    "scale": 1
+  },
+  "shell": {
+    "initial_velocity": [5, 2, 1],
+    "random_velocity": [1, 1, 0.25],
+    "acceleration": [0.0, -10, 0.0],
+    "angular_velocity": [360, -1200, 90],
+    "living_time": 1.0
   },
   "sounds": {
-    "reload_empty": "tacz:glock_17/glock17_reload_empty",
-    "reload_tactical": "tacz:glock_17/glock17_reload_tactical",
-    "inspect": "tacz:glock_17/glock17_inspect",
-    "inspect_empty": "tacz:glock_17/glock17_inspect_empty",
-    "draw": "tacz:glock_17/glock17_draw",
-    "shoot": "tacz:glock_17/glock17_shoot",
-    "shoot_3p": "tacz:glock_17/glock17_shoot_3p",
-    "silence": "tacz:glock_17/glock17_silence",
-    "silence_3p": "tacz:glock_17/glock17_silence_3p"
+    "shoot": "modtech_arsenal:smart_pistol/smart_pistol_shoot",
+    "shoot_3p": "modtech_arsenal:smart_pistol/smart_pistol_shoot_3p",
+    "silence": "modtech_arsenal:smart_pistol/smart_pistol_silence",
+    "silence_3p": "modtech_arsenal:smart_pistol/smart_pistol_silence_3p"
   },
   "offhand_show": {
-    "pos": [4, 13, -1],
-    "rotate": [-90, -35, 90],
+    "pos": [1, 19, 4],
+    "rotate": [0, 0, 50],
     "scale": [0.5, 0.5, 0.5]
   },
   "hotbar_show": {
     "0": {
-      "pos": [-5, 13, -1],
-      "rotate": [-90, -35, 90],
+      "pos": [-1, 19, 3],
+      "rotate": [-180, 0, 130],
       "scale": [0.5, 0.5, 0.5]
     }
   }
