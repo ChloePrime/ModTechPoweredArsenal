@@ -1,6 +1,6 @@
 {
-  "mtpa:config": {
-    "aim_assist": 60
+  "tacz_fire_control_extension:fire_control_system": {
+    "aim_cone_angle": 60
   },
   "ammo": "tacz:9mm",
   "rpm": 400,

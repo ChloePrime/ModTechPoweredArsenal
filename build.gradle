@@ -213,6 +213,10 @@ dependencies {
         jarJar.ranged(it, "[2,)")
     }
 
+    implementation(jarJar(fg.deobf('cn.chloeprime:tacz_fire_control_extension:1.0.1+mc1.20.1+tacz1.1.4'))) {
+        jarJar.ranged(it, "[1,)")
+    }
+
     // AAA粒子
     var aaap = USE_LOCAL_AAAP
             ? "libs:aaa_particles:1.20.1-1.4.6.a-forge"
