@@ -213,7 +213,7 @@ dependencies {
         jarJar.ranged(it, "[2,)")
     }
 
-    implementation(jarJar(fg.deobf('cn.chloeprime:tacz_fire_control_extension:1.0.1+mc1.20.1+tacz1.1.4'))) {
+    implementation(jarJar(fg.deobf('cn.chloeprime:tacz_fire_control_extension:1.0.2+mc1.20.1+tacz1.1.4'))) {
         jarJar.ranged(it, "[1,)")
     }
 
