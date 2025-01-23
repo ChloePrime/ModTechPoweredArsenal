@@ -1,6 +1,7 @@
-// 1.20.1	2025-01-23T19:30:02.4833343	Tags for minecraft:item mod id modtech_arsenal
-29cda0bfdb547461e9c31c7ee6f89a7346f852bd data/forge/tags/items/ingots.json
+// 1.20.1	2025-01-23T20:10:37.2121851	Tags for minecraft:item mod id modtech_arsenal
+69ef43f9837e6af88055c176fa3b474a0acf522f data/forge/tags/items/ingots.json
 47eed2875cc300829a9cf4a4ed1e3bd1e396085c data/forge/tags/items/ingots/gallium.json
+b0c9d1a79777b1d48e91baf75ab37904a1355e4d data/forge/tags/items/ingots/gallium_nitride.json
 a40781dd9bb0d5f766be7e6cbf2135e5175bba73 data/forge/tags/items/nuggets.json
 91799a65fbbda33ef83a1a66303ae562d388550b data/forge/tags/items/nuggets/gallium.json
 f508ffce45e16241eeb7124baa6ff6edf1585413 data/forge/tags/items/ores.json
@@ -13,5 +14,5 @@ b3da402e2bfdfc546a8ae0e12f90b442b46a6e28 data/forge/tags/items/raw_materials/gal
 607ff9c4abc96a5135ca92efecaa6210d970de0a data/forge/tags/items/storage_blocks.json
 65460863a9293b9e8df896d6f2760e1a60e134b7 data/forge/tags/items/storage_blocks/gallium.json
 2d4fa544cb40a8fb85e1236ed3d16e2d244e65b6 data/forge/tags/items/storage_blocks/raw_gallium.json
-47eed2875cc300829a9cf4a4ed1e3bd1e396085c data/minecraft/tags/items/beacon_payment_items.json
-47eed2875cc300829a9cf4a4ed1e3bd1e396085c data/minecraft/tags/items/trim_materials.json
+68cb794d86f122aa89091d245e17d4e8d2cff401 data/minecraft/tags/items/beacon_payment_items.json
+68cb794d86f122aa89091d245e17d4e8d2cff401 data/minecraft/tags/items/trim_materials.json

@@ -100,6 +100,8 @@ public final class MTPA {
         public static final RegistryObject<Item> GALLIUM_INGOT = registerSimpleItem("gallium_ingot");
         public static final RegistryObject<Item> GALLIUM_NUGGET = registerSimpleItem("gallium_nugget");
 
+        public static final RegistryObject<Item> GALLIUM_NITRIDE_INGOT = registerSimpleItem("gallium_nitride_ingot");
+
         private Items() {}
 
         public static final class Tags {
@@ -109,6 +111,8 @@ public final class MTPA {
             public static final TagKey<Item> RAW_MATERIALS_GALLIUM = forgeTag("raw_materials/gallium");
             public static final TagKey<Item> STORAGE_BLOCKS_GALLIUM = forgeTag("storage_blocks/gallium");
             public static final TagKey<Item> STORAGE_BLOCKS_RAW_GALLIUM = forgeTag("storage_blocks/raw_gallium");
+
+            public static final TagKey<Item> INGOTS_GALLIUM_NITRIDE = forgeTag("ingots/gallium_nitride");
 
             private static TagKey<Item> forgeTag(String path) {
                 return ItemTags.create(new ResourceLocation("forge", path));

@@ -1,5 +1,6 @@
 {
   "values": [
-    "#forge:ingots/gallium"
+    "#forge:ingots/gallium",
+    "#forge:ingots/gallium_nitride"
   ]
 }

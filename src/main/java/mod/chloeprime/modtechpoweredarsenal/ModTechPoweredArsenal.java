@@ -3,6 +3,7 @@ package mod.chloeprime.modtechpoweredarsenal;
 import com.google.common.base.Suppliers;
 import com.mojang.logging.LogUtils;
 import mod.chloeprime.modtechpoweredarsenal.common.lightland.MtpaL2Module;
+import mod.chloeprime.modtechpoweredarsenal.common.standard.SpecialRecipes;
 import mod.chloeprime.modtechpoweredarsenal.network.ModNetwork;
 import net.minecraft.core.registries.Registries;
 import net.minecraft.network.chat.Component;
@@ -113,6 +114,7 @@ public final class ModTechPoweredArsenal {
 
     private void commonSetup(final FMLCommonSetupEvent event) {
         event.enqueueWork(ModNetwork::init);
+        event.enqueueWork(SpecialRecipes::init);
     }
 
     // Add the example block item to the building blocks tab

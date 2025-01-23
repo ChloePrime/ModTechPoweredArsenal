@@ -10,6 +10,7 @@
   "item.modtech_arsenal.raw_gallium": "粗镓",
   "item.modtech_arsenal.gallium_ingot": "镓锭",
   "item.modtech_arsenal.gallium_nugget": "镓粒",
+  "item.modtech_arsenal.gallium_nitride_ingot": "氮化镓锭",
 
   "entity.modtech_arsenal.fang_emitter": "唤魔者尖牙生成器",
   "entity.modtech_arsenal.shockwave": "冲击波",

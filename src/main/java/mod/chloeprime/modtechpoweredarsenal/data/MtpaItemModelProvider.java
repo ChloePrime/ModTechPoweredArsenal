@@ -24,6 +24,7 @@ public class MtpaItemModelProvider extends ItemModelProvider {
         simpleTexture(MTPA.Items.GALLIUM_INGOT);
         simpleTexture(MTPA.Items.GALLIUM_NUGGET);
         simpleTexture(MTPA.Items.RAW_GALLIUM);
+//        simpleTexture(MTPA.Items.GALLIUM_NITRIDE_INGOT);
     }
 
     @SuppressWarnings("deprecation")

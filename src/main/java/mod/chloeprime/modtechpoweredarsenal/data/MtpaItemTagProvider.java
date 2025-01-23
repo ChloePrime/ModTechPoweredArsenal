@@ -25,27 +25,37 @@ public class MtpaItemTagProvider extends ItemTagsProvider {
     @SuppressWarnings("unchecked")
     protected void addTags(@NotNull HolderLookup.Provider provider) {
         // Ore
-        copy(Blocks.Tags.ORES_GALLIUM, Tags.ORES_GALLIUM);
-        tag(Items.ORES).addTag(Tags.ORES_GALLIUM);
-        tag(Items.ORE_RATES_SINGULAR).add(GALLIUM_ORE.get(), DEEPSLATE_GALLIUM_ORE.get());
-        tag(Items.ORES_IN_GROUND_STONE).add(GALLIUM_ORE.get());
-        tag(Items.ORES_IN_GROUND_DEEPSLATE).add(DEEPSLATE_GALLIUM_ORE.get());
-
+        {
+            copy(Blocks.Tags.ORES_GALLIUM, Tags.ORES_GALLIUM);
+            tag(Items.ORES).addTag(Tags.ORES_GALLIUM);
+            tag(Items.ORE_RATES_SINGULAR).add(GALLIUM_ORE.get(), DEEPSLATE_GALLIUM_ORE.get());
+            tag(Items.ORES_IN_GROUND_STONE).add(GALLIUM_ORE.get());
+            tag(Items.ORES_IN_GROUND_DEEPSLATE).add(DEEPSLATE_GALLIUM_ORE.get());
+        }
         // Storage Blocks
-        copy(Blocks.Tags.STORAGE_BLOCKS_GALLIUM, Tags.STORAGE_BLOCKS_GALLIUM);
-        copy(Blocks.Tags.STORAGE_BLOCKS_RAW_GALLIUM, Tags.STORAGE_BLOCKS_RAW_GALLIUM);
-        tag(Items.STORAGE_BLOCKS).addTags(Tags.STORAGE_BLOCKS_GALLIUM, Tags.STORAGE_BLOCKS_RAW_GALLIUM);
-
+        {
+            copy(Blocks.Tags.STORAGE_BLOCKS_GALLIUM, Tags.STORAGE_BLOCKS_GALLIUM);
+            copy(Blocks.Tags.STORAGE_BLOCKS_RAW_GALLIUM, Tags.STORAGE_BLOCKS_RAW_GALLIUM);
+            tag(Items.STORAGE_BLOCKS).addTags(Tags.STORAGE_BLOCKS_GALLIUM, Tags.STORAGE_BLOCKS_RAW_GALLIUM);
+        }
         // Ingot
-        tag(Tags.INGOTS_GALLIUM).add(GALLIUM_INGOT.get());
-        tag(Tags.NUGGETS_GALLIUM).add(GALLIUM_NUGGET.get());
-        tag(Items.INGOTS).addTag(Tags.INGOTS_GALLIUM);
-        tag(Items.NUGGETS).addTag(Tags.NUGGETS_GALLIUM);
-        tag(ItemTags.TRIM_MATERIALS).add(GALLIUM_INGOT.get());
-        tag(ItemTags.BEACON_PAYMENT_ITEMS).add(GALLIUM_INGOT.get());
+        {
+            tag(Tags.INGOTS_GALLIUM).add(GALLIUM_INGOT.get());
+            tag(Tags.NUGGETS_GALLIUM).add(GALLIUM_NUGGET.get());
+            tag(Items.INGOTS).addTag(Tags.INGOTS_GALLIUM);
+            tag(Items.NUGGETS).addTag(Tags.NUGGETS_GALLIUM);
+            tag(ItemTags.TRIM_MATERIALS).add(GALLIUM_INGOT.get());
+            tag(ItemTags.BEACON_PAYMENT_ITEMS).add(GALLIUM_INGOT.get());
 
+            tag(Tags.INGOTS_GALLIUM_NITRIDE).add(GALLIUM_NITRIDE_INGOT.get());
+            tag(Items.INGOTS).addTag(Tags.INGOTS_GALLIUM_NITRIDE);
+            tag(ItemTags.TRIM_MATERIALS).add(GALLIUM_NITRIDE_INGOT.get());
+            tag(ItemTags.BEACON_PAYMENT_ITEMS).add(GALLIUM_NITRIDE_INGOT.get());
+        }
         // Raw Material
-        tag(Tags.RAW_MATERIALS_GALLIUM).add(RAW_GALLIUM.get());
-        tag(Items.RAW_MATERIALS).addTag(Tags.RAW_MATERIALS_GALLIUM);
+        {
+            tag(Tags.RAW_MATERIALS_GALLIUM).add(RAW_GALLIUM.get());
+            tag(Items.RAW_MATERIALS).addTag(Tags.RAW_MATERIALS_GALLIUM);
+        }
     }
 }
