@@ -9,6 +9,7 @@
     "minecraft.MakeGunEnchantableMixin",
     "minecraft.MixinDamageSource",
     "minecraft.MixinEvokerFang",
+    "minecraft.MixinNoteBlock",
     "minecraft.PerkEnchantmentLimitMixin",
     "tacz.KineticBulletAccessor",
     "tacz.MixinGun",

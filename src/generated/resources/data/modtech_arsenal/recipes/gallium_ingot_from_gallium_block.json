@@ -1,0 +1,14 @@
+{
+  "type": "minecraft:crafting_shapeless",
+  "category": "misc",
+  "group": "gallium_ingot",
+  "ingredients": [
+    {
+      "item": "modtech_arsenal:gallium_block"
+    }
+  ],
+  "result": {
+    "count": 9,
+    "item": "modtech_arsenal:gallium_ingot"
+  }
+}

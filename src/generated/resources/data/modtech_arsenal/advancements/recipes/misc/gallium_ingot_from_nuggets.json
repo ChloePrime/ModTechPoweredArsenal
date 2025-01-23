@@ -1,0 +1,35 @@
+{
+  "parent": "minecraft:recipes/root",
+  "criteria": {
+    "has_gallium_nugget": {
+      "conditions": {
+        "items": [
+          {
+            "items": [
+              "modtech_arsenal:gallium_nugget"
+            ]
+          }
+        ]
+      },
+      "trigger": "minecraft:inventory_changed"
+    },
+    "has_the_recipe": {
+      "conditions": {
+        "recipe": "modtech_arsenal:gallium_ingot_from_nuggets"
+      },
+      "trigger": "minecraft:recipe_unlocked"
+    }
+  },
+  "requirements": [
+    [
+      "has_gallium_nugget",
+      "has_the_recipe"
+    ]
+  ],
+  "rewards": {
+    "recipes": [
+      "modtech_arsenal:gallium_ingot_from_nuggets"
+    ]
+  },
+  "sends_telemetry_event": false
+}

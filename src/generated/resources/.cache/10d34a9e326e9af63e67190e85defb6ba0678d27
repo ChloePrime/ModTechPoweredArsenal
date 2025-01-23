@@ -1,0 +1,12 @@
+// 1.20.1	2025-01-23T19:05:56.1019178	Tags for minecraft:block mod id modtech_arsenal
+f508ffce45e16241eeb7124baa6ff6edf1585413 data/forge/tags/blocks/ores.json
+12f8b3e3f49a5dd3805a6c6eb528b069e80aa524 data/forge/tags/blocks/ores/gallium.json
+acca61b31a7b432b2d0a0858610738f16695db08 data/forge/tags/blocks/ores_in_ground/deepslate.json
+c4ab6d8df7d4395f6a7db35abc5bc18cf91081c6 data/forge/tags/blocks/ores_in_ground/stone.json
+12f8b3e3f49a5dd3805a6c6eb528b069e80aa524 data/forge/tags/blocks/ore_rates/singular.json
+607ff9c4abc96a5135ca92efecaa6210d970de0a data/forge/tags/blocks/storage_blocks.json
+65460863a9293b9e8df896d6f2760e1a60e134b7 data/forge/tags/blocks/storage_blocks/gallium.json
+2d4fa544cb40a8fb85e1236ed3d16e2d244e65b6 data/forge/tags/blocks/storage_blocks/raw_gallium.json
+65460863a9293b9e8df896d6f2760e1a60e134b7 data/minecraft/tags/blocks/beacon_base_blocks.json
+3ab5eb599a2cea69c131eb67bfb48404eb661f89 data/minecraft/tags/blocks/mineable/pickaxe.json
+f5b682c127bd2bc7a149d328cb1af1db543a6f89 data/minecraft/tags/blocks/needs_iron_tool.json

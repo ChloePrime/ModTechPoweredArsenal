@@ -213,19 +213,23 @@ dependencies {
         jarJar.ranged(it, "[2,)")
     }
 
+    // 自瞄扩展
     implementation(jarJar(fg.deobf('cn.chloeprime:tacz_fire_control_extension:1.0.2+mc1.20.1+tacz1.1.4'))) {
         jarJar.ranged(it, "[1,)")
     }
 
+    compileOnly fg.deobf("com.tterrag.registrate:Registrate:MC1.20-1.3.11")
+    jarJar(group: 'com.tterrag.registrate', name: 'Registrate', version: "[MC1.20,MC1.20.2)")
+
     // AAA粒子
     var aaap = USE_LOCAL_AAAP
             ? "libs:aaa_particles:1.20.1-1.4.6.a-forge"
-            : "maven.modrinth:aaa-particles:1.20.1-1.4.6-forge"
+            : "maven.modrinth:aaa-particles:1.20.1-1.4.10-forge"
     implementation(jarJar(fg.deobf(aaap))) {
         jarJar.ranged(it, "[1.20.1-1,)")
     }
     implementation fg.deobf("dev.architectury:architectury-forge:9.2.14")
-    runtimeOnly fg.deobf("maven.modrinth:embeddium:0.3.31+mc1.20.1")
+//    runtimeOnly fg.deobf("maven.modrinth:embeddium:0.3.31+mc1.20.1")
 
     // MEK, 用于测试能量武器
     runtimeOnly fg.deobf("mekanism:Mekanism:${mekanism_version}")// core
@@ -245,7 +249,6 @@ dependencies {
     implementation fg.deobf('maven.modrinth:l2hostility:2.4.30')
 
     // 模组依赖的依赖
-    compileOnly fg.deobf("com.tterrag.registrate:Registrate:MC1.20-1.3.11")
     compileOnly fg.deobf("vazkii.patchouli:Patchouli:1.20.1-84-FORGE:api")
     runtimeOnly fg.deobf("vazkii.patchouli:Patchouli:1.20.1-84-FORGE")
 

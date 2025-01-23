@@ -1,0 +1,6 @@
+{
+  "parent": "minecraft:block/cube_all",
+  "textures": {
+    "all": "modtech_arsenal:block/gallium_ore"
+  }
+}

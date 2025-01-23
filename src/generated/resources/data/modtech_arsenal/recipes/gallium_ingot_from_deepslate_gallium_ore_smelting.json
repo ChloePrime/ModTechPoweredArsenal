@@ -1,0 +1,10 @@
+{
+  "type": "minecraft:smelting",
+  "category": "misc",
+  "cookingtime": 200,
+  "experience": 1.0,
+  "ingredient": {
+    "item": "modtech_arsenal:deepslate_gallium_ore"
+  },
+  "result": "modtech_arsenal:gallium_ingot"
+}

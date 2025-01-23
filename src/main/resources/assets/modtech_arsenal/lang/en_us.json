@@ -1,8 +1,19 @@
 {
   "itemGroup.modtech_arsenal.main": "ModTechPowered Arsenal",
+
+  "block.modtech_arsenal.gallium_ore": "Gallium Ore",
+  "block.modtech_arsenal.deepslate_gallium_ore": "Deepslate Gallium Ore",
+  "block.modtech_arsenal.gallium_block": "Block of Gallium",
+  "block.modtech_arsenal.raw_gallium_block": "Block of Raw Gallium",
+
   "item.modtech_arsenal.anti_magic_compound": "Bone of Sever and Bind",
+  "item.modtech_arsenal.raw_gallium": "Raw Gallium",
+  "item.modtech_arsenal.gallium_ingot": "Gallium Ingot",
+  "item.modtech_arsenal.gallium_nugget": "Gallium Nugget",
+
   "entity.modtech_arsenal.fang_emitter": "Evoker Fang Emitter",
   "entity.modtech_arsenal.shockwave": "Shockwave",
+
   "enchantment.modtech_arsenal.micro_missile": "Micro Missile",
   "enchantment.modtech_arsenal.micro_missile.desc": "This weapon fires a high-speed projectile in a straight line",
   "enchantment.modtech_arsenal.prime_chamber": "Prime Chamber",
@@ -16,6 +27,7 @@
   "enchantment.modtech_arsenal.subsistence": "Subsistence",
   "enchantment.modtech_arsenal.subsistence.desc": "Refills part of the magazine from inventory on weapon kills",
   "effect.modtech_arsenal.anti_regen": "Anti-Regeneration",
+
   "effect.modtech_arsenal.anti_regen.desc": "Disables healing",
   "effect.modtech_arsenal.recombination_buff": "Recombination",
   "effect.modtech_arsenal.recombination_buff.desc": "Increases damage of next gunshot"

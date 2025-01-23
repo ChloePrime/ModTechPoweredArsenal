@@ -1,0 +1,6 @@
+{
+  "parent": "minecraft:block/cube_all",
+  "textures": {
+    "all": "modtech_arsenal:block/deepslate_gallium_ore"
+  }
+}

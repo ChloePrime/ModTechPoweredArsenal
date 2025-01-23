@@ -22,6 +22,7 @@ import net.minecraftforge.registries.ForgeRegistries;
 import net.minecraftforge.registries.RegistryObject;
 import org.slf4j.Logger;
 
+import java.util.List;
 import java.util.Objects;
 import java.util.function.Supplier;
 
@@ -45,6 +46,13 @@ public final class ModTechPoweredArsenal {
             .icon(CREATIVE_TAB_ICON)
             .displayItems((parameters, output) -> {
                 output.accept(MTPA.Items.ANTI_MAGIC_COMPOUND.get());
+                output.accept(MTPA.Items.GALLIUM_ORE.get());
+                output.accept(MTPA.Items.DEEPSLATE_GALLIUM_ORE.get());
+                output.accept(MTPA.Items.RAW_GALLIUM.get());
+                output.accept(MTPA.Items.RAW_GALLIUM_BLOCK.get());
+                output.accept(MTPA.Items.GALLIUM_INGOT.get());
+                output.accept(MTPA.Items.GALLIUM_BLOCK.get());
+                output.accept(MTPA.Items.GALLIUM_NUGGET.get());
                 output.accept(MTPA.gun("ew_scythe"));
                 output.accept(MTPA.gun("ew_hammer"));
                 output.accept(MTPA.gun("gl_shark"));
@@ -93,10 +101,12 @@ public final class ModTechPoweredArsenal {
     }
 
     private void registerDFRs(IEventBus bus) {
+        MTPA.Blocks.REGISTRY.register(bus);
         MTPA.Items.REGISTRY.register(bus);
         MTPA.Entities.REGISTRY.register(bus);
         MTPA.Enchantments.REGISTRY.register(bus);
         MTPA.MobEffects.REGISTRY.register(bus);
+        MTPA.Sounds.REGISTRY.register(bus);
         CREATIVE_MODE_TABS.register(bus);
         bus.addListener(MTPA::registerIngredientSerializers);
     }

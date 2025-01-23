@@ -1,0 +1,5 @@
+// 1.20.1	2025-01-23T01:08:53.7540893	Loot Tables
+bde63999222e9bfe1e5f4559414684c7b9cec97d data/modtech_arsenal/loot_tables/blocks/deepslate_gallium_ore.json
+db898a234eaa321237c115e94905e0ef8a4455d2 data/modtech_arsenal/loot_tables/blocks/gallium_block.json
+ddc7dd38e7d449557c2d8405b9c404169b56818c data/modtech_arsenal/loot_tables/blocks/gallium_ore.json
+cb0cf7ff3f6e7f694b431e8fd4f31d2951e1823b data/modtech_arsenal/loot_tables/blocks/raw_gallium_block.json

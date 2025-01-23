@@ -1,0 +1,8 @@
+{
+  "gun_instrument": {
+    "sounds": [
+      "modtech_arsenal:instrument/glock17_shoot"
+    ],
+    "subtitle": "subtitles.block.note_block.note"
+  }
+}

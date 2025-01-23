@@ -1,0 +1,19 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "category": "building",
+  "group": "gallium_block",
+  "key": {
+    "#": {
+      "item": "modtech_arsenal:gallium_ingot"
+    }
+  },
+  "pattern": [
+    "###",
+    "###",
+    "###"
+  ],
+  "result": {
+    "item": "modtech_arsenal:gallium_block"
+  },
+  "show_notification": true
+}
