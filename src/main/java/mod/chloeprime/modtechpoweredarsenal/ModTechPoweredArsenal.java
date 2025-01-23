@@ -23,7 +23,6 @@ import net.minecraftforge.registries.ForgeRegistries;
 import net.minecraftforge.registries.RegistryObject;
 import org.slf4j.Logger;
 
-import java.util.List;
 import java.util.Objects;
 import java.util.function.Supplier;
 
