@@ -2,14 +2,12 @@ package mod.chloeprime.modtechpoweredarsenal;
 
 import com.google.common.base.Suppliers;
 import com.mojang.logging.LogUtils;
-import mod.chloeprime.modtechpoweredarsenal.common.lightland.MtpaL2Module;
 import mod.chloeprime.modtechpoweredarsenal.common.standard.SpecialRecipes;
 import mod.chloeprime.modtechpoweredarsenal.network.ModNetwork;
 import net.minecraft.core.registries.Registries;
 import net.minecraft.network.chat.Component;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.item.*;
-import net.minecraft.world.item.enchantment.EnchantmentInstance;
 import net.minecraftforge.common.MinecraftForge;
 import net.minecraftforge.event.BuildCreativeModeTabContentsEvent;
 import net.minecraftforge.eventbus.api.IEventBus;
@@ -19,11 +17,9 @@ import net.minecraftforge.fml.config.ModConfig;
 import net.minecraftforge.fml.event.lifecycle.FMLCommonSetupEvent;
 import net.minecraftforge.fml.javafmlmod.FMLJavaModLoadingContext;
 import net.minecraftforge.registries.DeferredRegister;
-import net.minecraftforge.registries.ForgeRegistries;
 import net.minecraftforge.registries.RegistryObject;
 import org.slf4j.Logger;
 
-import java.util.Objects;
 import java.util.function.Supplier;
 
 @Mod(ModTechPoweredArsenal.MODID)
@@ -44,43 +40,7 @@ public final class ModTechPoweredArsenal {
             .title(Component.translatable("itemGroup.%s.main".formatted(MODID)))
             .withTabsBefore(CreativeModeTabs.COMBAT)
             .icon(CREATIVE_TAB_ICON)
-            .displayItems((parameters, output) -> {
-                output.accept(MTPA.Items.ANTI_MAGIC_COMPOUND.get());
-                output.accept(MTPA.Items.GALLIUM_ORE.get());
-                output.accept(MTPA.Items.DEEPSLATE_GALLIUM_ORE.get());
-                output.accept(MTPA.Items.RAW_GALLIUM.get());
-                output.accept(MTPA.Items.RAW_GALLIUM_BLOCK.get());
-                output.accept(MTPA.Items.GALLIUM_INGOT.get());
-                output.accept(MTPA.Items.GALLIUM_BLOCK.get());
-                output.accept(MTPA.Items.GALLIUM_NUGGET.get());
-                output.accept(MTPA.gun("ew_scythe"));
-                output.accept(MTPA.gun("ew_hammer"));
-                output.accept(MTPA.gun("gl_shark"));
-                output.accept(MTPA.gun("gl_deafening_whisper"));
-                output.accept(MTPA.gun(MtpaL2Module.ID, "albert_01"));
-                output.accept(MTPA.ammo(MtpaL2Module.ID, "9mm_antiregen"));
-                output.accept(MTPA.attachment("stock_bumpfire"));
-                output.accept(MTPA.attachment(MtpaL2Module.ID, "muzzle_mod_void_amp"));
-                output.accept(MTPA.attachment("light_extended_battery_1"));
-                output.accept(MTPA.attachment("light_extended_battery_2"));
-                output.accept(MTPA.attachment("light_extended_battery_3"));
-                output.accept(MTPA.attachment("heavy_extended_battery_1"));
-                output.accept(MTPA.attachment("heavy_extended_battery_2"));
-                output.accept(MTPA.attachment("heavy_extended_battery_3"));
-                output.accept(MTPA.attachment("energy_mod_wave"));
-                output.accept(MTPA.attachment("energy_mod_plasma"));
-                output.accept(MTPA.attachment("ammo_mod_antimagic"));
-                output.accept(MTPA.attachment("ammo_trait_greed_of_ussr"));
-                output.accept(MTPA.attachment("ammo_trait_chain_action"));
-                // 添加满级附魔书
-                ForgeRegistries.ENCHANTMENTS.getKeys().stream()
-                        .filter(key -> MODID.equals(key.getNamespace()))
-                        .map(ForgeRegistries.ENCHANTMENTS::getValue)
-                        .filter(Objects::nonNull)
-                        .map(ench -> new EnchantmentInstance(ench, ench.getMaxLevel()))
-                        .map(EnchantedBookItem::createForEnchantment)
-                        .forEach(output::accept);
-            }).build());
+            .displayItems(MTPA::buildCreativeTabContents).build());
 
     public ModTechPoweredArsenal() {
         IEventBus modEventBus = FMLJavaModLoadingContext.get().getModEventBus();

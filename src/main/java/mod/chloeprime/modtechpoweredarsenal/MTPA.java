@@ -7,6 +7,7 @@ import com.tacz.guns.api.item.builder.AttachmentItemBuilder;
 import com.tacz.guns.api.item.builder.GunItemBuilder;
 import com.tacz.guns.resource.pojo.data.gun.Bolt;
 import com.tterrag.registrate.Registrate;
+import mod.chloeprime.modtechpoweredarsenal.common.lightland.MtpaL2Module;
 import mod.chloeprime.modtechpoweredarsenal.common.standard.enchantments.*;
 import mod.chloeprime.modtechpoweredarsenal.common.standard.entities.FangEmitter;
 import mod.chloeprime.modtechpoweredarsenal.common.standard.entities.Shockwave;
@@ -23,11 +24,10 @@ import net.minecraft.world.effect.MobEffect;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.entity.MobCategory;
-import net.minecraft.world.item.BlockItem;
-import net.minecraft.world.item.Item;
-import net.minecraft.world.item.ItemStack;
+import net.minecraft.world.item.*;
 import net.minecraft.world.item.enchantment.Enchantment;
 import net.minecraft.world.item.enchantment.EnchantmentCategory;
+import net.minecraft.world.item.enchantment.EnchantmentInstance;
 import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.DropExperienceBlock;
 import net.minecraft.world.level.block.SoundType;
@@ -41,6 +41,7 @@ import net.minecraftforge.registries.RegisterEvent;
 import net.minecraftforge.registries.RegistryObject;
 
 import java.awt.*;
+import java.util.Objects;
 import java.util.function.Supplier;
 
 import static net.minecraft.world.item.Items.BARRIER;
@@ -169,6 +170,47 @@ public final class MTPA {
     public static final class Sounds {
         static final DeferredRegister<SoundEvent> REGISTRY = DeferredRegister.create(ForgeRegistries.SOUND_EVENTS, ModTechPoweredArsenal.MODID);
         public static final RegistryObject<SoundEvent> GUN_INSTRUMENT = registerSound("gun_instrument");
+    }
+
+
+
+    static void buildCreativeTabContents(CreativeModeTab.ItemDisplayParameters ignored, CreativeModeTab.Output output) {
+        output.accept(Items.ANTI_MAGIC_COMPOUND.get());
+        output.accept(Items.GALLIUM_ORE.get());
+        output.accept(Items.DEEPSLATE_GALLIUM_ORE.get());
+        output.accept(Items.RAW_GALLIUM.get());
+        output.accept(Items.RAW_GALLIUM_BLOCK.get());
+        output.accept(Items.GALLIUM_INGOT.get());
+        output.accept(Items.GALLIUM_BLOCK.get());
+        output.accept(Items.GALLIUM_NUGGET.get());
+        output.accept(Items.GALLIUM_NITRIDE_INGOT.get());
+        output.accept(gun("ew_scythe"));
+        output.accept(gun("ew_hammer"));
+        output.accept(gun("gl_shark"));
+        output.accept(gun("gl_deafening_whisper"));
+        output.accept(gun(MtpaL2Module.ID, "albert_01"));
+        output.accept(ammo(MtpaL2Module.ID, "9mm_antiregen"));
+        output.accept(attachment("stock_bumpfire"));
+        output.accept(attachment(MtpaL2Module.ID, "muzzle_mod_void_amp"));
+        output.accept(attachment("light_extended_battery_1"));
+        output.accept(attachment("light_extended_battery_2"));
+        output.accept(attachment("light_extended_battery_3"));
+        output.accept(attachment("heavy_extended_battery_1"));
+        output.accept(attachment("heavy_extended_battery_2"));
+        output.accept(attachment("heavy_extended_battery_3"));
+        output.accept(attachment("energy_mod_wave"));
+        output.accept(attachment("energy_mod_plasma"));
+        output.accept(attachment("ammo_mod_antimagic"));
+        output.accept(attachment("ammo_trait_greed_of_ussr"));
+        output.accept(attachment("ammo_trait_chain_action"));
+        // 添加满级附魔书
+        ForgeRegistries.ENCHANTMENTS.getKeys().stream()
+                .filter(key -> ModTechPoweredArsenal.MODID.equals(key.getNamespace()))
+                .map(ForgeRegistries.ENCHANTMENTS::getValue)
+                .filter(Objects::nonNull)
+                .map(ench -> new EnchantmentInstance(ench, ench.getMaxLevel()))
+                .map(EnchantedBookItem::createForEnchantment)
+                .forEach(output::accept);
     }
 
     static RegistryObject<Item> registerSimpleItem(String path) {
