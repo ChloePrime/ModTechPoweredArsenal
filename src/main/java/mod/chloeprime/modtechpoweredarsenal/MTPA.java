@@ -101,7 +101,7 @@ public final class MTPA {
         public static final RegistryObject<Item> GALLIUM_INGOT = registerSimpleItem("gallium_ingot");
         public static final RegistryObject<Item> GALLIUM_NUGGET = registerSimpleItem("gallium_nugget");
 
-        public static final RegistryObject<Item> GALLIUM_NITRIDE_INGOT = registerSimpleItem("gallium_nitride_ingot");
+        public static final RegistryObject<Item> GALLIUM_NITRIDE_GEM = registerSimpleItem("gallium_nitride");
 
         private Items() {}
 
@@ -113,7 +113,7 @@ public final class MTPA {
             public static final TagKey<Item> STORAGE_BLOCKS_GALLIUM = forgeTag("storage_blocks/gallium");
             public static final TagKey<Item> STORAGE_BLOCKS_RAW_GALLIUM = forgeTag("storage_blocks/raw_gallium");
 
-            public static final TagKey<Item> INGOTS_GALLIUM_NITRIDE = forgeTag("ingots/gallium_nitride");
+            public static final TagKey<Item> GEMS_GALLIUM_NITRIDE = forgeTag("gems/gallium_nitride");
 
             private static TagKey<Item> forgeTag(String path) {
                 return ItemTags.create(new ResourceLocation("forge", path));
@@ -183,7 +183,7 @@ public final class MTPA {
         output.accept(Items.GALLIUM_INGOT.get());
         output.accept(Items.GALLIUM_BLOCK.get());
         output.accept(Items.GALLIUM_NUGGET.get());
-        output.accept(Items.GALLIUM_NITRIDE_INGOT.get());
+        output.accept(Items.GALLIUM_NITRIDE_GEM.get());
         output.accept(gun("ew_scythe"));
         output.accept(gun("ew_hammer"));
         output.accept(gun("gl_shark"));

@@ -1,6 +1,6 @@
 {
   "parent": "minecraft:item/generated",
   "textures": {
-    "layer0": "modtech_arsenal:item/gallium_nitride_ingot"
+    "layer0": "modtech_arsenal:item/gallium_nitride"
   }
 }

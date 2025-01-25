@@ -47,10 +47,10 @@ public class MtpaItemTagProvider extends ItemTagsProvider {
             tag(ItemTags.TRIM_MATERIALS).add(GALLIUM_INGOT.get());
             tag(ItemTags.BEACON_PAYMENT_ITEMS).add(GALLIUM_INGOT.get());
 
-            tag(Tags.INGOTS_GALLIUM_NITRIDE).add(GALLIUM_NITRIDE_INGOT.get());
-            tag(Items.INGOTS).addTag(Tags.INGOTS_GALLIUM_NITRIDE);
-            tag(ItemTags.TRIM_MATERIALS).add(GALLIUM_NITRIDE_INGOT.get());
-            tag(ItemTags.BEACON_PAYMENT_ITEMS).add(GALLIUM_NITRIDE_INGOT.get());
+            tag(Tags.GEMS_GALLIUM_NITRIDE).add(GALLIUM_NITRIDE_GEM.get());
+            tag(Items.GEMS).addTag(Tags.GEMS_GALLIUM_NITRIDE);
+            tag(ItemTags.TRIM_MATERIALS).add(GALLIUM_NITRIDE_GEM.get());
+            tag(ItemTags.BEACON_PAYMENT_ITEMS).add(GALLIUM_NITRIDE_GEM.get());
         }
         // Raw Material
         {

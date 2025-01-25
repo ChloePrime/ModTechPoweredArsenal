@@ -10,7 +10,7 @@ public class SpecialRecipes {
         BrewingRecipeRegistry.addRecipe(
                 Ingredient.of(MTPA.Items.Tags.INGOTS_GALLIUM),
                 Ingredient.of(Tags.Items.GUNPOWDER),
-                MTPA.Items.GALLIUM_NITRIDE_INGOT.get().getDefaultInstance()
+                MTPA.Items.GALLIUM_NITRIDE_GEM.get().getDefaultInstance()
         );
     }
 }
