@@ -1,0 +1,9 @@
+{
+  "type": "forge:add_features",
+  "biomes": "#minecraft:is_overworld",
+  "features": [
+    "modtech_arsenal:ore_gallium_in_copper_1",
+    "modtech_arsenal:ore_gallium_in_copper_2"
+  ],
+  "step": "underground_decoration"
+}

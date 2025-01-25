@@ -1,0 +1,9 @@
+{
+  "type": "forge:add_features",
+  "biomes": "minecraft:bamboo_jungle",
+  "features": [
+    "modtech_arsenal:ore_gallium_small",
+    "modtech_arsenal:ore_gallium_medium"
+  ],
+  "step": "underground_ores"
+}

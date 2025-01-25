@@ -1,0 +1,27 @@
+{
+  "type": "minecraft:ore",
+  "config": {
+    "targets": [
+      {
+        "target": {
+          "predicate_type": "minecraft:block_match",
+          "block": "minecraft:copper_ore"
+        },
+        "state": {
+          "Name": "modtech_arsenal:gallium_ore"
+        }
+      },
+      {
+        "target": {
+          "predicate_type": "minecraft:block_match",
+          "block": "minecraft:deepslate_copper_ore"
+        },
+        "state": {
+          "Name": "modtech_arsenal:deepslate_gallium_ore"
+        }
+      }
+    ],
+    "size": 4,
+    "discard_chance_on_air_exposure": 0.5
+  }
+}
