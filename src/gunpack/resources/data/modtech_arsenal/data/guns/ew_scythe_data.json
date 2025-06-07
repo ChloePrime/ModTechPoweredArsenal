@@ -1,4 +1,12 @@
 {
+  "gunsmithlib_extension": {
+    "battery": {
+      "energy_per_shot": 200,
+      "charge_power": 600,
+      "needs_reload_on_full_heat": true
+    },
+    "enable_overheat_feedback": true
+  },
   "ammo": "modtech_arsenal:battery",
   "ammo_amount": 180,
   "extended_mag_ammo_amount": [
@@ -29,17 +37,16 @@
     "ignite": false,
     "pierce": 1
   },
-  "overheat": {
-    "shots_before_overheat": 60,
-    "cd_delay_when_partially_overheat": 20,
-    "cd_delay_when_fully_overheat":  60,
-    "cool_delay": 1,
-    "cool_count":  2
-  },
-  "battery": {
-    "energy_per_shot": 200,
-    "charge_power": 600,
-    "needs_reload_on_full_heat": true
+  "heat":  {
+    "max": 120,
+    "per_shot": 2,
+    "cooling_multiplier": 5,
+    "cooling_delay": 1000,
+    "over_heat_time": 3000,
+    "min_inaccuracy": 1,
+    "max_inaccuracy": 1,
+    "min_rpm_mod": 1,
+    "max_rpm_mod": 1
   },
   "reload": {
     "type": "magazine",

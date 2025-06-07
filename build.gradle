@@ -136,11 +136,7 @@ sourceSets.main.resources {
     srcDir 'src/gunpack/resources'
 }
 
-boolean USE_LOCAL_AAAP = false
-
 repositories {
-    // NeoForge
-    maven { url "https://maven.neoforged.net/releases/" }
     // Curse maven
     maven {
         name = "Curse Maven"
@@ -165,6 +161,16 @@ repositories {
     // Architectury
     maven { url "https://maven.architectury.dev/" }
 
+    // GunsmithLib
+    maven {
+        name 'Chloe Maven'
+        url 'https://maven.chloeprime.cn:4080/releases'
+        content {
+            includeGroup("mod.chloeprime")
+            includeGroup("cn.chloeprime")
+        }
+    }
+
     repositories {
         maven { url 'https://modmaven.dev/' }
     }
@@ -176,14 +182,6 @@ repositories {
     // theillusivec4 (Curios)
     maven {
         url = "https://maven.theillusivec4.top/"
-    }
-
-    // AAAParticles
-    USE_LOCAL_AAAP = false; // file('../AAAParticles').exists();
-    if (USE_LOCAL_AAAP) {
-        flatDir {
-            dir '../AAAParticles/forge/build/libs'
-        }
     }
 
     maven { // Registrate
@@ -206,30 +204,21 @@ dependencies {
     minecraft "net.minecraftforge:forge:${minecraft_version}-${forge_version}"
 
     // TACZ
-    implementation fg.deobf('curse.maven:timeless-and-classics-zero-1028108:6058563-sources-6059152');
+    implementation fg.deobf('curse.maven:timeless-and-classics-zero-1028108:6518539-sources-6518544');
 
     // GunsmithLib
-    implementation(jarJar(fg.deobf('mod.chloeprime:gunsmithlib:2.0.0+mc1.20.1+tacz1.1.4'))) {
-        jarJar.ranged(it, "[2,)")
-    }
-
-    // 自瞄扩展
-    implementation(jarJar(fg.deobf('cn.chloeprime:tacz_fire_control_extension:1.0.2+mc1.20.1+tacz1.1.4'))) {
-        jarJar.ranged(it, "[1,)")
+    implementation(jarJar(fg.deobf('mod.chloeprime:gunsmithlib:3.7.0+mc1.20.1+tacz1.1.5'))) {
+        jarJar.ranged(it, "[3.7,)")
     }
 
     compileOnly fg.deobf("com.tterrag.registrate:Registrate:MC1.20-1.3.11")
     jarJar(group: 'com.tterrag.registrate', name: 'Registrate', version: "[MC1.20,MC1.20.2)")
 
     // AAA粒子
-    var aaap = USE_LOCAL_AAAP
-            ? "libs:aaa_particles:1.20.1-1.4.6.a-forge"
-            : "maven.modrinth:aaa-particles:1.20.1-1.4.10-forge"
-    implementation(jarJar(fg.deobf(aaap))) {
-        jarJar.ranged(it, "[1.20.1-1,)")
+    implementation(jarJar(fg.deobf("mod.chloeprime:aaa-particles-forge:1.20.1-1.4.11"))) {
+        jarJar.ranged(it, "[1.20.1-1.4.11,)")
     }
     implementation fg.deobf("dev.architectury:architectury-forge:9.2.14")
-//    runtimeOnly fg.deobf("maven.modrinth:embeddium:0.3.31+mc1.20.1")
 
     // MEK, 用于测试能量武器
     runtimeOnly fg.deobf("mekanism:Mekanism:${mekanism_version}")// core

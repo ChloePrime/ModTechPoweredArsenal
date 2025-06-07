@@ -1,12 +1,13 @@
 package mod.chloeprime.modtechpoweredarsenal.common.standard.enchantments;
 
 import com.tacz.guns.api.event.common.GunShootEvent;
+import com.tacz.guns.resource.pojo.data.gun.FeedType;
 import com.tacz.guns.util.AttachmentDataUtils;
 import mod.chloeprime.gunsmithlib.api.util.GunInfo;
 import mod.chloeprime.gunsmithlib.api.util.Gunsmith;
+import mod.chloeprime.gunsmithlib.common.gunpack_extension.gun.energy.EnergyWeaponBehavior;
 import mod.chloeprime.modtechpoweredarsenal.MTPA;
 import mod.chloeprime.modtechpoweredarsenal.ModTechPoweredArsenal;
-import mod.chloeprime.modtechpoweredarsenal.common.standard.guns.EnergyWeaponBehavior;
 import mod.chloeprime.modtechpoweredarsenal.common.standard.util.GunHelper;
 import mod.chloeprime.modtechpoweredarsenal.common.standard.util.StreamSupportMC;
 import net.minecraft.world.entity.EquipmentSlot;
@@ -51,7 +52,13 @@ public class ReconstructionPerk extends PerkBase {
 
     @Override
     public boolean canEnchant(@Nonnull ItemStack stack) {
-        return super.canEnchant(stack) && !EnergyWeaponBehavior.isEnergyWeapon(stack);
+        return super.canEnchant(stack) && !EnergyWeaponBehavior.isEnergyWeapon(stack) && !isUsingInventoryAmmo(stack);
+    }
+
+    private static boolean isUsingInventoryAmmo(ItemStack stack) {
+        return Gunsmith.getGunInfo(stack)
+                .filter(gun -> gun.index().getGunData().getReloadData().getType() == FeedType.INVENTORY)
+                .isPresent();
     }
 
     private void onPlayerShoot(GunShootEvent event) {

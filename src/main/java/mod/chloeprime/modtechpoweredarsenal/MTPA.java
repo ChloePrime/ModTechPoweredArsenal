@@ -102,6 +102,7 @@ public final class MTPA {
         public static final RegistryObject<Item> GALLIUM_NUGGET = registerSimpleItem("gallium_nugget");
 
         public static final RegistryObject<Item> GALLIUM_NITRIDE_GEM = registerSimpleItem("gallium_nitride");
+        public static final RegistryObject<Item> GALLIUM_NITRIDE_SUBSTRATE = registerSimpleItem("gallium_nitride_substrate");
 
         private Items() {}
 

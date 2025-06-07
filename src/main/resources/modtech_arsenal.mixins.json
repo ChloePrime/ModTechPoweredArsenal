@@ -19,8 +19,7 @@
   "client": [
     "minecraft.client.ParticleEngineAccessor",
     "tacz.client.GunTooltipRestrictionLifterMixin",
-    "tacz.client.MixinBulletHoleParticle",
-    "tacz.client.MixinGunHudOverlay"
+    "tacz.client.MixinBulletHoleParticle"
   ],
   "injectors": {
     "defaultRequire": 1
