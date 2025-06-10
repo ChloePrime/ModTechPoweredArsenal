@@ -1,4 +1,5 @@
 {
+  "extended_mag_level": 3,
   "weight": 0.6,
   "ads": {
     "addend": 0.02
@@ -7,21 +8,30 @@
   "rpm": {
     "multiplier": 1.5
   },
+  "// 激光枪": {},
   "inaccuracy": {
-    "multiplier": 0
+    "multiplier": 0.1
+  },
+  "aim_inaccuracy": {
+    "multiplier": 0.1
+  },
+  "sneak_inaccuracy": {
+    "multiplier": 0.1
+  },
+  "lie_inaccuracy": {
+    "multiplier": 0.1
   },
   "recoil": {
     "pitch": {
-      "multiplier": 0.1
+      "multiplier": 0
     },
     "yaw": {
-      "multiplier": 0.1
+      "multiplier": 0
     }
   },
   "ammo_speed": {
     "multiplier": 2
   },
-  "extended_mag_level": 3,
   "// 静音": {},
   "silence": {
     "distance_addend": -1024,
@@ -29,10 +39,10 @@
   },
   "// 代价：无法穿透怪物，基础伤害降低，爆头倍率降低": {},
   "damage": {
-    "multiplier": 0.9
+    "multiplier": 0.5
   },
   "head_shot":{
-    "multiplier": 0.9
+    "function":  "y = (x - 1) * 0.5 + 1"
   },
   "pierce": {
     "multiplier": 0

@@ -122,6 +122,7 @@
     "grip",
     "extended_mag"
   ],
+  "script": "modtech_arsenal:ew_scythe_logic",
   "exclusive_attachments": {
   }
 }
