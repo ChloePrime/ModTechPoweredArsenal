@@ -2,15 +2,17 @@ package mod.chloeprime.modtechpoweredarsenal;
 
 import com.google.common.base.Suppliers;
 import com.mojang.logging.LogUtils;
+import mod.chloeprime.modtechpoweredarsenal.client.MtpaClient;
+import mod.chloeprime.modtechpoweredarsenal.common.iron_spell.throwable.IronSpellModuleThrowableTypes;
 import mod.chloeprime.modtechpoweredarsenal.common.standard.SpecialRecipes;
 import mod.chloeprime.modtechpoweredarsenal.network.ModNetwork;
 import net.minecraft.core.registries.Registries;
 import net.minecraft.network.chat.Component;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.item.*;
-import net.minecraftforge.common.MinecraftForge;
-import net.minecraftforge.event.BuildCreativeModeTabContentsEvent;
+import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.eventbus.api.IEventBus;
+import net.minecraftforge.fml.DistExecutor;
 import net.minecraftforge.fml.ModLoadingContext;
 import net.minecraftforge.fml.common.Mod;
 import net.minecraftforge.fml.config.ModConfig;
@@ -45,19 +47,17 @@ public final class ModTechPoweredArsenal {
     public ModTechPoweredArsenal() {
         IEventBus modEventBus = FMLJavaModLoadingContext.get().getModEventBus();
 
+        // 注册器
         registerDFRs(modEventBus);
 
-        // Register the commonSetup method for modloading
-        modEventBus.addListener(this::commonSetup);
-
-        // Register ourselves for server and other game events we are interested in
-        MinecraftForge.EVENT_BUS.register(this);
-
-        // Register the item to a creative tab
-        modEventBus.addListener(this::addCreative);
-
-        // Register our mod's ForgeConfigSpec so that Forge can create and load the config file for us
+        // Config
         ModLoadingContext.get().registerConfig(ModConfig.Type.COMMON, Config.SPEC);
+
+        // Client Init
+        DistExecutor.unsafeRunWhenOn(Dist.CLIENT, () -> () -> MtpaClient.init(modEventBus));
+
+        // Common Setup
+        modEventBus.addListener((FMLCommonSetupEvent event) -> event.enqueueWork(this::commonSetup));
     }
 
     private void registerDFRs(IEventBus bus) {
@@ -67,17 +67,18 @@ public final class ModTechPoweredArsenal {
         MTPA.Enchantments.REGISTRY.register(bus);
         MTPA.MobEffects.REGISTRY.register(bus);
         MTPA.Sounds.REGISTRY.register(bus);
+
+        // 绿葡萄投掷物
+        if (ModLoadStatus.LRTAC_INSTALLED && ModLoadStatus.IRON_SPELLBOOKS_INSTALLED) {
+            IronSpellModuleThrowableTypes.init(bus);
+        }
+
         CREATIVE_MODE_TABS.register(bus);
         bus.addListener(MTPA::registerIngredientSerializers);
     }
 
-    private void commonSetup(final FMLCommonSetupEvent event) {
-        event.enqueueWork(ModNetwork::init);
-        event.enqueueWork(SpecialRecipes::init);
-    }
-
-    // Add the example block item to the building blocks tab
-    private void addCreative(BuildCreativeModeTabContentsEvent event)
-    {
+    private void commonSetup() {
+        ModNetwork.init();
+        SpecialRecipes.init();
     }
 }

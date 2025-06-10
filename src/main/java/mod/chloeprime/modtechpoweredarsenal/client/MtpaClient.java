@@ -1,12 +1,15 @@
 package mod.chloeprime.modtechpoweredarsenal.client;
 
 import mod.chloeprime.modtechpoweredarsenal.MTPA;
+import mod.chloeprime.modtechpoweredarsenal.ModLoadStatus;
+import mod.chloeprime.modtechpoweredarsenal.client.iron_spell.throwable.IronSpellModuleClient;
 import mod.chloeprime.modtechpoweredarsenal.common.standard.entities.Shockwave;
 import net.minecraft.client.renderer.entity.NoopRenderer;
 import net.minecraft.core.particles.ParticleTypes;
 import net.minecraft.world.level.Level;
 import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.client.event.EntityRenderersEvent;
+import net.minecraftforge.eventbus.api.IEventBus;
 import net.minecraftforge.eventbus.api.SubscribeEvent;
 import net.minecraftforge.fml.ModList;
 import net.minecraftforge.fml.common.Mod;
@@ -21,6 +24,12 @@ public class MtpaClient {
     public static void onRegRenderers(EntityRenderersEvent.RegisterRenderers event) {
         event.registerEntityRenderer(MTPA.Entities.FANG_EMITTER.get(), NoopRenderer::new);
         event.registerEntityRenderer(MTPA.Entities.SHOCKWAVE.get(), NoopRenderer::new);
+    }
+
+    public static void init(IEventBus bus) {
+        if (ModLoadStatus.LRTAC_INSTALLED && ModLoadStatus.IRON_SPELLBOOKS_INSTALLED) {
+            IronSpellModuleClient.init(bus);
+        }
     }
 
     private static final RandomGenerator RNG = new Random();
