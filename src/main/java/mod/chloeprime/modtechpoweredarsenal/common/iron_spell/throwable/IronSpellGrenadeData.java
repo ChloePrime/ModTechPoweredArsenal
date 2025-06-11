@@ -1,9 +1,13 @@
 package mod.chloeprime.modtechpoweredarsenal.common.iron_spell.throwable;
 
-import me.xjqsh.lrtactical.item.throwable.ThrowableData;
+import io.redspace.ironsspellbooks.api.registry.SchoolRegistry;
+import io.redspace.ironsspellbooks.api.spells.AbstractSpell;import me.xjqsh.lrtactical.item.throwable.ThrowableData;
 import net.minecraft.resources.ResourceLocation;
 
 import javax.annotation.Nullable;
+import java.util.Objects;
+import java.util.function.DoubleConsumer;
+import java.util.function.IntConsumer;
 
 public class IronSpellGrenadeData extends ThrowableData {
     @SuppressWarnings("unused")
@@ -58,5 +62,18 @@ public class IronSpellGrenadeData extends ThrowableData {
 
     public boolean willDebuffNonmatchingSchool() {
         return debuff_nonmatching_school;
+    }
+
+    public void adjustSpellPower(AbstractSpell actualSpell, int originalSpellLevel, double originalPower, IntConsumer outLevel, DoubleConsumer outPower) {
+        var grenadeSchoolId = getSchoolId();
+        var sameSchool = grenadeSchoolId == null || Objects.equals(SchoolRegistry.getSchool(grenadeSchoolId), actualSpell.getSchoolType());
+        if (sameSchool) {
+            outLevel.accept(originalSpellLevel + getSchoolAffinityBuff());
+            outPower.accept(originalPower * (1 + getSchoolPowerBuff()));
+        } else {
+            boolean debuff = willDebuffNonmatchingSchool();
+            outLevel.accept(debuff ? 1 : originalSpellLevel);
+            outPower.accept(debuff ? 0.1 : originalPower);
+        }
     }
 }
