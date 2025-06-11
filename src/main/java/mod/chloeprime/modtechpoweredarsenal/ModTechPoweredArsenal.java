@@ -69,7 +69,7 @@ public final class ModTechPoweredArsenal {
         MTPA.Sounds.REGISTRY.register(bus);
 
         // 绿葡萄投掷物
-        if (ModLoadStatus.LRTAC_INSTALLED && ModLoadStatus.IRON_SPELLBOOKS_INSTALLED) {
+        if (MTPA.ISB_GRENADE_ENABLED) {
             IronSpellModuleThrowableTypes.init(bus);
         }
 

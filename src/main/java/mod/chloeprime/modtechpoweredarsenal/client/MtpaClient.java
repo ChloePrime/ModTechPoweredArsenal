@@ -1,7 +1,6 @@
 package mod.chloeprime.modtechpoweredarsenal.client;
 
 import mod.chloeprime.modtechpoweredarsenal.MTPA;
-import mod.chloeprime.modtechpoweredarsenal.ModLoadStatus;
 import mod.chloeprime.modtechpoweredarsenal.client.iron_spell.throwable.IronSpellModuleClientSetup;
 import mod.chloeprime.modtechpoweredarsenal.common.standard.entities.Shockwave;
 import net.minecraft.client.renderer.entity.NoopRenderer;
@@ -26,7 +25,7 @@ public class MtpaClient {
     }
 
     public static void init(IEventBus bus) {
-        if (ModLoadStatus.LRTAC_INSTALLED && ModLoadStatus.IRON_SPELLBOOKS_INSTALLED) {
+        if (MTPA.ISB_GRENADE_ENABLED) {
             IronSpellModuleClientSetup.init(bus);
         }
     }

@@ -7,7 +7,9 @@ import com.tacz.guns.api.item.builder.AttachmentItemBuilder;
 import com.tacz.guns.api.item.builder.GunItemBuilder;
 import com.tacz.guns.resource.pojo.data.gun.Bolt;
 import com.tterrag.registrate.Registrate;
+import mod.chloeprime.modtechpoweredarsenal.common.iron_spell.throwable.IronSpellProxy;
 import mod.chloeprime.modtechpoweredarsenal.common.lightland.MtpaL2Module;
+import mod.chloeprime.modtechpoweredarsenal.common.standard.LRTacProxy;
 import mod.chloeprime.modtechpoweredarsenal.common.standard.enchantments.*;
 import mod.chloeprime.modtechpoweredarsenal.common.standard.entities.FangEmitter;
 import mod.chloeprime.modtechpoweredarsenal.common.standard.entities.Shockwave;
@@ -15,6 +17,7 @@ import mod.chloeprime.modtechpoweredarsenal.common.standard.entities.VirtualCast
 import mod.chloeprime.modtechpoweredarsenal.common.standard.mob_effects.AntiRegenEffect;
 import mod.chloeprime.modtechpoweredarsenal.common.standard.mob_effects.RecombinationBuffEffect;
 import mod.chloeprime.modtechpoweredarsenal.common.standard.util.IfModLoadIngredient;
+import net.minecraft.nbt.CompoundTag;
 import net.minecraft.network.chat.Component;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.sounds.SoundEvent;
@@ -43,11 +46,14 @@ import net.minecraftforge.registries.RegistryObject;
 
 import java.awt.*;
 import java.util.Objects;
+import java.util.Optional;
 import java.util.function.Supplier;
 
 import static net.minecraft.world.item.Items.BARRIER;
 
 public final class MTPA {
+    public static boolean ISB_GRENADE_ENABLED = ModLoadStatus.LRTAC_INSTALLED && ModLoadStatus.IRON_SPELLBOOKS_INSTALLED;
+
     /**
      * Used for recipe generating only
      */
@@ -214,6 +220,10 @@ public final class MTPA {
         output.accept(attachment("ammo_mod_antimagic"));
         output.accept(attachment("ammo_trait_greed_of_ussr"));
         output.accept(attachment("ammo_trait_chain_action"));
+        if (ISB_GRENADE_ENABLED) {
+            isbGrenade("iron_spell_grenade").ifPresent(output::accept);
+            isbGrenade("iron_spell_grenade_light").ifPresent(output::accept);
+        }
         // 添加满级附魔书
         ForgeRegistries.ENCHANTMENTS.getKeys().stream()
                 .filter(key -> ModTechPoweredArsenal.MODID.equals(key.getNamespace()))
@@ -287,6 +297,11 @@ public final class MTPA {
 
     static ItemStack attachment(String path) {
         return AttachmentItemBuilder.create().setId(loc(path)).build();
+    }
+
+    static Optional<ItemStack> isbGrenade(String path) {
+        var grenade = LRTacProxy.createThrowable(loc(path), 1, IronSpellProxy.getImbuableItemNBT());
+        return grenade.isEmpty() ? Optional.empty() : Optional.of(grenade);
     }
 
     private MTPA() {}
