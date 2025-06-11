@@ -30,5 +30,9 @@
   "modtech_arsenal.attachment.ammo_trait_chain_action.name": "Chain Reaction",
   "modtech_arsenal.attachment.ammo_trait_chain_action.desc": "§6Legendary\n§a+ Each kill with shockwave fired by this weapon creates an explosion",
   "modtech_arsenal.attachment.ammo_trait_greed_of_ussr.name": "Greed of the Kirov Empire",
-  "modtech_arsenal.attachment.ammo_trait_greed_of_ussr.desc": "§6Legendary\nFeel the bottomless greed of the fallen empire\n§a+ Kills caused by magic fang will feed your stomach"
+  "modtech_arsenal.attachment.ammo_trait_greed_of_ussr.desc": "§6Legendary\nFeel the bottomless greed of the fallen empire\n§a+ Kills caused by magic fang will feed your stomach",
+
+  "// 投掷物": "",
+  "item.modtech_arsenal.iron_spell_grenade": "Psychic Grenade",
+  "item.modtech_arsenal.iron_spell_grenade_light": "Holy Grenade"
 }

@@ -1,6 +1,6 @@
 {
   "type": "modtech_arsenal:iron_spell",
-  "name": "Example Magic Grenade",
+  "name": "item.modtech_arsenal.iron_spell_grenade",
   "data": {
     "prepare_time": 16,
     "initial_speed": 1.5,
@@ -14,6 +14,8 @@
       "should_bounce": true,
       "bounceFactor": 0.0625
     },
-    "spell_id": "irons_spellbooks:black_hole"
+    "spell": "irons_spellbooks:black_hole",
+    "school_affinity_buff": 2,
+    "school_power_buff": 0.0
   }
 }

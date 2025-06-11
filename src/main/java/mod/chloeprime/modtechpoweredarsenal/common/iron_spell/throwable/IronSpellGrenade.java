@@ -2,6 +2,7 @@ package mod.chloeprime.modtechpoweredarsenal.common.iron_spell.throwable;
 
 import com.google.common.base.Suppliers;
 import com.mojang.authlib.GameProfile;
+import io.redspace.ironsspellbooks.api.registry.SchoolRegistry;
 import io.redspace.ironsspellbooks.api.registry.SpellRegistry;
 import io.redspace.ironsspellbooks.api.spells.AbstractSpell;
 import io.redspace.ironsspellbooks.api.spells.CastSource;
@@ -12,12 +13,14 @@ import me.xjqsh.lrtactical.item.throwable.ThrowableType;
 import me.xjqsh.lrtactical.resource.CommonAssetsManager;
 import mod.chloeprime.modtechpoweredarsenal.common.standard.internal.HateTransferable;
 import net.minecraft.commands.arguments.EntityAnchorArgument;
+import net.minecraft.core.registries.BuiltInRegistries;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.MobCategory;
+import net.minecraft.world.entity.ai.attributes.Attribute;
 import net.minecraft.world.entity.projectile.Projectile;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.Level;
@@ -26,9 +29,12 @@ import net.minecraftforge.common.util.FakePlayer;
 import net.minecraftforge.common.util.FakePlayerFactory;
 import net.minecraftforge.event.entity.EntityJoinLevelEvent;
 import net.minecraftforge.eventbus.api.SubscribeEvent;
-import org.jetbrains.annotations.NotNull;
+import org.jetbrains.annotations.Nullable;
 
+import javax.annotation.Nonnull;
 import java.lang.ref.WeakReference;
+import java.util.Objects;
+import java.util.Optional;
 import java.util.UUID;
 import java.util.function.Supplier;
 
@@ -40,6 +46,11 @@ public class IronSpellGrenade extends ThrowableItemEntity {
             .sized(0.3F, 0.3F)
             .noSave().noSummon().fireImmune()
             .build("iron_spell_grenade");
+
+    @SuppressWarnings("deprecation")
+    private static final Supplier<@Nullable Attribute> SPELL_POWER = Suppliers.memoize(
+            () -> BuiltInRegistries.ATTRIBUTE.get(new ResourceLocation("irons_spellbooks", "spell_power"))
+    );
 
     public static ThrowableType<IronSpellGrenadeData, IronSpellGrenade> DATA_TYPE = ThrowableType.Builder
             .<IronSpellGrenadeData, IronSpellGrenade>of()
@@ -56,14 +67,14 @@ public class IronSpellGrenade extends ThrowableItemEntity {
         entity.setBounceFactor(data.getEntityData().getBounceFactor());
         entity.setShouldBounce(data.getEntityData().isShouldBounce());
 
-        if (!entity.loadSpellOverrideFromNBT(stack)) {
+        if (!entity.loadSpellOverrideFromNBT(stack, thrower, data)) {
             entity.setSpell(data.getSpellId());
             entity.setSpellLevel(data.getSpellLevel());
         }
         return entity;
     }
 
-    private boolean loadSpellOverrideFromNBT(ItemStack stack) {
+    private boolean loadSpellOverrideFromNBT(ItemStack stack, LivingEntity caster, IronSpellGrenadeData data) {
         if (!ISpellContainer.isSpellContainer(stack)) {
             return false;
         }
@@ -71,14 +82,33 @@ public class IronSpellGrenade extends ThrowableItemEntity {
         if (container.isEmpty()) {
             return false;
         }
-        SpellData spell = container.get(0);
-        setSpell(spell.getSpell());
-        setSpellLevel(spell.getLevel());
+        SpellData spellStack = container.get(0);
+        AbstractSpell spell = spellStack.getSpell();
+        setSpell(spell);
+
+        double casterGenericSpellPower = Optional.ofNullable(SPELL_POWER.get())
+                .map(caster::getAttributeValue)
+                .orElse(1.0);
+        double casterSchoolSpellPower = spell.getSchoolType().getPowerFor(caster);
+        double casterSpellPower = casterGenericSpellPower * casterSchoolSpellPower;
+
+        // 无学派手雷的buff会对所有学派的法术生效
+        var grenadeSchoolId = data.getSchoolId();
+        var sameSchool = grenadeSchoolId == null || Objects.equals(SchoolRegistry.getSchool(grenadeSchoolId), spell.getSchoolType());
+        if (sameSchool) {
+            setSpellLevel(spellStack.getLevel() + data.getSchoolAffinityBuff());
+            setSpellPower(casterSpellPower * (1 + data.getSchoolPowerBuff()));
+        } else {
+            boolean debuff = data.willDebuffNonmatchingSchool();
+            setSpellLevel(debuff ? 1 : spellStack.getLevel());
+            setSpellPower(debuff ? 0.1 : casterSpellPower);
+        }
         return true;
     }
 
     private AbstractSpell spell = SpellRegistry.none();
     private int spellLevel = 1;
+    private double spellPower = 1;
     private final Supplier<WeakReference<FakePlayer>> caster = Suppliers.memoize(() -> createCaster(level()));
     private final EventHandler handler = new EventHandler();
 
@@ -102,6 +132,10 @@ public class IronSpellGrenade extends ThrowableItemEntity {
         return spellLevel;
     }
 
+    public double getSpellPower() {
+        return spellPower;
+    }
+
     public void setSpell(AbstractSpell spell) {
         this.spell = spell;
     }
@@ -114,8 +148,13 @@ public class IronSpellGrenade extends ThrowableItemEntity {
         this.spellLevel = spellLevel;
     }
 
+    public void setSpellPower(double spellPower) {
+        this.spellPower = spellPower;
+    }
+
     @Override
     public void onDeath() {
+        var spell = getSpell();
         if (spell != null && !level().isClientSide) {
             FakePlayer caster = this.caster.get().get();
             if (caster == null) {
@@ -130,11 +169,14 @@ public class IronSpellGrenade extends ThrowableItemEntity {
             }
             caster.setPos(this.position());
             var lookTarget = shouldBounce()
-                    ? caster.getEyePosition().add(0, 1,0)
+                    ? caster.getEyePosition().add(0, 1, 0)
                     : caster.getEyePosition().add(this.getDeltaMovement().scale(-1));
             caster.lookAt(EntityAnchorArgument.Anchor.EYES, lookTarget);
 
-            spell.castSpell(level(), spellLevel, caster, CastSource.COMMAND, false);
+            Optional.ofNullable(SPELL_POWER.get())
+                    .map(caster::getAttribute)
+                    .ifPresent(spp -> spp.setBaseValue(getSpellPower()));
+            spell.castSpell(level(), getSpellLevel(), caster, CastSource.COMMAND, false);
         }
 
         super.onDeath();
@@ -149,7 +191,7 @@ public class IronSpellGrenade extends ThrowableItemEntity {
     }
 
     @Override
-    public void remove(@NotNull RemovalReason reason) {
+    public void remove(@Nonnull RemovalReason reason) {
         super.remove(reason);
         if (!level().isClientSide() && isRemoved()) {
             MinecraftForge.EVENT_BUS.unregister(handler);
@@ -159,7 +201,7 @@ public class IronSpellGrenade extends ThrowableItemEntity {
     public final class EventHandler {
         @SubscribeEvent
         public void onEntityJoinLevel(EntityJoinLevelEvent event) {
-            if (level().isClientSide() || event.getEntity().level().isClientSide()) {
+            if (event.getEntity().level().isClientSide()) {
                 return;
             }
             if (event.getEntity() == IronSpellGrenade.this) {

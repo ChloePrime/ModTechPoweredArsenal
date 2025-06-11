@@ -1,0 +1,22 @@
+{
+  "type": "modtech_arsenal:iron_spell",
+  "name": "item.modtech_arsenal.iron_spell_grenade_light",
+  "data": {
+    "prepare_time": 16,
+    "initial_speed": 1.5,
+    "cooldown": 40,
+    "cooldown_category": "modtech_arsenal:iron_spell",
+    "put_away_time": 380,
+    "stack_size": 3,
+    "entity": {
+      "life_time": 60,
+      "gravity": 0.07,
+      "should_bounce": true,
+      "bounceFactor": 0.0625
+    },
+    "spell": "irons_spellbooks:divine_smite",
+    "school": "irons_spellbooks:holy",
+    "school_affinity_buff": 4,
+    "school_power_buff": 0.5
+  }
+}
