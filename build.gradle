@@ -1,3 +1,5 @@
+import java.text.SimpleDateFormat
+
 buildscript {
     repositories {
         // These repositories are only for Gradle plugins, put any other repositories in the repository block further below
@@ -18,6 +20,12 @@ plugins {
 
 apply plugin: 'org.spongepowered.mixin'
 
+mod_license = mod_version.contains("internal")
+        ? "All rights reserved: This version is for private use only"
+        : mod_license
+mod_version = mod_version.contains("internal")
+        ? mod_version + "-" + new SimpleDateFormat("MMdd-HHmmss").format(new Date())
+        : mod_version
 mod_version = "${mod_version}+mc${minecraft_version}+tacz${tacz_version_decl}"
 group = mod_group_id
 version = mod_version
@@ -218,13 +226,13 @@ dependencies {
     minecraft "net.minecraftforge:forge:${minecraft_version}-${forge_version}"
 
     // TACZ
-    implementation fg.deobf('curse.maven:timeless-and-classics-zero-1028108:6518539-sources-6518544')
+    implementation fg.deobf('curse.maven:timeless-and-classics-zero-1028108:6632240-sources-6633203')
     // LRTAC
     implementation fg.deobf('maven.modrinth:lr-tactical:0.2.4')
 
     // GunsmithLib
-    implementation(jarJar(fg.deobf('mod.chloeprime:gunsmithlib:3.7.0+mc1.20.1+tacz1.1.5'))) {
-        jarJar.ranged(it, "[3.7,)")
+    implementation(jarJar(fg.deobf('mod.chloeprime:gunsmithlib:4.2.0+mc1.20.1+tacz1.1.6'))) {
+        jarJar.ranged(it, "[4.2,)")
     }
 
     compileOnly fg.deobf("com.tterrag.registrate:Registrate:MC1.20-1.3.11")
