@@ -1,48 +1,37 @@
 package mod.chloeprime.modtechpoweredarsenal.common.iron_spell.throwable;
 
 import com.google.common.base.Suppliers;
-import com.mojang.authlib.GameProfile;
-import io.redspace.ironsspellbooks.api.events.SpellPreCastEvent;
 import io.redspace.ironsspellbooks.api.magic.MagicData;
-import io.redspace.ironsspellbooks.api.magic.SpellSelectionManager;
 import io.redspace.ironsspellbooks.api.registry.SpellRegistry;
 import io.redspace.ironsspellbooks.api.spells.AbstractSpell;
 import io.redspace.ironsspellbooks.api.spells.CastSource;
 import io.redspace.ironsspellbooks.api.spells.ISpellContainer;
 import io.redspace.ironsspellbooks.api.spells.SpellData;
-import io.redspace.ironsspellbooks.capabilities.magic.SyncedSpellData;
 import io.redspace.ironsspellbooks.capabilities.magic.TargetEntityCastData;
 import me.xjqsh.lrtactical.entity.ThrowableItemEntity;
 import me.xjqsh.lrtactical.item.throwable.ThrowableType;
 import me.xjqsh.lrtactical.resource.CommonAssetsManager;
-import mod.chloeprime.modtechpoweredarsenal.common.standard.internal.HateTransferable;
+import mod.chloeprime.modtechpoweredarsenal.common.standard.entities.VirtualCaster;
 import mod.chloeprime.modtechpoweredarsenal.common.standard.util.RegistryHelper;
 import net.minecraft.commands.arguments.EntityAnchorArgument;
 import net.minecraft.core.registries.BuiltInRegistries;
 import net.minecraft.resources.ResourceLocation;
-import net.minecraft.server.level.ServerLevel;
-import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.MobCategory;
 import net.minecraft.world.entity.ai.attributes.Attribute;
-import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.entity.projectile.Projectile;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.Level;
 import net.minecraftforge.common.MinecraftForge;
-import net.minecraftforge.common.util.FakePlayer;
-import net.minecraftforge.common.util.FakePlayerFactory;
 import net.minecraftforge.event.entity.EntityJoinLevelEvent;
 import net.minecraftforge.eventbus.api.SubscribeEvent;
 
 import javax.annotation.Nonnull;
-import java.lang.ref.WeakReference;
-import java.util.LinkedHashMap;
-import java.util.Map;
+import javax.annotation.Nullable;
 import java.util.Optional;
-import java.util.UUID;
+import java.util.concurrent.atomic.AtomicInteger;
 import java.util.function.Supplier;
 
 public class IronSpellGrenade extends ThrowableItemEntity {
@@ -56,14 +45,6 @@ public class IronSpellGrenade extends ThrowableItemEntity {
 
     @SuppressWarnings("deprecation")
     private static final Supplier<Attribute> SPELL_POWER = RegistryHelper.holder(BuiltInRegistries.ATTRIBUTE, "irons_spellbooks", "spell_power");
-
-    static final Map<UUID, ServerPlayer> CASTERS = new LinkedHashMap<>();
-
-    @SuppressWarnings("deprecation")
-    private static final Supplier<Attribute> MAX_MANA = RegistryHelper.holder(BuiltInRegistries.ATTRIBUTE, "irons_spellbooks", "max_mana");
-
-    @SuppressWarnings("deprecation")
-    private static final Supplier<Attribute> FAST_CAST = RegistryHelper.holder(BuiltInRegistries.ATTRIBUTE, "irons_spellbooks", "cast_time_reduction");
 
     public static ThrowableType<IronSpellGrenadeData, IronSpellGrenade> DATA_TYPE = ThrowableType.Builder
             .<IronSpellGrenadeData, IronSpellGrenade>of()
@@ -118,8 +99,10 @@ public class IronSpellGrenade extends ThrowableItemEntity {
     private int spellLevel = 1;
     private double spellPower = 1;
     private ItemStack grenadeItem;
-    private final Supplier<WeakReference<FakePlayer>> caster = Suppliers.memoize(() -> createCaster(level()));
+    private final Supplier<VirtualCaster> caster = Suppliers.memoize(() -> createCaster(level()));
     private final EventHandler handler = new EventHandler();
+    private final AtomicInteger isCasterJoiningLevel = new AtomicInteger();
+    private boolean casterCreated;
 
     public IronSpellGrenade(LivingEntity thrower, Level level, int lifeTime) {
         this(TYPE, thrower, level, lifeTime);
@@ -166,23 +149,33 @@ public class IronSpellGrenade extends ThrowableItemEntity {
     }
 
     @Override
+    public void tick() {
+        super.tick();
+        if (casterCreated) {
+            var caster = this.caster.get();
+            if (caster != null) {
+                caster.setPos(this.position());
+            }
+        }
+    }
+
+    @Override
     public void onDeath() {
         var spell = getSpell();
-        if (spell != null && !level().isClientSide) {
-            FakePlayer caster = this.caster.get().get();
+        if (spell != null && !level().isClientSide()) {
+            var caster = this.caster.get();
             if (caster == null) {
                 return;
             }
 
-            if (caster instanceof HateTransferable hateTransferable) {
-                Entity grenadeOwner = getOwner();
-                if (grenadeOwner != null) {
-                    hateTransferable.mtpa$setHateOwner(grenadeOwner);
-                }
+            Entity grenadeOwner = getOwner();
+            if (grenadeOwner != null) {
+                caster.mtpa$setHateOwner(grenadeOwner);
             }
 
             prepareCasting(caster, spell);
-            spell.attemptInitiateCast(grenadeItem, getSpellLevel(), level(), caster, CastSource.COMMAND, false, SpellSelectionManager.MAINHAND);
+            cast(caster, spell, getSpellLevel());
+            caster.beginDecay();
         }
 
         super.onDeath();
@@ -209,8 +202,21 @@ public class IronSpellGrenade extends ThrowableItemEntity {
         // 回满魔力
         var magicData = MagicData.getPlayerMagicData(caster);
         if (magicData != null) {
-            magicData.setMana(Float.MAX_VALUE);
+            // 设置自己为备选目标
+            if (magicData.getAdditionalCastData() == null) {
+                magicData.setAdditionalCastData(new TargetEntityCastData(caster));
+            }
         }
+    }
+
+    private static void cast(LivingEntity caster, AbstractSpell spell, int spellLevel) {
+        MagicData magicData = MagicData.getPlayerMagicData(caster);
+        if (!spell.checkPreCastConditions(caster.level(), spellLevel, caster, magicData)) {
+            return;
+        }
+
+        spell.onCast(caster.level(), spellLevel, caster, CastSource.COMMAND, magicData);
+        spell.onServerCastComplete(caster.level(), spellLevel, caster, magicData, false);
     }
 
     @Override
@@ -234,60 +240,42 @@ public class IronSpellGrenade extends ThrowableItemEntity {
             if (event.getEntity().level().isClientSide()) {
                 return;
             }
-            if (event.getEntity() == IronSpellGrenade.this || event.getEntity() instanceof FakePlayer) {
+            if (event.getEntity() == IronSpellGrenade.this || isCasterJoiningLevel.get() > 0) {
                 return;
             }
-            var caster = IronSpellGrenade.this.caster.get().get();
+            var caster = IronSpellGrenade.this.caster.get();
             if (caster == null) {
                 return;
             }
             if (event.getEntity() instanceof Projectile projectile && projectile.getOwner() == caster) {
                 double yCenterOffset = (getBbHeight() - projectile.getBbHeight()) / 2;
-                projectile.setPos(caster.position().add(0, yCenterOffset, 0));
+                projectile.setPos(position().add(0, yCenterOffset, 0));
                 var grenadeOwner = getOwner();
                 if (grenadeOwner != null) {
                     projectile.setOwner(grenadeOwner);
                 }
             }
         }
-
-        @SubscribeEvent
-        public void onPreCast(SpellPreCastEvent event) {
-            if (event.getEntity().level().isClientSide()) {
-                return;
-            }
-            var caster = IronSpellGrenade.this.caster.get().get();
-            if (caster == null || event.getEntity() != caster) {
-                return;
-            }
-            var magicData = MagicData.getPlayerMagicData(caster);
-            if (magicData.getAdditionalCastData() == null) {
-                magicData.setAdditionalCastData(new TargetEntityCastData(caster));
-            }
-        }
     }
 
-    private static final WeakReference<FakePlayer> NULL_CASTER = new WeakReference<>(null);
-    private static WeakReference<FakePlayer> createCaster(Level level) {
-        if (level.isClientSide() || !(level instanceof ServerLevel serverLevel)) {
-            return NULL_CASTER;
+    private @Nullable VirtualCaster createCaster(Level level) {
+        if (level.isClientSide()) {
+            return null;
         }
-        var id = UUID.randomUUID();
-        var name = "§§ Grenade Man %s §§".formatted(id.getMostSignificantBits() ^ id.getLeastSignificantBits());
-        return new WeakReference<>(setupPlayer(FakePlayerFactory.get(serverLevel, new GameProfile(id, name))));
+        VirtualCaster result = setupCaster(level, new VirtualCaster(level, getOwner()));
+        casterCreated = true;
+        return result;
     }
 
-    private static <P extends ServerPlayer> P setupPlayer(P player) {
-        setAttribute(player, MAX_MANA, 1000000);
-        setAttribute(player, FAST_CAST, 100);
-        ((ServerLevel) player.level()).addNewPlayer(player);
-        return player;
-    }
-
-    private static void setAttribute(LivingEntity holder, Supplier<Attribute> attribute, double value) {
-        var instance = holder.getAttribute(attribute.get());
-        if (instance != null) {
-            instance.setBaseValue(value);
+    private VirtualCaster setupCaster(Level level, @Nonnull VirtualCaster entity) {
+        if (!level.isClientSide()) {
+            try {
+                isCasterJoiningLevel.incrementAndGet();
+                level.addFreshEntity(entity);
+            } finally {
+                isCasterJoiningLevel.decrementAndGet();
+            }
         }
+        return entity;
     }
 }

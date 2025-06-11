@@ -11,6 +11,7 @@ import mod.chloeprime.modtechpoweredarsenal.common.lightland.MtpaL2Module;
 import mod.chloeprime.modtechpoweredarsenal.common.standard.enchantments.*;
 import mod.chloeprime.modtechpoweredarsenal.common.standard.entities.FangEmitter;
 import mod.chloeprime.modtechpoweredarsenal.common.standard.entities.Shockwave;
+import mod.chloeprime.modtechpoweredarsenal.common.standard.entities.VirtualCaster;
 import mod.chloeprime.modtechpoweredarsenal.common.standard.mob_effects.AntiRegenEffect;
 import mod.chloeprime.modtechpoweredarsenal.common.standard.mob_effects.RecombinationBuffEffect;
 import mod.chloeprime.modtechpoweredarsenal.common.standard.util.IfModLoadIngredient;
@@ -138,6 +139,15 @@ public final class MTPA {
                 () -> EntityType.Builder.<Shockwave>of(Shockwave::new, MobCategory.MISC)
                         .sized(0.5F, 1F / 16)
                         .clientTrackingRange(8)
+                        .fireImmune()
+                        .noSave()
+        );
+
+        public static final RegistryObject<EntityType<VirtualCaster>> VIRTUAL_CASTER = registerEntity(
+                "virtual_caster",
+                () -> EntityType.Builder.<VirtualCaster>of(VirtualCaster::new, MobCategory.MISC)
+                        .sized(0.5F, 0.5F)
+                        .clientTrackingRange(0)
                         .fireImmune()
                         .noSave()
         );

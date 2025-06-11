@@ -25,9 +25,6 @@ public class MixinAbstractSpell {
         if (projectile == attacker) {
             realProjectile = realAttacker;
         } else {
-            if (projectile instanceof Projectile ownable) {
-                ownable.setOwner(realAttacker);
-            }
             realProjectile = projectile;
         }
 
