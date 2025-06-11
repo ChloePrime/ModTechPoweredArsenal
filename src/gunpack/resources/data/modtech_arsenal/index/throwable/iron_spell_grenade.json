@@ -7,7 +7,7 @@
     "cooldown": 40,
     "cooldown_category": "modtech_arsenal:iron_spell",
     "put_away_time": 380,
-    "stack_size": 3,
+    "stack_size": 16,
     "entity": {
       "life_time": 60,
       "gravity": 0.07,
