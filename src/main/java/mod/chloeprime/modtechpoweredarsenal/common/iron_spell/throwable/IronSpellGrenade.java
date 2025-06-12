@@ -25,6 +25,7 @@ import net.minecraft.world.entity.ai.attributes.Attribute;
 import net.minecraft.world.entity.projectile.Projectile;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.Level;
+import net.minecraft.world.level.entity.EntityTypeTest;
 import net.minecraft.world.phys.AABB;
 import net.minecraft.world.phys.Vec3;
 import net.minecraftforge.common.MinecraftForge;
@@ -179,8 +180,25 @@ public class IronSpellGrenade extends ThrowableItemEntity {
 
     @Override
     public void onDeath() {
+        explode();
+        super.onDeath();
+    }
+
+    private void explode() {
         var spell = getSpell();
         if (spell != null && !level().isClientSide()) {
+            // buff自身类法术，以周围目标为施法者释放
+            if (spellIs(CAST_AS_NEARBY_TARGETS_ON_EXPLODE)) {
+                double range = 8;
+                var explodeCenter = getEyePosition();
+                var testArea = AABB.ofSize(getEyePosition(), 0, 0, 0).inflate(range + 2);
+                level().getEntities(EntityTypeTest.forClass(LivingEntity.class), testArea, IronSpellGrenade::canEntityBeSelected)
+                        .stream()
+                        .filter(entity -> minDistanceSqrTo(entity, explodeCenter) <= range * range)
+                        .forEach(entity -> forceCast(entity, spell, getSpellLevel()));
+                return;
+            }
+
             var caster = this.caster.get();
             if (caster == null) {
                 return;
@@ -198,8 +216,10 @@ public class IronSpellGrenade extends ThrowableItemEntity {
             });
             caster.beginDecay();
         }
+    }
 
-        super.onDeath();
+    private static boolean canEntityBeSelected(Entity entity) {
+        return entity.isPickable() && entity.isAlive();
     }
 
     private void prepareCasting(LivingEntity caster) {
@@ -220,7 +240,7 @@ public class IronSpellGrenade extends ThrowableItemEntity {
             double range = 8;
             var explodeCenter = getEyePosition();
             var testArea = AABB.ofSize(getEyePosition(), 0, 0, 0).inflate(range + 2);
-            stream = Stream.concat(stream, caster.level().getEntities(caster, testArea, entity -> entity.isPickable() && entity.isAlive())
+            stream = Stream.concat(stream, caster.level().getEntities(caster, testArea, IronSpellGrenade::canEntityBeSelected)
                     .stream()
                     .filter(et -> minDistanceSqrTo(et, explodeCenter) <= range * range)
                     .map(Entity::getEyePosition));
@@ -266,7 +286,7 @@ public class IronSpellGrenade extends ThrowableItemEntity {
                 .getAsDouble();
     }
 
-    private static void cast(LivingEntity caster, AbstractSpell spell, int spellLevel) {
+    private static void forceCast(LivingEntity caster, AbstractSpell spell, int spellLevel) {
         MagicData magicData = MagicData.getPlayerMagicData(caster);
         if (!spell.checkPreCastConditions(caster.level(), spellLevel, caster, magicData)) {
             return;
@@ -317,7 +337,7 @@ public class IronSpellGrenade extends ThrowableItemEntity {
     }
 
     private @Nullable VirtualCaster createCaster(Level level) {
-        if (level.isClientSide()) {
+        if (level.isClientSide() || spellIs(CAST_AS_NEARBY_TARGETS_ON_EXPLODE)) {
             return null;
         }
         VirtualCaster result = setupCaster(level, new VirtualCaster(level, getOwner()));
