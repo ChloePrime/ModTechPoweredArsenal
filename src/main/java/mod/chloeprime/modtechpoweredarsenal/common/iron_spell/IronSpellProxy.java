@@ -1,8 +1,7 @@
-package mod.chloeprime.modtechpoweredarsenal.common.iron_spell.throwable;
+package mod.chloeprime.modtechpoweredarsenal.common.iron_spell;
 
 import net.minecraft.nbt.CompoundTag;
 
-@SuppressWarnings("SpellCheckingInspection")
 public class IronSpellProxy {
     public static CompoundTag getImbuableItemNBT() {
         return ISB_IMBUABLE_NBT;

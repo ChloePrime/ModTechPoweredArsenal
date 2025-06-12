@@ -1,9 +1,9 @@
 package mod.chloeprime.modtechpoweredarsenal.client.iron_spell.throwable;
 
 import io.redspace.ironsspellbooks.api.events.ModifySpellLevelEvent;
-import io.redspace.ironsspellbooks.api.registry.SpellRegistry;
 import me.xjqsh.lrtactical.api.LrTacticalAPI;
 import me.xjqsh.lrtactical.api.item.IThrowable;
+import mod.chloeprime.modtechpoweredarsenal.common.iron_spell.IronSpellProxyImpl;
 import mod.chloeprime.modtechpoweredarsenal.common.iron_spell.throwable.IronSpellGrenadeData;
 import mod.chloeprime.modtechpoweredarsenal.common.standard.util.RegistryHelper;
 import net.minecraft.client.Minecraft;
@@ -39,12 +39,15 @@ public final class IronSpellGrenadeTooltip {
         if (spellPowerAttribute == null) {
             return;
         }
-        ifIsGrenade(event.getItemStack(), IronSpellGrenadeTooltip::onBeginTooltip0);
+        ifIsGrenade(event.getItemStack(), (player, data) -> onBeginTooltip0(player, event.getItemStack(), data));
     }
 
-    private static void onBeginTooltip0(Player player, IronSpellGrenadeData data) {
+    private static void onBeginTooltip0(Player player, ItemStack grenade, IronSpellGrenadeData data) {
         var spellPowerAttribute = Objects.requireNonNull(SPELL_POWER.get());
-        var spell = SpellRegistry.getSpell(data.getSpellId());
+        var spellData = IronSpellProxyImpl.getFirstSpell(grenade).orElse(null);
+        if (spellData == null) {
+            return;
+        }
         var attributeInstance = player.getAttribute(spellPowerAttribute);
         if (attributeInstance == null) {
             return;
@@ -54,7 +57,7 @@ public final class IronSpellGrenadeTooltip {
             return;
         }
         var newPower = new MutableDouble(oldPower);
-        data.adjustSpellPower(spell, 1, oldPower, _i -> {}, newPower::setValue);
+        data.adjustSpellPower(spellData.getSpell(), spellData.getLevel(), oldPower, _i -> {}, newPower::setValue);
 
         if (newPower.doubleValue() == oldPower) {
             return;

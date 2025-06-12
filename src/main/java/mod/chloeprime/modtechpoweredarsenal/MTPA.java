@@ -7,7 +7,7 @@ import com.tacz.guns.api.item.builder.AttachmentItemBuilder;
 import com.tacz.guns.api.item.builder.GunItemBuilder;
 import com.tacz.guns.resource.pojo.data.gun.Bolt;
 import com.tterrag.registrate.Registrate;
-import mod.chloeprime.modtechpoweredarsenal.common.iron_spell.throwable.IronSpellProxy;
+import mod.chloeprime.modtechpoweredarsenal.common.iron_spell.IronSpellProxy;
 import mod.chloeprime.modtechpoweredarsenal.common.lightland.MtpaL2Module;
 import mod.chloeprime.modtechpoweredarsenal.common.standard.LRTacProxy;
 import mod.chloeprime.modtechpoweredarsenal.common.standard.enchantments.*;

@@ -6,10 +6,10 @@ import io.redspace.ironsspellbooks.api.registry.SpellRegistry;
 import io.redspace.ironsspellbooks.api.spells.AbstractSpell;
 import io.redspace.ironsspellbooks.api.spells.CastSource;
 import io.redspace.ironsspellbooks.api.spells.ISpellContainer;
-import io.redspace.ironsspellbooks.api.spells.SpellData;
 import me.xjqsh.lrtactical.entity.ThrowableItemEntity;
 import me.xjqsh.lrtactical.item.throwable.ThrowableType;
 import me.xjqsh.lrtactical.resource.CommonAssetsManager;
+import mod.chloeprime.modtechpoweredarsenal.common.iron_spell.IronSpellProxyImpl;
 import mod.chloeprime.modtechpoweredarsenal.common.standard.entities.VirtualCaster;
 import mod.chloeprime.modtechpoweredarsenal.common.standard.util.MoreMth;
 import mod.chloeprime.modtechpoweredarsenal.common.standard.util.RegistryHelper;
@@ -80,11 +80,10 @@ public class IronSpellGrenade extends ThrowableItemEntity {
         if (!ISpellContainer.isSpellContainer(stack)) {
             return false;
         }
-        var container = ISpellContainer.get(stack).getActiveSpells();
-        if (container.isEmpty()) {
+        var spellStack = IronSpellProxyImpl.getFirstSpell(stack).orElse(null);
+        if (spellStack == null) {
             return false;
         }
-        SpellData spellStack = container.get(0);
         AbstractSpell spell = spellStack.getSpell();
         setSpell(spell);
 
