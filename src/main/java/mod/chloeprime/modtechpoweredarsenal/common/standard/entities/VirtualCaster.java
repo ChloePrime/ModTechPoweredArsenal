@@ -26,6 +26,7 @@ import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.LevelAccessor;
+import net.minecraft.world.level.gameevent.GameEvent;
 import net.minecraft.world.level.material.PushReaction;
 import net.minecraft.world.phys.Vec3;
 import net.minecraftforge.common.ForgeMod;
@@ -86,11 +87,10 @@ public class VirtualCaster extends AbstractSpellCastingMob implements TraceableE
                 for (int i = 0; i < slaveCount; i++) {
                     var slave = new VirtualCaster(level(), getOwner());
                     slave.isSlave = true;
-                    slave.setPos(this.position());
-                    slave.decaying = this.decaying;
-                    slave.ticksDecayed = this.ticksDecayed;
                     level().addFreshEntity(slave);
+                    slave.setPos(this.position());
                     slave.cast(spell, spellLevel);
+                    slave.beginDecay();
                 }
             }
         } else {
@@ -250,6 +250,12 @@ public class VirtualCaster extends AbstractSpellCastingMob implements TraceableE
     @Override
     public boolean hurt(DamageSource pSource, float pAmount) {
         return false;
+    }
+
+    @Override
+    public void kill() {
+        remove(Entity.RemovalReason.KILLED);
+        gameEvent(GameEvent.ENTITY_DIE);
     }
 
     @Override
