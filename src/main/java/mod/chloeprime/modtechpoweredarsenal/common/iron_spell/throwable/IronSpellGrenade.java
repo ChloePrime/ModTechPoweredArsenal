@@ -205,7 +205,6 @@ public class IronSpellGrenade extends ThrowableItemEntity {
 
     private void prepareCasting(LivingEntity caster) {
         // 位置和朝向
-        caster.setPos(this.position());
         centerPos = position().add(0, 0.25, 0);
         keepOwner = spellIs(KEEP_OWNER_AS_CASTER);
 
