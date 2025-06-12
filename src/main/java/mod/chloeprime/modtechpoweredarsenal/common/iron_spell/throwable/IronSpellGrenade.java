@@ -168,7 +168,7 @@ public class IronSpellGrenade extends ThrowableItemEntity {
         if (casterCreated) {
             var caster = this.caster.get();
             if (caster != null) {
-                caster.setPos(this.position());
+                caster.setPos(this.position().add(0, 0.25, 0));
             }
         }
         if (!level().isClientSide() && spell != null) {
