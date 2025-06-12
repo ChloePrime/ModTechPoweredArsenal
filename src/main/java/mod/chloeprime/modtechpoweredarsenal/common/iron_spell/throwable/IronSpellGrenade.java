@@ -235,28 +235,38 @@ public class IronSpellGrenade extends ThrowableItemEntity {
     }
 
     private Stream<Vec3> gatherCastTargets(LivingEntity caster) {
+        Stream<Vec3> stream = Stream.empty();
+        boolean useFallback = true;
         if (spellIs(ITERATE_NEARBY_TARGETS_ON_EXPLODE)) {
             double range = 8;
             var explodeCenter = getEyePosition();
             var testArea = AABB.ofSize(getEyePosition(), 0, 0, 0).inflate(range + 2);
-            return caster.level().getEntities(caster, testArea, entity -> entity.isPickable() && entity.isAlive())
+            stream = Stream.concat(stream, caster.level().getEntities(caster, testArea, entity -> entity.isPickable() && entity.isAlive())
                     .stream()
                     .filter(et -> minDistanceSqrTo(et, explodeCenter) <= range * range)
-                    .map(Entity::getEyePosition);
-        } else if (spellIs(ITERATE_RANDOM_POSITION_ON_EXPLODE)) {
+                    .map(Entity::getEyePosition));
+            useFallback = false;
+        }
+
+        if (spellIs(ITERATE_RANDOM_POSITION_ON_EXPLODE)) {
             // 让施法中心上移一点，达到些微的空爆效果，
             // 以在不大幅增加弹片数量的情况下改善对地面目标的命中率
             centerPos = centerPos.add(0, 0.75, 0);
-            int shrapnel = 32;
+            int shrapnel = 8;
             var explodeCenter = getEyePosition();
-            return IntStream
+            stream = Stream.concat(stream, IntStream
                     .range(0, shrapnel)
-                    .mapToObj(_i -> explodeCenter.add(randomUnitVector(caster.getRandom()).scale(16)));
-        } else {
+                    .mapToObj(_i -> explodeCenter.add(randomUnitVector(caster.getRandom()).scale(16))));
+            useFallback = false;
+        }
+
+        if (useFallback) {
             var lookTarget = shouldBounce()
                     ? caster.getEyePosition().add(0, -1, 0)
                     : caster.getEyePosition().add(this.getDeltaMovement().scale(-1));
             return Stream.of(lookTarget);
+        } else {
+            return stream;
         }
     }
 

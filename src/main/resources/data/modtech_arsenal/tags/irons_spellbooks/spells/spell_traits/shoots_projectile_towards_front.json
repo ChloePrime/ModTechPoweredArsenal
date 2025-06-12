@@ -1,6 +1,7 @@
 {
   "replace": false,
   "values": [
-    "irons_spellbooks:poison_arrow"
+    "modtech_arsenal:spell_traits/sniper",
+    "irons_spellbooks:ball_lightning"
   ]
 }

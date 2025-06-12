@@ -4,6 +4,7 @@
   "values": [
     "#modtech_arsenal:spell_traits/requires_target",
     "#modtech_arsenal:spell_traits/low_radius_aoe",
+    "#modtech_arsenal:spell_traits/sniper",
     "irons_spellbooks:stomp"
   ]
 }
