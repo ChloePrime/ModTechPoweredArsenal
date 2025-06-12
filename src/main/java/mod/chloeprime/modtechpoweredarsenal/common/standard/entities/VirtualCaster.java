@@ -2,10 +2,10 @@ package mod.chloeprime.modtechpoweredarsenal.common.standard.entities;
 
 import com.google.common.base.MoreObjects;
 import io.redspace.ironsspellbooks.api.magic.MagicData;
+import io.redspace.ironsspellbooks.api.registry.AttributeRegistry;
 import io.redspace.ironsspellbooks.api.spells.AbstractSpell;
 import io.redspace.ironsspellbooks.api.spells.CastSource;
 import io.redspace.ironsspellbooks.api.spells.CastType;
-import io.redspace.ironsspellbooks.api.spells.SpellData;
 import io.redspace.ironsspellbooks.capabilities.magic.TargetEntityCastData;
 import io.redspace.ironsspellbooks.entity.mobs.abstract_spell_casting_mob.AbstractSpellCastingMob;
 import mod.chloeprime.modtechpoweredarsenal.MTPA;
@@ -34,6 +34,7 @@ import net.minecraftforge.event.entity.EntityAttributeCreationEvent;
 import net.minecraftforge.eventbus.api.SubscribeEvent;
 import net.minecraftforge.fml.common.Mod;
 
+import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
 import javax.annotation.ParametersAreNonnullByDefault;
 import java.util.Optional;
@@ -85,10 +86,7 @@ public class VirtualCaster extends AbstractSpellCastingMob implements TraceableE
                 // 让场面更壮观一点
                 var slaveCount = getRandom().nextInt(4, 7) - 1;
                 for (int i = 0; i < slaveCount; i++) {
-                    var slave = new VirtualCaster(level(), getOwner());
-                    slave.isSlave = true;
-                    level().addFreshEntity(slave);
-                    slave.setPos(this.position());
+                    var slave = createSlaveCaster();
                     slave.cast(spell, spellLevel);
                     slave.beginDecay();
                 }
@@ -108,6 +106,19 @@ public class VirtualCaster extends AbstractSpellCastingMob implements TraceableE
 
     public void beginDecay() {
         decaying = true;
+    }
+
+    public @Nonnull VirtualCaster createSlaveCaster() {
+        var slave = new VirtualCaster(level(), getOwner());
+        slave.isSlave = true;
+        var spellPowerAttribute = AttributeRegistry.SPELL_POWER.get();
+        var spellPowerInstance = slave.getAttribute(spellPowerAttribute);
+        if (spellPowerInstance != null) {
+            spellPowerInstance.setBaseValue(this.getAttributeValue(spellPowerAttribute));
+        }
+        level().addFreshEntity(slave);
+        slave.setPos(this.position());
+        return slave;
     }
 
     @Override
