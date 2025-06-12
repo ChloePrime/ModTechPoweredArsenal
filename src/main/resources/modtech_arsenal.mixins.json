@@ -6,6 +6,7 @@
   "refmap": "modtech_arsenal.refmap.json",
   "mixins": [
     "iron_spell.MixinAbstractSpell",
+    "iron_spell.MixinSpellRegistry",
     "minecraft.DamageSourcesAccessor",
     "minecraft.MakeGunEnchantableMixin",
     "minecraft.MixinDamageSource",

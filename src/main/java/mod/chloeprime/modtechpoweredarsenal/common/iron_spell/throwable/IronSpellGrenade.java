@@ -16,6 +16,8 @@ import mod.chloeprime.modtechpoweredarsenal.common.standard.util.RegistryHelper;
 import net.minecraft.commands.arguments.EntityAnchorArgument;
 import net.minecraft.core.registries.BuiltInRegistries;
 import net.minecraft.resources.ResourceLocation;
+import net.minecraft.tags.TagKey;
+import net.minecraft.util.RandomSource;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.entity.LivingEntity;
@@ -24,6 +26,8 @@ import net.minecraft.world.entity.ai.attributes.Attribute;
 import net.minecraft.world.entity.projectile.Projectile;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.Level;
+import net.minecraft.world.phys.AABB;
+import net.minecraft.world.phys.Vec3;
 import net.minecraftforge.common.MinecraftForge;
 import net.minecraftforge.event.entity.EntityJoinLevelEvent;
 import net.minecraftforge.eventbus.api.SubscribeEvent;
@@ -33,6 +37,10 @@ import javax.annotation.Nullable;
 import java.util.Optional;
 import java.util.concurrent.atomic.AtomicInteger;
 import java.util.function.Supplier;
+import java.util.stream.IntStream;
+import java.util.stream.Stream;
+
+import static mod.chloeprime.modtechpoweredarsenal.common.iron_spell.throwable.IronSpellGrenadeCompatibilityTags.*;
 
 public class IronSpellGrenade extends ThrowableItemEntity {
     public static EntityType<IronSpellGrenade> TYPE = EntityType.Builder.<IronSpellGrenade>of(IronSpellGrenade::new, MobCategory.MISC)
@@ -103,6 +111,8 @@ public class IronSpellGrenade extends ThrowableItemEntity {
     private final EventHandler handler = new EventHandler();
     private final AtomicInteger isCasterJoiningLevel = new AtomicInteger();
     private boolean casterCreated;
+    private boolean keepOwner;
+    private Vec3 centerPos = Vec3.ZERO;
 
     public IronSpellGrenade(LivingEntity thrower, Level level, int lifeTime) {
         this(TYPE, thrower, level, lifeTime);
@@ -148,6 +158,15 @@ public class IronSpellGrenade extends ThrowableItemEntity {
         this.grenadeItem = stack.copy();
     }
 
+
+    private boolean spellIs(TagKey<AbstractSpell> tag) {
+        return level().registryAccess()
+                .registry(SpellRegistry.SPELL_REGISTRY_KEY)
+                .flatMap(reg -> reg.getResourceKey(this.spell).flatMap(reg::getHolder))
+                .filter(holder -> holder.is(tag))
+                .isPresent();
+    }
+
     @Override
     public void tick() {
         super.tick();
@@ -155,6 +174,11 @@ public class IronSpellGrenade extends ThrowableItemEntity {
             var caster = this.caster.get();
             if (caster != null) {
                 caster.setPos(this.position());
+            }
+        }
+        if (!level().isClientSide() && spell != null) {
+            if (tickCount > 0 && shouldBounce() && spellIs(REQUIRES_ON_GROUND) && getDeltaMovement().lengthSqr() > 0.04) {
+                tickCount--;
             }
         }
     }
@@ -174,7 +198,10 @@ public class IronSpellGrenade extends ThrowableItemEntity {
             }
 
             prepareCasting(caster, spell);
-            cast(caster, spell, getSpellLevel());
+            gatherCastTargets(caster).forEach(targetPos -> {
+                caster.lookAt(EntityAnchorArgument.Anchor.EYES, targetPos);
+                cast(caster, spell, getSpellLevel());
+            });
             caster.beginDecay();
         }
 
@@ -184,10 +211,8 @@ public class IronSpellGrenade extends ThrowableItemEntity {
     private void prepareCasting(LivingEntity caster, @Nonnull AbstractSpell spell) {
         // 位置和朝向
         caster.setPos(this.position());
-        var lookTarget = shouldBounce()
-                ? caster.getEyePosition().add(0, -1, 0)
-                : caster.getEyePosition().add(this.getDeltaMovement().scale(-1));
-        caster.lookAt(EntityAnchorArgument.Anchor.EYES, lookTarget);
+        centerPos = position().add(0, 0.25, 0);
+        keepOwner = spellIs(KEEP_OWNER_AS_CASTER);
 
         // 设置魔法强度
         Optional.ofNullable(SPELL_POWER.get())
@@ -207,6 +232,57 @@ public class IronSpellGrenade extends ThrowableItemEntity {
                 magicData.setAdditionalCastData(new TargetEntityCastData(caster));
             }
         }
+    }
+
+    private Stream<Vec3> gatherCastTargets(LivingEntity caster) {
+        if (spellIs(ITERATE_NEARBY_TARGETS_ON_EXPLODE)) {
+            double range = 8;
+            var explodeCenter = getEyePosition();
+            var testArea = AABB.ofSize(getEyePosition(), 0, 0, 0).inflate(range + 2);
+            return caster.level().getEntities(caster, testArea, entity -> entity.isPickable() && entity.isAlive())
+                    .stream()
+                    .filter(et -> minDistanceSqrTo(et, explodeCenter) <= range * range)
+                    .map(Entity::getEyePosition);
+        } else if (spellIs(ITERATE_RANDOM_POSITION_ON_EXPLODE)) {
+            // 让施法中心上移一点，达到些微的空爆效果，
+            // 以在不大幅增加弹片数量的情况下改善对地面目标的命中率
+            centerPos = centerPos.add(0, 0.75, 0);
+            int shrapnel = 32;
+            var explodeCenter = getEyePosition();
+            return IntStream
+                    .range(0, shrapnel)
+                    .mapToObj(_i -> explodeCenter.add(randomUnitVector(caster.getRandom()).scale(16)));
+        } else {
+            var lookTarget = shouldBounce()
+                    ? caster.getEyePosition().add(0, -1, 0)
+                    : caster.getEyePosition().add(this.getDeltaMovement().scale(-1));
+            return Stream.of(lookTarget);
+        }
+    }
+
+    private static Vec3 randomUnitVector(RandomSource random) {
+        return new Vec3(
+                random.nextGaussian(),
+                random.nextGaussian(),
+                random.nextGaussian()
+        ).normalize();
+    }
+
+    private static double minDistanceSqrTo(Entity entity, Vec3 pos) {
+        var bb = entity.getBoundingBox();
+        return Stream.of(
+                        new Vec3(bb.minX, bb.minY, bb.minZ),
+                        new Vec3(bb.minX, bb.minY, bb.maxZ),
+                        new Vec3(bb.minX, bb.maxY, bb.minZ),
+                        new Vec3(bb.minX, bb.maxY, bb.maxZ),
+                        new Vec3(bb.maxX, bb.minY, bb.minZ),
+                        new Vec3(bb.maxX, bb.minY, bb.maxZ),
+                        new Vec3(bb.maxX, bb.maxY, bb.minZ),
+                        new Vec3(bb.maxX, bb.maxY, bb.maxZ)
+                )
+                .mapToDouble(vertex -> pos.distanceToSqr(pos))
+                .min()
+                .getAsDouble();
     }
 
     private static void cast(LivingEntity caster, AbstractSpell spell, int spellLevel) {
@@ -248,11 +324,12 @@ public class IronSpellGrenade extends ThrowableItemEntity {
                 return;
             }
             if (event.getEntity() instanceof Projectile projectile && projectile.getOwner() == caster) {
-                double yCenterOffset = (getBbHeight() - projectile.getBbHeight()) / 2;
-                projectile.setPos(position().add(0, yCenterOffset, 0));
-                var grenadeOwner = getOwner();
-                if (grenadeOwner != null) {
-                    projectile.setOwner(grenadeOwner);
+                projectile.setPos(centerPos.add(0, -projectile.getBbHeight() / 2, 0));
+                if (!keepOwner) {
+                    var grenadeOwner = getOwner();
+                    if (grenadeOwner != null) {
+                        projectile.setOwner(grenadeOwner);
+                    }
                 }
             }
         }

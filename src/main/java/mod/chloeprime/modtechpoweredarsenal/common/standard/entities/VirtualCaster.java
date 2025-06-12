@@ -4,6 +4,7 @@ import com.google.common.base.MoreObjects;
 import mod.chloeprime.modtechpoweredarsenal.MTPA;
 import mod.chloeprime.modtechpoweredarsenal.common.standard.internal.HateTransferable;
 import net.minecraft.MethodsReturnNonnullByDefault;
+import net.minecraft.network.chat.Component;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.world.damagesource.DamageSource;
 import net.minecraft.world.entity.*;
@@ -20,6 +21,7 @@ import net.minecraftforge.fml.common.Mod;
 
 import javax.annotation.Nullable;
 import javax.annotation.ParametersAreNonnullByDefault;
+import java.util.Optional;
 import java.util.UUID;
 
 @ParametersAreNonnullByDefault
@@ -106,6 +108,19 @@ public class VirtualCaster extends Mob implements TraceableEntity, HateTransfera
     }
 
     // Entity
+
+    @Override
+    public Component getDisplayName() {
+        return Optional.ofNullable(getOwner())
+                .filter(owner -> owner != this)
+                .map(Entity::getDisplayName)
+                .orElseGet(super::getDisplayName);
+    }
+
+    @Override
+    public boolean isPickable() {
+        return false;
+    }
 
     @Override
     public boolean isInvulnerableTo(DamageSource source) {

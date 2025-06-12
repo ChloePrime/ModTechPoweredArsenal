@@ -1,0 +1,8 @@
+{
+  "comment": "使用拥有该标签的法术的法术手雷在落地前不会爆炸",
+  "replace": false,
+  "values": [
+    "irons_spellbooks:stomp",
+    "irons_spellbooks:magma_bomb"
+  ]
+}

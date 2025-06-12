@@ -14,7 +14,8 @@
       "should_bounce": true,
       "bounceFactor": 0.0625
     },
-    "spell": "irons_spellbooks:black_hole",
+    "spell": "irons_spellbooks:lightning_bolt",
+    "spell_level": 1,
     "school_affinity_buff": 2,
     "school_power_buff": 0.0
   }
