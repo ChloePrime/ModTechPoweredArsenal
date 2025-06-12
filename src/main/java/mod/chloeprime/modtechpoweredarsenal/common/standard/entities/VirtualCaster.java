@@ -210,6 +210,12 @@ public class VirtualCaster extends AbstractSpellCastingMob implements TraceableE
     }
 
     @Override
+    public boolean isAlliedTo(Entity target) {
+        Entity owner = getOwner();
+        return owner != null ? (owner == target || owner.isAlliedTo(target)) : super.isAlliedTo(target);
+    }
+
+    @Override
     public boolean isPickable() {
         return false;
     }
