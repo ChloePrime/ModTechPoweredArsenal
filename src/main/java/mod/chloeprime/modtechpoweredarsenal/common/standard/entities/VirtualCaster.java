@@ -5,6 +5,7 @@ import io.redspace.ironsspellbooks.api.magic.MagicData;
 import io.redspace.ironsspellbooks.api.spells.AbstractSpell;
 import io.redspace.ironsspellbooks.api.spells.CastSource;
 import io.redspace.ironsspellbooks.api.spells.CastType;
+import io.redspace.ironsspellbooks.api.spells.SpellData;
 import io.redspace.ironsspellbooks.capabilities.magic.TargetEntityCastData;
 import io.redspace.ironsspellbooks.entity.mobs.abstract_spell_casting_mob.AbstractSpellCastingMob;
 import mod.chloeprime.modtechpoweredarsenal.MTPA;
@@ -18,6 +19,9 @@ import net.minecraft.world.damagesource.DamageSource;
 import net.minecraft.world.entity.*;
 import net.minecraft.world.entity.ai.attributes.AttributeSupplier;
 import net.minecraft.world.entity.ai.attributes.Attributes;
+import net.minecraft.world.entity.ai.control.JumpControl;
+import net.minecraft.world.entity.ai.control.LookControl;
+import net.minecraft.world.entity.ai.control.MoveControl;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.Level;
@@ -47,6 +51,21 @@ public class VirtualCaster extends AbstractSpellCastingMob implements TraceableE
 
     public VirtualCaster(EntityType<? extends AbstractSpellCastingMob> entityType, Level level) {
         super(entityType, level);
+        lookControl = new LookControl(this) {
+            @Override
+            public void tick() {
+            }
+        };
+        moveControl = new MoveControl(this) {
+            @Override
+            public void tick() {
+            }
+        };
+        jumpControl = new JumpControl(this) {
+            @Override
+            public void tick() {
+            }
+        };
     }
 
     private @Nullable UUID ownerUUID;
@@ -67,7 +86,7 @@ public class VirtualCaster extends AbstractSpellCastingMob implements TraceableE
             if (magicData.getAdditionalCastData() == null) {
                 magicData.setAdditionalCastData(new TargetEntityCastData(this));
             }
-            spell.onCast(level(), spellLevel, this, CastSource.COMMAND, magicData);
+            spell.onCast(level(), spellLevel, this, CastSource.MOB, magicData);
             spell.onServerCastComplete(level(), spellLevel, this, magicData, false);
         }
     }
@@ -86,10 +105,24 @@ public class VirtualCaster extends AbstractSpellCastingMob implements TraceableE
                 }
             }
             if (isCasting() && randomizeHeadDirection) {
-                lookAt(Anchor.EYES, getEyePosition().add(MoreMth.randomUnitVector(getRandom()).scale(16)));
+                randomizeHeadDirection();
             }
         }
         super.tick();
+        if (!level().isClientSide() && isCasting()) {
+            MagicData magicData = getMagicData();
+            SpellData current = magicData.getCastingSpell();
+            if (current.getSpell().getCastType() == CastType.CONTINUOUS) {
+                for (int i = 0; i < 7; i++) {
+                    randomizeHeadDirection();
+                    current.getSpell().onCast(level(), current.getLevel(), this, CastSource.MOB, magicData);
+                }
+            }
+        }
+    }
+
+    public void randomizeHeadDirection() {
+        lookAt(Anchor.EYES, getEyePosition().add(MoreMth.randomUnitVector(getRandom()).scale(16)));
     }
 
     public void setOwner(@Nullable Entity owner) {
