@@ -10,9 +10,24 @@ import java.util.function.DoubleConsumer;
 import java.util.function.IntConsumer;
 
 public class IronSpellGrenadeData extends ThrowableData {
+    /**
+     * 默认法术。这里填入的法术不受学派增益影响
+     */
     @SuppressWarnings("unused")
     private ResourceLocation spell;
 
+    /**
+     * 默认法术的等级。
+     * 这里填入的法术等级不受学派增益影响
+     */
+    @SuppressWarnings({"FieldMayBeFinal", "FieldCanBeLocal"})
+    private int spell_level = 1;
+
+    /**
+     * 该手雷的专场学派。
+     * 注入学派相同的法术会使得法术大幅增强，注入不同学派的法术会使得法术被大幅削弱。
+     * 为空时则增强所有学派的法术。
+     */
     @SuppressWarnings("unused")
     private @Nullable ResourceLocation school;
 
@@ -37,8 +52,11 @@ public class IronSpellGrenadeData extends ThrowableData {
     @SuppressWarnings({"FieldMayBeFinal", "FieldCanBeLocal"})
     private boolean debuff_nonmatching_school = true;
 
+    /**
+     * 选取周围目标进行循环施法时候的选取范围（半径）
+     */
     @SuppressWarnings({"FieldMayBeFinal", "FieldCanBeLocal"})
-    private int spell_level = 1;
+    private double iterative_casting_range = 6;
 
     public final ResourceLocation getSpellId() {
         return spell;
@@ -62,6 +80,10 @@ public class IronSpellGrenadeData extends ThrowableData {
 
     public boolean willDebuffNonmatchingSchool() {
         return debuff_nonmatching_school;
+    }
+
+    public double getIterativeCastingRange() {
+        return iterative_casting_range;
     }
 
     public void adjustSpellPower(AbstractSpell actualSpell, int originalSpellLevel, double originalPower, IntConsumer outLevel, DoubleConsumer outPower) {

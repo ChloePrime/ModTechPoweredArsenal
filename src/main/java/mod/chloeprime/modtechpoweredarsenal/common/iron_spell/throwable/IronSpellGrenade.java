@@ -68,6 +68,7 @@ public class IronSpellGrenade extends ThrowableItemEntity {
         entity.setGravity(data.getEntityData().getGravity());
         entity.setBounceFactor(data.getEntityData().getBounceFactor());
         entity.setShouldBounce(data.getEntityData().isShouldBounce());
+        entity.setIterativeCastingRange(data.getIterativeCastingRange());
         entity.setGrenadeItem(stack);
 
         if (!entity.loadSpellOverrideFromNBT(stack, thrower, data)) {
@@ -94,9 +95,11 @@ public class IronSpellGrenade extends ThrowableItemEntity {
         double casterSchoolSpellPower = spell.getSchoolType().getPowerFor(caster);
         double casterSpellPower = casterGenericSpellPower * casterSchoolSpellPower;
 
+        int casterSpellLevel = spell.getLevelFor(spellStack.getLevel(), caster);
+
         // 无学派手雷的buff会对所有学派的法术生效
         data.adjustSpellPower(
-                spell, spellStack.getLevel(), casterSpellPower,
+                spell, casterSpellLevel, casterSpellPower,
                 this::setSpellLevel, this::setSpellPower
         );
         return true;
@@ -105,6 +108,8 @@ public class IronSpellGrenade extends ThrowableItemEntity {
     private AbstractSpell spell = SpellRegistry.none();
     private int spellLevel = 1;
     private double spellPower = 1;
+
+    private double iterativeCastingRange = 6;
     private ItemStack grenadeItem;
     private final Supplier<VirtualCaster> caster = Suppliers.memoize(() -> createCaster(level()));
     private final EventHandler handler = new EventHandler();
@@ -137,6 +142,10 @@ public class IronSpellGrenade extends ThrowableItemEntity {
         return spellPower;
     }
 
+    public double getIterativeCastingRange() {
+        return iterativeCastingRange;
+    }
+
     public void setSpell(AbstractSpell spell) {
         this.spell = spell;
     }
@@ -151,6 +160,10 @@ public class IronSpellGrenade extends ThrowableItemEntity {
 
     public void setSpellPower(double spellPower) {
         this.spellPower = spellPower;
+    }
+
+    public void setIterativeCastingRange(double iterativeCastingRange) {
+        this.iterativeCastingRange = iterativeCastingRange;
     }
 
     private void setGrenadeItem(ItemStack stack) {
@@ -189,7 +202,7 @@ public class IronSpellGrenade extends ThrowableItemEntity {
         if (spell != null && !level().isClientSide()) {
             // buff自身类法术，以周围目标为施法者释放
             if (spellIs(CAST_AS_NEARBY_TARGETS_ON_EXPLODE)) {
-                double range = 8;
+                double range = getIterativeCastingRange();
                 var explodeCenter = getEyePosition();
                 var testArea = AABB.ofSize(getEyePosition(), 0, 0, 0).inflate(range + 2);
                 level().getEntities(EntityTypeTest.forClass(LivingEntity.class), testArea, IronSpellGrenade::canEntityBeSelected)
@@ -237,7 +250,7 @@ public class IronSpellGrenade extends ThrowableItemEntity {
         Stream<Vec3> stream = Stream.empty();
         boolean useFallback = true;
         if (spellIs(ITERATE_NEARBY_TARGETS_ON_EXPLODE)) {
-            double range = 8;
+            double range = getIterativeCastingRange();
             var explodeCenter = getEyePosition();
             var testArea = AABB.ofSize(getEyePosition(), 0, 0, 0).inflate(range + 2);
             stream = Stream.concat(stream, caster.level().getEntities(caster, testArea, IronSpellGrenade::canEntityBeSelected)
