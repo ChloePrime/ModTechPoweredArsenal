@@ -1,9 +1,17 @@
 package mod.chloeprime.modtechpoweredarsenal.common.standard.entities;
 
 import com.google.common.base.MoreObjects;
+import io.redspace.ironsspellbooks.api.magic.MagicData;
+import io.redspace.ironsspellbooks.api.spells.AbstractSpell;
+import io.redspace.ironsspellbooks.api.spells.CastSource;
+import io.redspace.ironsspellbooks.api.spells.CastType;
+import io.redspace.ironsspellbooks.capabilities.magic.TargetEntityCastData;
+import io.redspace.ironsspellbooks.entity.mobs.abstract_spell_casting_mob.AbstractSpellCastingMob;
 import mod.chloeprime.modtechpoweredarsenal.MTPA;
 import mod.chloeprime.modtechpoweredarsenal.common.standard.internal.HateTransferable;
+import mod.chloeprime.modtechpoweredarsenal.common.standard.util.MoreMth;
 import net.minecraft.MethodsReturnNonnullByDefault;
+import net.minecraft.commands.arguments.EntityAnchorArgument.Anchor;
 import net.minecraft.network.chat.Component;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.world.damagesource.DamageSource;
@@ -13,7 +21,9 @@ import net.minecraft.world.entity.ai.attributes.Attributes;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.Level;
+import net.minecraft.world.level.LevelAccessor;
 import net.minecraft.world.level.material.PushReaction;
+import net.minecraft.world.phys.Vec3;
 import net.minecraftforge.common.ForgeMod;
 import net.minecraftforge.event.entity.EntityAttributeCreationEvent;
 import net.minecraftforge.eventbus.api.SubscribeEvent;
@@ -26,7 +36,7 @@ import java.util.UUID;
 
 @ParametersAreNonnullByDefault
 @MethodsReturnNonnullByDefault
-public class VirtualCaster extends Mob implements TraceableEntity, HateTransferable {
+public class VirtualCaster extends AbstractSpellCastingMob implements TraceableEntity, HateTransferable {
     public VirtualCaster(Level level, @Nullable Entity owner) {
         this(MTPA.Entities.VIRTUAL_CASTER.get(), level);
         setOwner(owner);
@@ -35,7 +45,7 @@ public class VirtualCaster extends Mob implements TraceableEntity, HateTransfera
         }
     }
 
-    public VirtualCaster(EntityType<? extends Mob> entityType, Level level) {
+    public VirtualCaster(EntityType<? extends AbstractSpellCastingMob> entityType, Level level) {
         super(entityType, level);
     }
 
@@ -43,6 +53,24 @@ public class VirtualCaster extends Mob implements TraceableEntity, HateTransfera
     private @Nullable Entity cachedOwner;
     private int ticksDecayed;
     private boolean decaying;
+    private boolean randomizeHeadDirection;
+
+    public void cast(AbstractSpell spell, int spellLevel) {
+        if (spell.getCastType() == CastType.CONTINUOUS) {
+            initiateCastSpell(spell, spellLevel);
+            randomizeHeadDirection = true;
+        } else {
+            MagicData magicData = MagicData.getPlayerMagicData(this);
+            if (!spell.checkPreCastConditions(level(), spellLevel, this, magicData)) {
+                return;
+            }
+            if (magicData.getAdditionalCastData() == null) {
+                magicData.setAdditionalCastData(new TargetEntityCastData(this));
+            }
+            spell.onCast(level(), spellLevel, this, CastSource.COMMAND, magicData);
+            spell.onServerCastComplete(level(), spellLevel, this, magicData, false);
+        }
+    }
 
     public void beginDecay() {
         decaying = true;
@@ -50,15 +78,18 @@ public class VirtualCaster extends Mob implements TraceableEntity, HateTransfera
 
     @Override
     public void tick() {
-        if (level().isClientSide()) {
-            return;
-        }
-        if (decaying) {
-            ticksDecayed++;
-            if (ticksDecayed > 200) {
-                discard();
+        if (!level().isClientSide()) {
+            if (decaying) {
+                ticksDecayed++;
+                if (ticksDecayed > 200) {
+                    discard();
+                }
+            }
+            if (isCasting() && randomizeHeadDirection) {
+                lookAt(Anchor.EYES, getEyePosition().add(MoreMth.randomUnitVector(getRandom()).scale(16)));
             }
         }
+        super.tick();
     }
 
     public void setOwner(@Nullable Entity owner) {
@@ -118,6 +149,11 @@ public class VirtualCaster extends Mob implements TraceableEntity, HateTransfera
     }
 
     @Override
+    protected float getStandingEyeHeight(Pose pPose, EntityDimensions pDimensions) {
+        return 0.5F;
+    }
+
+    @Override
     public boolean isPickable() {
         return false;
     }
@@ -144,6 +180,15 @@ public class VirtualCaster extends Mob implements TraceableEntity, HateTransfera
     }
 
     @Override
+    public boolean isPushable() {
+        return false;
+    }
+
+    @Override
+    public void push(Entity pEntity) {
+    }
+
+    @Override
     public boolean isIgnoringBlockTriggers() {
         return true;
     }
@@ -151,6 +196,15 @@ public class VirtualCaster extends Mob implements TraceableEntity, HateTransfera
     @Override
     public boolean isNoGravity() {
         return true;
+    }
+
+    @Override
+    public Vec3 getDeltaMovement() {
+        return Vec3.ZERO;
+    }
+
+    @Override
+    public void setDeltaMovement(Vec3 pDeltaMovement) {
     }
 
     // LivingEntity
@@ -161,7 +215,11 @@ public class VirtualCaster extends Mob implements TraceableEntity, HateTransfera
     }
 
     @Override
-    public void push(Entity pEntity) {
+    protected void doPush(Entity pEntity) {
+    }
+
+    @Override
+    protected void pushEntities() {
     }
 
     @Override
@@ -171,17 +229,33 @@ public class VirtualCaster extends Mob implements TraceableEntity, HateTransfera
     // Mob
 
     @Override
-    public boolean isNoAi() {
-        return true;
-    }
-
-    @Override
     public boolean removeWhenFarAway(double pDistanceToClosestPlayer) {
         return false;
     }
 
     @Override
     public boolean canHoldItem(ItemStack pStack) {
+        return false;
+    }
+
+    // PathfinderMob
+
+    @Override
+    public boolean checkSpawnRules(LevelAccessor pLevel, MobSpawnType pSpawnReason) {
+        return true;
+    }
+
+    @Override
+    public boolean isPathFinding() {
+        return false;
+    }
+
+    @Override
+    protected void tickLeash() {
+    }
+
+    @Override
+    protected boolean shouldStayCloseToLeashHolder() {
         return false;
     }
 }

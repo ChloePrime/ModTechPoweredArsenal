@@ -7,17 +7,16 @@ import io.redspace.ironsspellbooks.api.spells.AbstractSpell;
 import io.redspace.ironsspellbooks.api.spells.CastSource;
 import io.redspace.ironsspellbooks.api.spells.ISpellContainer;
 import io.redspace.ironsspellbooks.api.spells.SpellData;
-import io.redspace.ironsspellbooks.capabilities.magic.TargetEntityCastData;
 import me.xjqsh.lrtactical.entity.ThrowableItemEntity;
 import me.xjqsh.lrtactical.item.throwable.ThrowableType;
 import me.xjqsh.lrtactical.resource.CommonAssetsManager;
 import mod.chloeprime.modtechpoweredarsenal.common.standard.entities.VirtualCaster;
+import mod.chloeprime.modtechpoweredarsenal.common.standard.util.MoreMth;
 import mod.chloeprime.modtechpoweredarsenal.common.standard.util.RegistryHelper;
 import net.minecraft.commands.arguments.EntityAnchorArgument;
 import net.minecraft.core.registries.BuiltInRegistries;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.tags.TagKey;
-import net.minecraft.util.RandomSource;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.entity.LivingEntity;
@@ -160,11 +159,7 @@ public class IronSpellGrenade extends ThrowableItemEntity {
 
 
     private boolean spellIs(TagKey<AbstractSpell> tag) {
-        return level().registryAccess()
-                .registry(SpellRegistry.SPELL_REGISTRY_KEY)
-                .flatMap(reg -> reg.getResourceKey(this.spell).flatMap(reg::getHolder))
-                .filter(holder -> holder.is(tag))
-                .isPresent();
+        return RegistryHelper.is(level(), SpellRegistry.SPELL_REGISTRY_KEY, this.spell, tag);
     }
 
     @Override
@@ -197,10 +192,10 @@ public class IronSpellGrenade extends ThrowableItemEntity {
                 caster.mtpa$setHateOwner(grenadeOwner);
             }
 
-            prepareCasting(caster, spell);
+            prepareCasting(caster);
             gatherCastTargets(caster).forEach(targetPos -> {
                 caster.lookAt(EntityAnchorArgument.Anchor.EYES, targetPos);
-                cast(caster, spell, getSpellLevel());
+                caster.cast(spell, getSpellLevel());
             });
             caster.beginDecay();
         }
@@ -208,7 +203,7 @@ public class IronSpellGrenade extends ThrowableItemEntity {
         super.onDeath();
     }
 
-    private void prepareCasting(LivingEntity caster, @Nonnull AbstractSpell spell) {
+    private void prepareCasting(LivingEntity caster) {
         // 位置和朝向
         caster.setPos(this.position());
         centerPos = position().add(0, 0.25, 0);
@@ -218,20 +213,6 @@ public class IronSpellGrenade extends ThrowableItemEntity {
         Optional.ofNullable(SPELL_POWER.get())
                 .map(caster::getAttribute)
                 .ifPresent(spp -> spp.setBaseValue(getSpellPower()));
-
-        // 学习将要释放的法术
-        if (spell.needsLearning()) {
-            MagicData.getPlayerMagicData(caster).getSyncedData().learnSpell(spell);
-        }
-
-        // 回满魔力
-        var magicData = MagicData.getPlayerMagicData(caster);
-        if (magicData != null) {
-            // 设置自己为备选目标
-            if (magicData.getAdditionalCastData() == null) {
-                magicData.setAdditionalCastData(new TargetEntityCastData(caster));
-            }
-        }
     }
 
     private Stream<Vec3> gatherCastTargets(LivingEntity caster) {
@@ -256,7 +237,7 @@ public class IronSpellGrenade extends ThrowableItemEntity {
             var explodeCenter = getEyePosition();
             stream = Stream.concat(stream, IntStream
                     .range(0, shrapnel)
-                    .mapToObj(_i -> explodeCenter.add(randomUnitVector(caster.getRandom()).scale(16))));
+                    .mapToObj(_i -> explodeCenter.add(MoreMth.randomUnitVector(caster.getRandom()).scale(16))));
             useFallback = false;
         }
 
@@ -268,14 +249,6 @@ public class IronSpellGrenade extends ThrowableItemEntity {
         } else {
             return stream;
         }
-    }
-
-    private static Vec3 randomUnitVector(RandomSource random) {
-        return new Vec3(
-                random.nextGaussian(),
-                random.nextGaussian(),
-                random.nextGaussian()
-        ).normalize();
     }
 
     private static double minDistanceSqrTo(Entity entity, Vec3 pos) {

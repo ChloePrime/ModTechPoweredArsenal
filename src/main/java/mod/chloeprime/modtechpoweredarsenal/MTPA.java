@@ -17,7 +17,6 @@ import mod.chloeprime.modtechpoweredarsenal.common.standard.entities.VirtualCast
 import mod.chloeprime.modtechpoweredarsenal.common.standard.mob_effects.AntiRegenEffect;
 import mod.chloeprime.modtechpoweredarsenal.common.standard.mob_effects.RecombinationBuffEffect;
 import mod.chloeprime.modtechpoweredarsenal.common.standard.util.IfModLoadIngredient;
-import net.minecraft.nbt.CompoundTag;
 import net.minecraft.network.chat.Component;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.sounds.SoundEvent;
@@ -152,8 +151,8 @@ public final class MTPA {
         public static final RegistryObject<EntityType<VirtualCaster>> VIRTUAL_CASTER = registerEntity(
                 "virtual_caster",
                 () -> EntityType.Builder.<VirtualCaster>of(VirtualCaster::new, MobCategory.MISC)
-                        .sized(0.5F, 0.5F)
-                        .clientTrackingRange(0)
+                        .sized(1F, 1F)
+                        .clientTrackingRange(64)
                         .fireImmune()
                         .noSave()
         );
