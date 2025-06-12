@@ -21,7 +21,6 @@ public class MtpaClient {
     public static void onRegRenderers(EntityRenderersEvent.RegisterRenderers event) {
         event.registerEntityRenderer(MTPA.Entities.FANG_EMITTER.get(), NoopRenderer::new);
         event.registerEntityRenderer(MTPA.Entities.SHOCKWAVE.get(), NoopRenderer::new);
-        event.registerEntityRenderer(MTPA.Entities.VIRTUAL_CASTER.get(), NoopRenderer::new);
     }
 
     public static void init(IEventBus bus) {

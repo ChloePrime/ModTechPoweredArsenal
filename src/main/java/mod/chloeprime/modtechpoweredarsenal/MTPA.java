@@ -13,7 +13,6 @@ import mod.chloeprime.modtechpoweredarsenal.common.standard.LRTacProxy;
 import mod.chloeprime.modtechpoweredarsenal.common.standard.enchantments.*;
 import mod.chloeprime.modtechpoweredarsenal.common.standard.entities.FangEmitter;
 import mod.chloeprime.modtechpoweredarsenal.common.standard.entities.Shockwave;
-import mod.chloeprime.modtechpoweredarsenal.common.standard.entities.VirtualCaster;
 import mod.chloeprime.modtechpoweredarsenal.common.standard.mob_effects.AntiRegenEffect;
 import mod.chloeprime.modtechpoweredarsenal.common.standard.mob_effects.RecombinationBuffEffect;
 import mod.chloeprime.modtechpoweredarsenal.common.standard.util.IfModLoadIngredient;
@@ -148,14 +147,6 @@ public final class MTPA {
                         .noSave()
         );
 
-        public static final RegistryObject<EntityType<VirtualCaster>> VIRTUAL_CASTER = registerEntity(
-                "virtual_caster",
-                () -> EntityType.Builder.<VirtualCaster>of(VirtualCaster::new, MobCategory.MISC)
-                        .sized(1F, 1F)
-                        .clientTrackingRange(64)
-                        .fireImmune()
-                        .noSave()
-        );
     }
 
     @SuppressWarnings("unused")

@@ -8,7 +8,6 @@ import io.redspace.ironsspellbooks.api.spells.CastSource;
 import io.redspace.ironsspellbooks.api.spells.CastType;
 import io.redspace.ironsspellbooks.capabilities.magic.TargetEntityCastData;
 import io.redspace.ironsspellbooks.entity.mobs.abstract_spell_casting_mob.AbstractSpellCastingMob;
-import mod.chloeprime.modtechpoweredarsenal.MTPA;
 import mod.chloeprime.modtechpoweredarsenal.common.standard.internal.HateTransferable;
 import mod.chloeprime.modtechpoweredarsenal.common.standard.util.MoreMth;
 import net.minecraft.MethodsReturnNonnullByDefault;
@@ -43,8 +42,16 @@ import java.util.UUID;
 @ParametersAreNonnullByDefault
 @MethodsReturnNonnullByDefault
 public class VirtualCaster extends AbstractSpellCastingMob implements TraceableEntity, HateTransferable {
+    public static final EntityType<VirtualCaster> TYPE = EntityType.Builder
+            .<VirtualCaster>of(VirtualCaster::new, MobCategory.MISC)
+            .sized(1F, 1F)
+            .clientTrackingRange(64)
+            .fireImmune()
+            .noSave()
+            .build("virtual_caster");
+
     public VirtualCaster(Level level, @Nullable Entity owner) {
-        this(MTPA.Entities.VIRTUAL_CASTER.get(), level);
+        this(TYPE, level);
         setOwner(owner);
         if (owner != null) {
             setPos(owner.position());
@@ -183,7 +190,7 @@ public class VirtualCaster extends AbstractSpellCastingMob implements TraceableE
     public static final class AttributeInitializer {
         @SubscribeEvent
         public static void onCreateAttributes(EntityAttributeCreationEvent event) {
-            event.put(MTPA.Entities.VIRTUAL_CASTER.get(), createVirtualCasterAttributes().build());
+            event.put(TYPE, createVirtualCasterAttributes().build());
         }
     }
 

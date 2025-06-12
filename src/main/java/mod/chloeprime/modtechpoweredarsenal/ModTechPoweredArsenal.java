@@ -3,7 +3,7 @@ package mod.chloeprime.modtechpoweredarsenal;
 import com.google.common.base.Suppliers;
 import com.mojang.logging.LogUtils;
 import mod.chloeprime.modtechpoweredarsenal.client.MtpaClient;
-import mod.chloeprime.modtechpoweredarsenal.common.iron_spell.throwable.IronSpellModuleThrowableTypes;
+import mod.chloeprime.modtechpoweredarsenal.common.iron_spell.throwable.IronSpellModuleContent;
 import mod.chloeprime.modtechpoweredarsenal.common.standard.SpecialRecipes;
 import mod.chloeprime.modtechpoweredarsenal.network.ModNetwork;
 import net.minecraft.core.registries.Registries;
@@ -70,7 +70,7 @@ public final class ModTechPoweredArsenal {
 
         // 绿葡萄投掷物
         if (MTPA.ISB_GRENADE_ENABLED) {
-            IronSpellModuleThrowableTypes.init(bus);
+            IronSpellModuleContent.init(bus);
         }
 
         CREATIVE_MODE_TABS.register(bus);
