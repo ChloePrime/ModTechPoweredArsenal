@@ -73,11 +73,26 @@ public class VirtualCaster extends AbstractSpellCastingMob implements TraceableE
     private int ticksDecayed;
     private boolean decaying;
     private boolean randomizeHeadDirection;
+    private boolean isSlave;
 
     public void cast(AbstractSpell spell, int spellLevel) {
         if (spell.getCastType() == CastType.CONTINUOUS) {
             initiateCastSpell(spell, spellLevel);
             randomizeHeadDirection = true;
+            if (!isSlave && !level().isClientSide()) {
+                // 召唤几个从属施法者，朝着360度随机施法，
+                // 让场面更壮观一点
+                var slaveCount = getRandom().nextInt(4, 7) - 1;
+                for (int i = 0; i < slaveCount; i++) {
+                    var slave = new VirtualCaster(level(), getOwner());
+                    slave.isSlave = true;
+                    slave.setPos(this.position());
+                    slave.decaying = this.decaying;
+                    slave.ticksDecayed = this.ticksDecayed;
+                    level().addFreshEntity(slave);
+                    slave.cast(spell, spellLevel);
+                }
+            }
         } else {
             MagicData magicData = MagicData.getPlayerMagicData(this);
             if (!spell.checkPreCastConditions(level(), spellLevel, this, magicData)) {
@@ -109,16 +124,6 @@ public class VirtualCaster extends AbstractSpellCastingMob implements TraceableE
             }
         }
         super.tick();
-        if (!level().isClientSide() && isCasting()) {
-            MagicData magicData = getMagicData();
-            SpellData current = magicData.getCastingSpell();
-            if (current.getSpell().getCastType() == CastType.CONTINUOUS) {
-                for (int i = 0; i < 7; i++) {
-                    randomizeHeadDirection();
-                    current.getSpell().onCast(level(), current.getLevel(), this, CastSource.MOB, magicData);
-                }
-            }
-        }
     }
 
     public void randomizeHeadDirection() {
