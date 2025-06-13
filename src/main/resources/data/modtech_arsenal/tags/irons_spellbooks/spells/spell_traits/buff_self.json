@@ -7,6 +7,10 @@
     "irons_spellbooks:charge",
     "irons_spellbooks:thunderstorm",
     "irons_spellbooks:heartstop",
-    "irons_spellbooks:invisibility"
+    "irons_spellbooks:invisibility",
+    "irons_spellbooks:heal",
+    "irons_spellbooks:greater_heal",
+    "irons_spellbooks:angel_wing",
+    "irons_spellbooks:haste"
   ]
 }

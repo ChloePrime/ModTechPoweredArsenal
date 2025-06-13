@@ -8,6 +8,8 @@
     "irons_spellbooks:acupuncture",
     "irons_spellbooks:devour",
     "irons_spellbooks:sacrifice",
-    "irons_spellbooks:slow"
+    "irons_spellbooks:slow",
+    "irons_spellbooks:wisp",
+    "irons_spellbooks:blessing_of_life"
   ]
 }
