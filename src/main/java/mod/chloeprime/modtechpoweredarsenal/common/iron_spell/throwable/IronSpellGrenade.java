@@ -6,9 +6,11 @@ import io.redspace.ironsspellbooks.api.registry.SpellRegistry;
 import io.redspace.ironsspellbooks.api.spells.AbstractSpell;
 import io.redspace.ironsspellbooks.api.spells.CastSource;
 import io.redspace.ironsspellbooks.api.spells.ISpellContainer;
+import io.redspace.ironsspellbooks.entity.mobs.MagicSummon;
 import me.xjqsh.lrtactical.entity.ThrowableItemEntity;
 import me.xjqsh.lrtactical.item.throwable.ThrowableType;
 import me.xjqsh.lrtactical.resource.CommonAssetsManager;
+import mod.chloeprime.modtechpoweredarsenal.ModTechPoweredArsenal;
 import mod.chloeprime.modtechpoweredarsenal.common.iron_spell.IronSpellProxyImpl;
 import mod.chloeprime.modtechpoweredarsenal.common.standard.entities.VirtualCaster;
 import mod.chloeprime.modtechpoweredarsenal.common.standard.util.MoreMth;
@@ -31,6 +33,7 @@ import net.minecraft.world.phys.Vec3;
 import net.minecraftforge.common.MinecraftForge;
 import net.minecraftforge.event.entity.EntityJoinLevelEvent;
 import net.minecraftforge.eventbus.api.SubscribeEvent;
+import org.apache.commons.lang3.reflect.MethodUtils;
 
 import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
@@ -224,6 +227,7 @@ public class IronSpellGrenade extends ThrowableItemEntity {
 
             prepareCasting(caster);
             gatherCastTargets(caster).forEach(targetPos -> {
+                caster.setPos(this.position());
                 caster.lookAt(EntityAnchorArgument.Anchor.EYES, targetPos);
                 caster.cast(spell, getSpellLevel());
             });
@@ -327,22 +331,36 @@ public class IronSpellGrenade extends ThrowableItemEntity {
     public final class EventHandler {
         @SubscribeEvent
         public void onEntityJoinLevel(EntityJoinLevelEvent event) {
-            if (event.getEntity().level().isClientSide()) {
+            Entity entity = event.getEntity();
+            if (entity.level().isClientSide()) {
                 return;
             }
-            if (event.getEntity() == IronSpellGrenade.this || isCasterJoiningLevel.get() > 0) {
+            if (entity == IronSpellGrenade.this || isCasterJoiningLevel.get() > 0) {
                 return;
             }
             var caster = IronSpellGrenade.this.caster.get();
             if (caster == null) {
                 return;
             }
-            if (event.getEntity() instanceof Projectile projectile && projectile.getOwner() == caster) {
+            if (entity instanceof Projectile projectile && projectile.getOwner() == caster) {
                 projectile.setPos(centerPos.add(0, -projectile.getBbHeight() / 2, 0));
                 if (!keepOwner) {
                     var grenadeOwner = getOwner();
                     if (grenadeOwner != null) {
                         projectile.setOwner(grenadeOwner);
+                    }
+                }
+            }
+            if (entity instanceof MagicSummon summoned && summoned.getSummoner() == caster) {
+                entity.setPos(position());
+                if (!keepOwner) {
+                    var grenadeOwner = getOwner();
+                    if (grenadeOwner != null) {
+                        try {
+                            MethodUtils.invokeMethod(summoned, "setSummoner", grenadeOwner);
+                        } catch (ReflectiveOperationException ex) {
+                            ModTechPoweredArsenal.LOGGER.warn("Failed to set summoner for grenade caster summoned {}", entity.getDisplayName().getString(), ex);
+                        }
                     }
                 }
             }
