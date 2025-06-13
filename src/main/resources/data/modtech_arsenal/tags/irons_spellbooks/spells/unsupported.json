@@ -6,6 +6,9 @@
     "irons_spellbooks:teleport",
     "irons_spellbooks:portal",
     "irons_spellbooks:summon_ender_chest",
-    "irons_spellbooks:recall"
+    "irons_spellbooks:recall",
+    "irons_spellbooks:burning_dash",
+    "irons_spellbooks:wall_of_fire",
+    "irons_spellbooks:flaming_barrage"
   ]
 }
