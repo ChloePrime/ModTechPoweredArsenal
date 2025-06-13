@@ -352,7 +352,6 @@ public class IronSpellGrenade extends ThrowableItemEntity {
                 }
             }
             if (entity instanceof MagicSummon summoned && summoned.getSummoner() == caster) {
-                entity.setPos(position());
                 if (!keepOwner) {
                     var grenadeOwner = getOwner();
                     if (grenadeOwner != null) {

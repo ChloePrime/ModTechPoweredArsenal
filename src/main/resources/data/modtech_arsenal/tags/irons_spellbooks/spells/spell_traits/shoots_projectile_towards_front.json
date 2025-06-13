@@ -2,6 +2,7 @@
   "replace": false,
   "values": [
     "#modtech_arsenal:spell_traits/sniper",
-    "irons_spellbooks:ball_lightning"
+    "irons_spellbooks:ball_lightning",
+    "irons_spellbooks:blood_slash"
   ]
 }

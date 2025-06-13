@@ -4,6 +4,9 @@
     "irons_spellbooks:firefly_swarm",
     "irons_spellbooks:root",
     "irons_spellbooks:blight",
-    "irons_spellbooks:chain_lightning"
+    "irons_spellbooks:chain_lightning",
+    "irons_spellbooks:acupuncture",
+    "irons_spellbooks:devour",
+    "irons_spellbooks:sacrifice"
   ]
 }

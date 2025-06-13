@@ -1,6 +1,7 @@
 {
   "replace": false,
   "values": [
-    "irons_spellbooks:chain_lightning"
+    "irons_spellbooks:chain_lightning",
+    "irons_spellbooks:ray_of_siphoning"
   ]
 }
