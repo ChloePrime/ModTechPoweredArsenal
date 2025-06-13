@@ -103,9 +103,6 @@ public class VirtualCaster extends AbstractSpellCastingMob implements TraceableE
             if (!spell.checkPreCastConditions(level(), spellLevel, this, magicData)) {
                 return;
             }
-            if (magicData.getAdditionalCastData() == null) {
-                magicData.setAdditionalCastData(new TargetEntityCastData(this));
-            }
             spell.onCast(level(), spellLevel, this, CastSource.MOB, magicData);
             spell.onServerCastComplete(level(), spellLevel, this, magicData, false);
         }
