@@ -9,6 +9,8 @@
     "irons_spellbooks:recall",
     "irons_spellbooks:burning_dash",
     "irons_spellbooks:wall_of_fire",
-    "irons_spellbooks:flaming_barrage"
+    "irons_spellbooks:flaming_barrage",
+    "irons_spellbooks:telekinesis",
+    "irons_spellbooks:eldritch_blast"
   ]
 }
