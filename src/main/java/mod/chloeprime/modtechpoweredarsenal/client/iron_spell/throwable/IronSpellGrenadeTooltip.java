@@ -1,13 +1,20 @@
 package mod.chloeprime.modtechpoweredarsenal.client.iron_spell.throwable;
 
 import io.redspace.ironsspellbooks.api.events.ModifySpellLevelEvent;
+import io.redspace.ironsspellbooks.api.registry.SpellRegistry;
+import io.redspace.ironsspellbooks.api.spells.SpellData;
 import me.xjqsh.lrtactical.api.LrTacticalAPI;
 import me.xjqsh.lrtactical.api.item.IThrowable;
 import mod.chloeprime.modtechpoweredarsenal.common.iron_spell.IronSpellProxyImpl;
+import mod.chloeprime.modtechpoweredarsenal.common.iron_spell.throwable.IronSpellGrenade;
+import mod.chloeprime.modtechpoweredarsenal.common.iron_spell.throwable.IronSpellGrenadeCompatibilityTags;
 import mod.chloeprime.modtechpoweredarsenal.common.iron_spell.throwable.IronSpellGrenadeData;
 import mod.chloeprime.modtechpoweredarsenal.common.standard.util.RegistryHelper;
+import net.minecraft.ChatFormatting;
 import net.minecraft.client.Minecraft;
 import net.minecraft.core.registries.BuiltInRegistries;
+import net.minecraft.network.chat.Component;
+import net.minecraft.network.chat.MutableComponent;
 import net.minecraft.world.entity.ai.attributes.Attribute;
 import net.minecraft.world.entity.ai.attributes.AttributeModifier;
 import net.minecraft.world.entity.player.Player;
@@ -31,6 +38,9 @@ public final class IronSpellGrenadeTooltip {
     private static final Deque<ItemStack> tooltipCallLayers = new ConcurrentLinkedDeque<>();
     private static final Supplier<Attribute> SPELL_POWER = RegistryHelper.holder(BuiltInRegistries.ATTRIBUTE, "irons_spellbooks", "spell_power");
     private static final UUID GRENADE_SPELL_POWER_DISPLAY_MODIFIER_ID = UUID.fromString("91f3fb2c-634b-4bc8-a7ac-2f495e536eff");
+    private static final MutableComponent UNSUPPORTED_SPELL_WARNING = Component
+            .translatable("modtech_arsenal.warning.unsupported_spell")
+            .withStyle(ChatFormatting.RED);
 
     @SubscribeEvent(priority = EventPriority.HIGHEST, receiveCanceled = true)
     public static void onBeginTooltip(ItemTooltipEvent event) {
@@ -44,7 +54,7 @@ public final class IronSpellGrenadeTooltip {
 
     private static void onBeginTooltip0(Player player, ItemStack grenade, IronSpellGrenadeData data) {
         var spellPowerAttribute = Objects.requireNonNull(SPELL_POWER.get());
-        var spellData = IronSpellProxyImpl.getFirstSpell(grenade).orElse(null);
+        var spellData = IronSpellGrenade.getActiveSpell(grenade).orElse(null);
         if (spellData == null) {
             return;
         }
@@ -70,6 +80,24 @@ public final class IronSpellGrenadeTooltip {
                 AttributeModifier.Operation.MULTIPLY_TOTAL
         );
         attributeInstance.addTransientModifier(modifier);
+    }
+
+    @SubscribeEvent(priority = EventPriority.LOW)
+    public static void onAddTooltip(ItemTooltipEvent event) {
+        ifIsGrenade(event.getItemStack(), (player, data) -> {
+            var lore = event.getToolTip();
+            var spell = IronSpellGrenade.getActiveSpell(event.getItemStack())
+                    .map(SpellData::getSpell)
+                    .orElse(SpellRegistry.none());
+            var unsupported = RegistryHelper.is(player.level(), SpellRegistry.SPELL_REGISTRY_KEY, spell, IronSpellGrenadeCompatibilityTags.UNSUPPORTED);
+            if (unsupported) {
+                if (lore.isEmpty()) {
+                    lore.add(UNSUPPORTED_SPELL_WARNING);
+                } else {
+                    lore.add(1, UNSUPPORTED_SPELL_WARNING);
+                }
+            }
+        });
     }
 
     @SubscribeEvent

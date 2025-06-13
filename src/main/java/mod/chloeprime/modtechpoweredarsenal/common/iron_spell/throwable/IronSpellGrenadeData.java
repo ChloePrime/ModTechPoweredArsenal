@@ -58,11 +58,11 @@ public class IronSpellGrenadeData extends ThrowableData {
     @SuppressWarnings({"FieldMayBeFinal", "FieldCanBeLocal"})
     private double iterative_casting_range = 6;
 
-    public final ResourceLocation getSpellId() {
+    public final ResourceLocation getDefaultSpellId() {
         return spell;
     }
 
-    public final int getSpellLevel() {
+    public final int getDefaultSpellLevel() {
         return spell_level;
     }
 

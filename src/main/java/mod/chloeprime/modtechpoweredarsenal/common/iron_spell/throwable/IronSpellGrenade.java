@@ -6,6 +6,7 @@ import io.redspace.ironsspellbooks.api.registry.SpellRegistry;
 import io.redspace.ironsspellbooks.api.spells.AbstractSpell;
 import io.redspace.ironsspellbooks.api.spells.CastSource;
 import io.redspace.ironsspellbooks.api.spells.ISpellContainer;
+import io.redspace.ironsspellbooks.api.spells.SpellData;
 import io.redspace.ironsspellbooks.entity.mobs.MagicSummon;
 import me.xjqsh.lrtactical.entity.ThrowableItemEntity;
 import me.xjqsh.lrtactical.item.throwable.ThrowableType;
@@ -75,8 +76,8 @@ public class IronSpellGrenade extends ThrowableItemEntity {
         entity.setGrenadeItem(stack);
 
         if (!entity.loadSpellOverrideFromNBT(stack, thrower, data)) {
-            entity.setSpell(data.getSpellId());
-            entity.setSpellLevel(data.getSpellLevel());
+            entity.setSpell(data.getDefaultSpellId());
+            entity.setSpellLevel(data.getDefaultSpellLevel());
         }
         return entity;
     }
@@ -85,7 +86,7 @@ public class IronSpellGrenade extends ThrowableItemEntity {
         if (!ISpellContainer.isSpellContainer(stack)) {
             return false;
         }
-        var spellStack = IronSpellProxyImpl.getFirstSpell(stack).orElse(null);
+        var spellStack = getActiveSpell(stack).orElse(null);
         if (spellStack == null) {
             return false;
         }
@@ -131,6 +132,10 @@ public class IronSpellGrenade extends ThrowableItemEntity {
 
     public IronSpellGrenade(EntityType<? extends IronSpellGrenade> type, Level level) {
         super(type, level);
+    }
+
+    public static Optional<SpellData> getActiveSpell(ItemStack stack) {
+        return IronSpellProxyImpl.getFirstSpell(stack);
     }
 
     public AbstractSpell getSpell() {

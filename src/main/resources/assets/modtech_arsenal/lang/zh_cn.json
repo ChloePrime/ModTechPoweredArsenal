@@ -31,5 +31,7 @@
   "effect.modtech_arsenal.anti_regen": "反再生",
   "effect.modtech_arsenal.anti_regen.desc": "生命值无法得到回复",
   "effect.modtech_arsenal.recombination_buff": "重组",
-  "effect.modtech_arsenal.recombination_buff.desc": "增加下一次射击的威力"
+  "effect.modtech_arsenal.recombination_buff.desc": "增加下一次射击的威力",
+
+  "modtech_arsenal.warning.unsupported_spell": "警告：不支持的法术"
 }

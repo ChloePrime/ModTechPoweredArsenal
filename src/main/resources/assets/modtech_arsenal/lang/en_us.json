@@ -31,5 +31,7 @@
 
   "effect.modtech_arsenal.anti_regen.desc": "Disables healing",
   "effect.modtech_arsenal.recombination_buff": "Recombination",
-  "effect.modtech_arsenal.recombination_buff.desc": "Increases damage of next gunshto"
+  "effect.modtech_arsenal.recombination_buff.desc": "Increases damage of next gunshto",
+
+  "modtech_arsenal.warning.unsupported_spell": "Warning: Unsupported Spell"
 }
