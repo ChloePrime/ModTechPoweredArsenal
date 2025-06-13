@@ -15,6 +15,7 @@ import net.minecraft.commands.arguments.EntityAnchorArgument.Anchor;
 import net.minecraft.network.chat.Component;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.world.damagesource.DamageSource;
+import net.minecraft.world.effect.MobEffectInstance;
 import net.minecraft.world.entity.*;
 import net.minecraft.world.entity.ai.attributes.AttributeSupplier;
 import net.minecraft.world.entity.ai.attributes.Attributes;
@@ -271,6 +272,29 @@ public class VirtualCaster extends AbstractSpellCastingMob implements TraceableE
     @Override
     public boolean hurt(DamageSource pSource, float pAmount) {
         return false;
+    }
+
+    @Override
+    public void heal(float amount) {
+        if (getOwner() instanceof LivingEntity owner) {
+            owner.heal(amount);
+        } else {
+            super.heal(amount);
+        }
+    }
+
+    @Override
+    public boolean addEffect(MobEffectInstance instance, @Nullable Entity cause) {
+        return getOwner() instanceof LivingEntity owner ? owner.addEffect(instance, cause) : super.addEffect(instance, cause);
+    }
+
+    @Override
+    public void forceAddEffect(MobEffectInstance instance, @Nullable Entity cause) {
+        if (getOwner() instanceof LivingEntity owner) {
+            owner.forceAddEffect(instance, cause);
+        } else {
+            super.forceAddEffect(instance, cause);
+        }
     }
 
     @Override
