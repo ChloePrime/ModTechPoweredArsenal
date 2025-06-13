@@ -275,7 +275,7 @@ public class IronSpellGrenade extends ThrowableItemEntity {
         if (useFallback) {
             var lookTarget = shouldBounce()
                     ? caster.getEyePosition().add(0, -1, 0)
-                    : caster.getEyePosition().add(this.getDeltaMovement().scale(-1));
+                    : caster.getEyePosition().add(this.getDeltaMovement());
             return Stream.of(lookTarget);
         } else {
             return stream;
