@@ -5,7 +5,6 @@ import io.redspace.ironsspellbooks.api.registry.SpellRegistry;
 import io.redspace.ironsspellbooks.api.spells.SpellData;
 import me.xjqsh.lrtactical.api.LrTacticalAPI;
 import me.xjqsh.lrtactical.api.item.IThrowable;
-import mod.chloeprime.modtechpoweredarsenal.common.iron_spell.IronSpellProxyImpl;
 import mod.chloeprime.modtechpoweredarsenal.common.iron_spell.throwable.IronSpellGrenade;
 import mod.chloeprime.modtechpoweredarsenal.common.iron_spell.throwable.IronSpellGrenadeCompatibilityTags;
 import mod.chloeprime.modtechpoweredarsenal.common.iron_spell.throwable.IronSpellGrenadeData;

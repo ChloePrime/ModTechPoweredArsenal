@@ -11,6 +11,8 @@
     "irons_spellbooks:heal",
     "irons_spellbooks:greater_heal",
     "irons_spellbooks:angel_wing",
-    "irons_spellbooks:haste"
+    "irons_spellbooks:haste",
+    "irons_spellbooks:evasion",
+    "irons_spellbooks:echoing_strikes"
   ]
 }

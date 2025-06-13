@@ -2,6 +2,10 @@
   "comment": "法术手雷不支持的法术",
   "replace": false,
   "values": [
-    "#modtech_arsenal:spell_traits/block_breaking"
+    "#modtech_arsenal:spell_traits/block_breaking",
+    "irons_spellbooks:teleport",
+    "irons_spellbooks:portal",
+    "irons_spellbooks:summon_ender_chest",
+    "irons_spellbooks:recall"
   ]
 }

@@ -8,6 +8,7 @@ import static mod.chloeprime.modtechpoweredarsenal.ModTechPoweredArsenal.loc;
 
 public class IronSpellGrenadeCompatibilityTags {
     public static final TagKey<AbstractSpell> CAST_AS_NEARBY_TARGETS_ON_EXPLODE = TagKey.create(SPELL_REGISTRY_KEY, loc("cast_as_nearby_targets_on_explode"));
+    public static final TagKey<AbstractSpell> CONTINUOUS_NO_SLAVE = TagKey.create(SPELL_REGISTRY_KEY, loc("continuous_no_slave"));
     public static final TagKey<AbstractSpell> FACES_OUTSIDE = TagKey.create(SPELL_REGISTRY_KEY, loc("faces_outside"));
     public static final TagKey<AbstractSpell> ITERATE_NEARBY_TARGETS_ON_EXPLODE = TagKey.create(SPELL_REGISTRY_KEY, loc("iterate_nearby_targets_on_explode"));
     public static final TagKey<AbstractSpell> ITERATE_RANDOM_POSITION_ON_EXPLODE = TagKey.create(SPELL_REGISTRY_KEY, loc("iterate_random_position_on_explode"));

@@ -9,6 +9,9 @@
     "irons_spellbooks:blood_needles",
     "irons_spellbooks:lob_creeper",
     "irons_spellbooks:gust",
-    "irons_spellbooks:guiding_bolt"
+    "irons_spellbooks:guiding_bolt",
+    "irons_spellbooks:magic_missile",
+    "irons_spellbooks:magic_arrow",
+    "irons_spellbooks:counterspell"
   ]
 }

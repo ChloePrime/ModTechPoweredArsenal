@@ -3,16 +3,19 @@ package mod.chloeprime.modtechpoweredarsenal.common.standard.entities;
 import com.google.common.base.MoreObjects;
 import io.redspace.ironsspellbooks.api.magic.MagicData;
 import io.redspace.ironsspellbooks.api.registry.AttributeRegistry;
+import io.redspace.ironsspellbooks.api.registry.SpellRegistry;
 import io.redspace.ironsspellbooks.api.spells.AbstractSpell;
 import io.redspace.ironsspellbooks.api.spells.CastSource;
 import io.redspace.ironsspellbooks.api.spells.CastType;
 import io.redspace.ironsspellbooks.entity.mobs.abstract_spell_casting_mob.AbstractSpellCastingMob;
 import mod.chloeprime.modtechpoweredarsenal.common.standard.internal.HateTransferable;
 import mod.chloeprime.modtechpoweredarsenal.common.standard.util.MoreMth;
+import mod.chloeprime.modtechpoweredarsenal.common.standard.util.RegistryHelper;
 import net.minecraft.MethodsReturnNonnullByDefault;
 import net.minecraft.commands.arguments.EntityAnchorArgument.Anchor;
 import net.minecraft.network.chat.Component;
 import net.minecraft.server.level.ServerLevel;
+import net.minecraft.tags.TagKey;
 import net.minecraft.world.damagesource.DamageSource;
 import net.minecraft.world.effect.MobEffectInstance;
 import net.minecraft.world.entity.*;
@@ -38,6 +41,8 @@ import javax.annotation.Nullable;
 import javax.annotation.ParametersAreNonnullByDefault;
 import java.util.Optional;
 import java.util.UUID;
+
+import static mod.chloeprime.modtechpoweredarsenal.common.iron_spell.throwable.IronSpellGrenadeCompatibilityTags.*;
 
 @ParametersAreNonnullByDefault
 @MethodsReturnNonnullByDefault
@@ -88,7 +93,7 @@ public class VirtualCaster extends AbstractSpellCastingMob implements TraceableE
         if (spell.getCastType() == CastType.CONTINUOUS) {
             initiateCastSpell(spell, spellLevel);
             randomizeHeadDirection = true;
-            if (!isSlave && !level().isClientSide()) {
+            if (!isSlave && !level().isClientSide() && !spellIs(spell, CONTINUOUS_NO_SLAVE)) {
                 // 召唤几个从属施法者，朝着360度随机施法，
                 // 让场面更壮观一点
                 var slaveCount = getRandom().nextInt(4, 7) - 1;
@@ -189,6 +194,10 @@ public class VirtualCaster extends AbstractSpellCastingMob implements TraceableE
         public static void onCreateAttributes(EntityAttributeCreationEvent event) {
             event.put(TYPE, createVirtualCasterAttributes().build());
         }
+    }
+
+    private boolean spellIs(AbstractSpell spell, TagKey<AbstractSpell> tag) {
+        return RegistryHelper.is(level(), SpellRegistry.SPELL_REGISTRY_KEY, spell, tag);
     }
 
     // Entity
