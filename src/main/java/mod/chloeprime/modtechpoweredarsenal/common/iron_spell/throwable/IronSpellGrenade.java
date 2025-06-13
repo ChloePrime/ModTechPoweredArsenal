@@ -202,7 +202,7 @@ public class IronSpellGrenade extends ThrowableItemEntity {
 
     private void explode() {
         var spell = getSpell();
-        if (spell != null && !level().isClientSide()) {
+        if (spell != null && !level().isClientSide() && !spellIs(UNSUPPORTED)) {
             // buff自身类法术，以周围目标为施法者释放
             if (spellIs(CAST_AS_NEARBY_TARGETS_ON_EXPLODE)) {
                 double range = getIterativeCastingRange();
@@ -240,9 +240,9 @@ public class IronSpellGrenade extends ThrowableItemEntity {
 
     private void prepareCasting(LivingEntity caster) {
         // 位置和朝向
-        caster.setPos(this.position());
         centerPos = position().add(0, 0.25, 0);
         keepOwner = spellIs(KEEP_OWNER_AS_CASTER);
+        caster.setPos(centerPos);
 
         // 设置魔法强度
         Optional.ofNullable(SPELL_POWER.get())
@@ -367,7 +367,7 @@ public class IronSpellGrenade extends ThrowableItemEntity {
     }
 
     private @Nullable VirtualCaster createCaster(Level level) {
-        if (level.isClientSide() || spellIs(CAST_AS_NEARBY_TARGETS_ON_EXPLODE)) {
+        if (level.isClientSide() || spellIs(CAST_AS_NEARBY_TARGETS_ON_EXPLODE) || spellIs(UNSUPPORTED)) {
             return null;
         }
         VirtualCaster result = setupCaster(level, new VirtualCaster(level, getOwner()));

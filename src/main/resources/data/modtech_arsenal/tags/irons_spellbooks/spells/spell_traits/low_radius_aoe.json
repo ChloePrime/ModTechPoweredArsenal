@@ -2,6 +2,7 @@
   "replace": false,
   "values": [
     "irons_spellbooks:poison_splash",
-    "irons_spellbooks:ice_block"
+    "irons_spellbooks:ice_block",
+    "irons_spellbooks:chain_creeper"
   ]
 }

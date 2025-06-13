@@ -1,0 +1,10 @@
+{
+  "replace": false,
+  "values": [
+    "irons_spellbooks:spectral_hammer",
+    {
+      "id": "irons_spellbooks:touch_dig",
+      "required": false
+    }
+  ]
+}

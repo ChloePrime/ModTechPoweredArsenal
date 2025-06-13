@@ -2,6 +2,8 @@
   "comment": "使用拥有该标签的法术的法术手雷爆炸时会对半径内所有的目标施法",
   "replace": false,
   "values": [
-    "#modtech_arsenal:spell_traits/shoots_projectile_towards_front"
+    "#modtech_arsenal:spell_traits/shoots_projectile_towards_front",
+    "irons_spellbooks:fang_strike",
+    "irons_spellbooks:arrow_volley"
   ]
 }
