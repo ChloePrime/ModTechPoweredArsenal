@@ -212,7 +212,15 @@ public final class MTPA {
         output.accept(attachment("ammo_trait_chain_action"));
         if (ISB_GRENADE_ENABLED) {
             isbGrenade("iron_spell_grenade").ifPresent(output::accept);
-            isbGrenade("iron_spell_grenade_light").ifPresent(output::accept);
+            isbGrenade("iron_spell_grenade_nature").ifPresent(output::accept);
+            isbGrenade("iron_spell_grenade_lightning").ifPresent(output::accept);
+            isbGrenade("iron_spell_grenade_ice").ifPresent(output::accept);
+            isbGrenade("iron_spell_grenade_blood").ifPresent(output::accept);
+            isbGrenade("iron_spell_grenade_evocation").ifPresent(output::accept);
+            isbGrenade("iron_spell_grenade_holy").ifPresent(output::accept);
+            isbGrenade("iron_spell_grenade_ender").ifPresent(output::accept);
+            isbGrenade("iron_spell_grenade_fire").ifPresent(output::accept);
+            isbGrenade("iron_spell_grenade_eldritch").ifPresent(output::accept);
         }
         // 添加满级附魔书
         ForgeRegistries.ENCHANTMENTS.getKeys().stream()

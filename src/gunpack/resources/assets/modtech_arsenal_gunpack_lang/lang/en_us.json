@@ -34,5 +34,13 @@
 
   "// 投掷物": "",
   "item.modtech_arsenal.iron_spell_grenade": "Psychic Grenade",
-  "item.modtech_arsenal.iron_spell_grenade_light": "Holy Grenade"
+  "item.modtech_arsenal.iron_spell_grenade_nature": "Fallen Dryad's Bile",
+  "item.modtech_arsenal.iron_spell_grenade_lightning": "Unstable Alien Battery",
+  "item.modtech_arsenal.iron_spell_grenade_ice": "Canned Magic-Infused Liquid Helium",
+  "item.modtech_arsenal.iron_spell_grenade_blood": "Blood Grenade",
+  "item.modtech_arsenal.iron_spell_grenade_evocation": "Splash Soul Bottle",
+  "item.modtech_arsenal.iron_spell_grenade_holy": "Holy Grenade",
+  "item.modtech_arsenal.iron_spell_grenade_ender": "Sub-Space Grenade",
+  "item.modtech_arsenal.iron_spell_grenade_fire": "Napalm Cocktail",
+  "item.modtech_arsenal.iron_spell_grenade_eldritch": "Corruptive Grenade"
 }
