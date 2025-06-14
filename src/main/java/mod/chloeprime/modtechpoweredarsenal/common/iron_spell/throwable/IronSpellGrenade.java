@@ -11,12 +11,14 @@ import io.redspace.ironsspellbooks.entity.mobs.MagicSummon;
 import me.xjqsh.lrtactical.entity.ThrowableItemEntity;
 import me.xjqsh.lrtactical.item.throwable.ThrowableType;
 import me.xjqsh.lrtactical.resource.CommonAssetsManager;
+import mod.chloeprime.aaaparticles.api.common.AAALevel;
+import mod.chloeprime.aaaparticles.api.common.ParticleEmitterInfo;
 import mod.chloeprime.modtechpoweredarsenal.ModTechPoweredArsenal;
 import mod.chloeprime.modtechpoweredarsenal.common.iron_spell.IronSpellProxyImpl;
 import mod.chloeprime.modtechpoweredarsenal.common.standard.entities.VirtualCaster;
 import mod.chloeprime.modtechpoweredarsenal.common.standard.util.MoreMth;
 import mod.chloeprime.modtechpoweredarsenal.common.standard.util.RegistryHelper;
-import net.minecraft.commands.arguments.EntityAnchorArgument;
+import net.minecraft.commands.arguments.EntityAnchorArgument.Anchor;
 import net.minecraft.core.registries.BuiltInRegistries;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.tags.TagKey;
@@ -30,6 +32,8 @@ import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.entity.EntityTypeTest;
 import net.minecraft.world.phys.AABB;
+import net.minecraft.world.phys.BlockHitResult;
+import net.minecraft.world.phys.HitResult;
 import net.minecraft.world.phys.Vec3;
 import net.minecraftforge.common.MinecraftForge;
 import net.minecraftforge.event.entity.EntityJoinLevelEvent;
@@ -72,6 +76,7 @@ public class IronSpellGrenade extends ThrowableItemEntity {
         entity.setGravity(data.getEntityData().getGravity());
         entity.setBounceFactor(data.getEntityData().getBounceFactor());
         entity.setShouldBounce(data.getEntityData().isShouldBounce());
+        entity.setExplodeFxId(data.getExplodeFxId());
         entity.setIterativeCastingRange(data.getIterativeCastingRange());
         entity.setGrenadeItem(stack);
 
@@ -112,14 +117,17 @@ public class IronSpellGrenade extends ThrowableItemEntity {
     private AbstractSpell spell = SpellRegistry.none();
     private int spellLevel = 1;
     private double spellPower = 1;
-
+    private @Nullable ResourceLocation explodeFxId;
     private double iterativeCastingRange = 6;
+
     private ItemStack grenadeItem;
     private final Supplier<VirtualCaster> caster = Suppliers.memoize(() -> createCaster(level()));
     private final EventHandler handler = new EventHandler();
     private final AtomicInteger isCasterJoiningLevel = new AtomicInteger();
     private boolean casterCreated;
     private boolean keepOwner;
+    private Vec3 hitPos = Vec3.ZERO;
+    private Vec3 hitNormal = Vec3.ZERO;
     private Vec3 centerPos = Vec3.ZERO;
 
     public IronSpellGrenade(LivingEntity thrower, Level level, int lifeTime) {
@@ -150,6 +158,10 @@ public class IronSpellGrenade extends ThrowableItemEntity {
         return spellPower;
     }
 
+    public @Nullable ResourceLocation getExplodeFxId() {
+        return explodeFxId;
+    }
+
     public double getIterativeCastingRange() {
         return iterativeCastingRange;
     }
@@ -168,6 +180,10 @@ public class IronSpellGrenade extends ThrowableItemEntity {
 
     public void setSpellPower(double spellPower) {
         this.spellPower = spellPower;
+    }
+
+    public void setExplodeFxId(@Nullable ResourceLocation explodeFxId) {
+        this.explodeFxId = explodeFxId;
     }
 
     public void setIterativeCastingRange(double iterativeCastingRange) {
@@ -189,7 +205,7 @@ public class IronSpellGrenade extends ThrowableItemEntity {
         if (casterCreated) {
             var caster = this.caster.get();
             if (caster != null) {
-                caster.setPos(this.position().add(0, 0.25, 0));
+                caster.setPos(position().add(0, 0.25, 0));
             }
         }
         if (!level().isClientSide() && spell != null) {
@@ -200,19 +216,38 @@ public class IronSpellGrenade extends ThrowableItemEntity {
     }
 
     @Override
+    protected void onHit(HitResult result) {
+        this.hitPos = result.getLocation();
+        this.hitNormal = result instanceof BlockHitResult blockHit
+                ? Vec3.atLowerCornerOf(blockHit.getDirection().getNormal())
+                : getDeltaMovement().normalize().scale(-1);
+        super.onHit(result);
+    }
+
+    @Override
     public void onDeath() {
+        if (hitPos.equals(Vec3.ZERO)) {
+            hitPos = position();
+        }
+        if (hitNormal.equals(Vec3.ZERO)) {
+            hitNormal = getDeltaMovement().normalize().scale(-1);
+        }
         explode();
+        explodeVFX();
         super.onDeath();
     }
 
     private void explode() {
+        if (level().isClientSide()) {
+            return;
+        }
         var spell = getSpell();
-        if (spell != null && !level().isClientSide() && !spellIs(UNSUPPORTED)) {
+        if (spell != null && !spellIs(UNSUPPORTED)) {
             // buff自身类法术，以周围目标为施法者释放
             if (spellIs(CAST_AS_NEARBY_TARGETS_ON_EXPLODE)) {
                 double range = getIterativeCastingRange();
-                var explodeCenter = getEyePosition();
-                var testArea = AABB.ofSize(getEyePosition(), 0, 0, 0).inflate(range + 2);
+                var explodeCenter = hitPos;
+                var testArea = AABB.ofSize(hitPos, 0, 0, 0).inflate(range + 2);
                 level().getEntities(EntityTypeTest.forClass(LivingEntity.class), testArea, IronSpellGrenade::canEntityBeSelected)
                         .stream()
                         .filter(entity -> minDistanceSqrTo(entity, explodeCenter) <= range * range)
@@ -232,10 +267,25 @@ public class IronSpellGrenade extends ThrowableItemEntity {
 
             prepareCasting(caster);
             gatherCastTargets(caster).forEach(targetPos -> {
-                caster.lookAt(EntityAnchorArgument.Anchor.EYES, targetPos);
+                caster.lookAt(Anchor.EYES, targetPos);
                 caster.cast(spell, getSpellLevel());
             });
             caster.beginDecay();
+        }
+    }
+
+    private void explodeVFX() {
+        if (level().isClientSide()) {
+            return;
+        }
+        var effek = getExplodeFxId();
+        if (effek != null) {
+            lookAt(Anchor.EYES, getEyePosition().add(hitNormal));
+            var emitter = ParticleEmitterInfo
+                    .create(level(), effek)
+                    .position(hitPos)
+                    .rotation((float) Math.toRadians(getXRot() + 90), (float) Math.toRadians(-getYRot()), 0);
+            AAALevel.addParticle(level(), 256, emitter);
         }
     }
 
@@ -245,7 +295,7 @@ public class IronSpellGrenade extends ThrowableItemEntity {
 
     private void prepareCasting(LivingEntity caster) {
         // 位置和朝向
-        centerPos = position().add(0, 0.25, 0);
+        centerPos = hitPos.add(0, 0.25, 0);
         keepOwner = spellIs(KEEP_OWNER_AS_CASTER);
         caster.setPos(centerPos);
 
@@ -260,8 +310,8 @@ public class IronSpellGrenade extends ThrowableItemEntity {
         boolean useFallback = true;
         if (spellIs(ITERATE_NEARBY_TARGETS_ON_EXPLODE)) {
             double range = getIterativeCastingRange();
-            var explodeCenter = getEyePosition();
-            var testArea = AABB.ofSize(getEyePosition(), 0, 0, 0).inflate(range + 2);
+            var explodeCenter = centerPos;
+            var testArea = AABB.ofSize(centerPos, 0, 0, 0).inflate(range + 2);
             stream = Stream.concat(stream, caster.level().getEntities(caster, testArea, IronSpellGrenade::canEntityBeSelected)
                     .stream()
                     .filter(et -> minDistanceSqrTo(et, explodeCenter) <= range * range)
@@ -274,7 +324,7 @@ public class IronSpellGrenade extends ThrowableItemEntity {
             // 以在不大幅增加弹片数量的情况下改善对地面目标的命中率
             centerPos = centerPos.add(0, 0.75, 0);
             int shrapnel = 8;
-            var explodeCenter = getEyePosition();
+            var explodeCenter = centerPos;
             stream = Stream.concat(stream, IntStream
                     .range(0, shrapnel)
                     .mapToObj(_i -> explodeCenter.add(MoreMth.randomUnitVector(caster.getRandom()).scale(16))));

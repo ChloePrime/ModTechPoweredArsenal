@@ -14,6 +14,7 @@
       "should_bounce": false,
       "bounceFactor": 0.0625
     },
+    "explode_fx": "modtech_arsenal:iron_spell_grenade/fire",
     "spell": "irons_spellbooks:magma_bomb",
     "school": "irons_spellbooks:fire",
     "school_affinity_buff": 4,

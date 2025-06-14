@@ -24,6 +24,12 @@ public class IronSpellGrenadeData extends ThrowableData {
     private int spell_level = 1;
 
     /**
+     * 手雷爆炸时释放的 Effekseer 特效 ID
+     */
+    @SuppressWarnings("unused")
+    private @Nullable ResourceLocation explode_fx;
+
+    /**
      * 该手雷的专场学派。
      * 注入学派相同的法术会使得法术大幅增强，注入不同学派的法术会使得法术被大幅削弱。
      * 为空时则增强所有学派的法术。
@@ -64,6 +70,10 @@ public class IronSpellGrenadeData extends ThrowableData {
 
     public final int getDefaultSpellLevel() {
         return spell_level;
+    }
+
+    public @Nullable ResourceLocation getExplodeFxId() {
+        return explode_fx;
     }
 
     public @Nullable ResourceLocation getSchoolId() {
