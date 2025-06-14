@@ -2,6 +2,7 @@ package mod.chloeprime.modtechpoweredarsenal.common.iron_spell.throwable;
 
 import io.redspace.ironsspellbooks.api.registry.SchoolRegistry;
 import io.redspace.ironsspellbooks.api.spells.AbstractSpell;import me.xjqsh.lrtactical.item.throwable.ThrowableData;
+import mod.chloeprime.modtechpoweredarsenal.common.standard.pojo.EffekseerEmitterPO;
 import net.minecraft.resources.ResourceLocation;
 
 import javax.annotation.Nullable;
@@ -27,7 +28,7 @@ public class IronSpellGrenadeData extends ThrowableData {
      * 手雷爆炸时释放的 Effekseer 特效 ID
      */
     @SuppressWarnings("unused")
-    private @Nullable ResourceLocation explode_fx;
+    private @Nullable EffekseerEmitterPO explode_fx;
 
     /**
      * 该手雷的专场学派。
@@ -72,7 +73,7 @@ public class IronSpellGrenadeData extends ThrowableData {
         return spell_level;
     }
 
-    public @Nullable ResourceLocation getExplodeFxId() {
+    public @Nullable EffekseerEmitterPO getExplodeFx() {
         return explode_fx;
     }
 

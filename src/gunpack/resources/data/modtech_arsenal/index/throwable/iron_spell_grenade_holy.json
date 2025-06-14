@@ -14,6 +14,10 @@
       "should_bounce": false,
       "bounceFactor": 0.0625
     },
+    "explode_fx": {
+      "id": "modtech_arsenal:iron_spell_grenade/holy",
+      "scale": 0.6667
+    },
     "spell": "irons_spellbooks:divine_smite",
     "school": "irons_spellbooks:holy",
     "school_affinity_buff": 4,

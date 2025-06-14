@@ -16,6 +16,7 @@ import mod.chloeprime.aaaparticles.api.common.ParticleEmitterInfo;
 import mod.chloeprime.modtechpoweredarsenal.ModTechPoweredArsenal;
 import mod.chloeprime.modtechpoweredarsenal.common.iron_spell.IronSpellProxyImpl;
 import mod.chloeprime.modtechpoweredarsenal.common.standard.entities.VirtualCaster;
+import mod.chloeprime.modtechpoweredarsenal.common.standard.pojo.EffekseerEmitterPO;
 import mod.chloeprime.modtechpoweredarsenal.common.standard.util.MoreMth;
 import mod.chloeprime.modtechpoweredarsenal.common.standard.util.RegistryHelper;
 import net.minecraft.commands.arguments.EntityAnchorArgument.Anchor;
@@ -76,7 +77,7 @@ public class IronSpellGrenade extends ThrowableItemEntity {
         entity.setGravity(data.getEntityData().getGravity());
         entity.setBounceFactor(data.getEntityData().getBounceFactor());
         entity.setShouldBounce(data.getEntityData().isShouldBounce());
-        entity.setExplodeFxId(data.getExplodeFxId());
+        entity.setExplodeFx(data.getExplodeFx());
         entity.setIterativeCastingRange(data.getIterativeCastingRange());
         entity.setGrenadeItem(stack);
 
@@ -117,7 +118,7 @@ public class IronSpellGrenade extends ThrowableItemEntity {
     private AbstractSpell spell = SpellRegistry.none();
     private int spellLevel = 1;
     private double spellPower = 1;
-    private @Nullable ResourceLocation explodeFxId;
+    private @Nullable EffekseerEmitterPO explodeFx;
     private double iterativeCastingRange = 6;
 
     private ItemStack grenadeItem;
@@ -158,8 +159,8 @@ public class IronSpellGrenade extends ThrowableItemEntity {
         return spellPower;
     }
 
-    public @Nullable ResourceLocation getExplodeFxId() {
-        return explodeFxId;
+    public @Nullable EffekseerEmitterPO getExplodeFx() {
+        return explodeFx;
     }
 
     public double getIterativeCastingRange() {
@@ -182,8 +183,8 @@ public class IronSpellGrenade extends ThrowableItemEntity {
         this.spellPower = spellPower;
     }
 
-    public void setExplodeFxId(@Nullable ResourceLocation explodeFxId) {
-        this.explodeFxId = explodeFxId;
+    public void setExplodeFx(@Nullable EffekseerEmitterPO explodeFx) {
+        this.explodeFx = explodeFx;
     }
 
     public void setIterativeCastingRange(double iterativeCastingRange) {
@@ -278,13 +279,14 @@ public class IronSpellGrenade extends ThrowableItemEntity {
         if (level().isClientSide()) {
             return;
         }
-        var effek = getExplodeFxId();
+        var effek = getExplodeFx();
         if (effek != null) {
             lookAt(Anchor.EYES, getEyePosition().add(hitNormal));
             var emitter = ParticleEmitterInfo
-                    .create(level(), effek)
+                    .create(level(), effek.getId())
                     .position(hitPos)
-                    .rotation((float) Math.toRadians(getXRot() + 90), (float) Math.toRadians(-getYRot()), 0);
+                    .rotation((float) Math.toRadians(getXRot() + 90), (float) Math.toRadians(-getYRot()), 0)
+                    .scale((float) effek.getScale());
             AAALevel.addParticle(level(), 256, emitter);
         }
     }
