@@ -432,15 +432,16 @@ public class IronSpellGrenade extends ThrowableItemEntity {
         return result;
     }
 
-    private VirtualCaster setupCaster(Level level, @Nonnull VirtualCaster entity) {
+    private VirtualCaster setupCaster(Level level, @Nonnull VirtualCaster caster) {
         if (!level.isClientSide()) {
             try {
                 isCasterJoiningLevel.incrementAndGet();
-                level.addFreshEntity(entity);
+                caster.setPos(this.position());
+                level.addFreshEntity(caster);
             } finally {
                 isCasterJoiningLevel.decrementAndGet();
             }
         }
-        return entity;
+        return caster;
     }
 }

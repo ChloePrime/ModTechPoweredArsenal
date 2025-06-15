@@ -58,9 +58,6 @@ public class VirtualCaster extends AbstractSpellCastingMob implements TraceableE
     public VirtualCaster(Level level, @Nullable Entity owner) {
         this(TYPE, level);
         setOwner(owner);
-        if (owner != null) {
-            setPos(owner.position());
-        }
     }
 
     public VirtualCaster(EntityType<? extends AbstractSpellCastingMob> entityType, Level level) {
@@ -120,13 +117,13 @@ public class VirtualCaster extends AbstractSpellCastingMob implements TraceableE
     public @Nonnull VirtualCaster createSlaveCaster() {
         var slave = new VirtualCaster(level(), getOwner());
         slave.isSlave = true;
+        slave.setPos(this.position());
         var spellPowerAttribute = AttributeRegistry.SPELL_POWER.get();
         var spellPowerInstance = slave.getAttribute(spellPowerAttribute);
         if (spellPowerInstance != null) {
             spellPowerInstance.setBaseValue(this.getAttributeValue(spellPowerAttribute));
         }
         level().addFreshEntity(slave);
-        slave.setPos(this.position());
         return slave;
     }
 
