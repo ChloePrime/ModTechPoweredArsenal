@@ -4,7 +4,7 @@ import net.minecraft.resources.ResourceLocation;
 
 import java.io.Serializable;
 
-@SuppressWarnings({"FieldMayBeFinal", "FieldCanBeLocal"})
+@SuppressWarnings({"FieldMayBeFinal", "FieldCanBeLocal", "unused"})
 public class EffekseerEmitterPO implements Serializable {
     private ResourceLocation id;
     private double scale = 1;
