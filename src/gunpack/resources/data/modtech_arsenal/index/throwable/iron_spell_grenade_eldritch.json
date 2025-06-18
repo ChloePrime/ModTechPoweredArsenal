@@ -14,6 +14,10 @@
       "should_bounce": false,
       "bounceFactor": 0.0625
     },
+    "explode_fx": {
+      "id": "modtech_arsenal:iron_spell_grenade/eldritch",
+      "scale": 1.5
+    },
     "spell": "irons_spellbooks:sculk_tentacles",
     "school": "irons_spellbooks:eldritch",
     "school_affinity_buff": 4,
