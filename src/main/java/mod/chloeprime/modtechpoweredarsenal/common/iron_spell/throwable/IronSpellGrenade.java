@@ -218,7 +218,9 @@ public class IronSpellGrenade extends ThrowableItemEntity {
 
     @Override
     protected void onHit(HitResult result) {
-        this.hitPos = result.getLocation();
+        this.hitPos = result instanceof BlockHitResult
+                ? result.getLocation()
+                : this.position();
         this.hitNormal = result instanceof BlockHitResult blockHit
                 ? Vec3.atLowerCornerOf(blockHit.getDirection().getNormal())
                 : getDeltaMovement().normalize().scale(-1);
