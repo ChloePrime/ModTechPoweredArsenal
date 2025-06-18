@@ -28,6 +28,7 @@ import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.MobCategory;
 import net.minecraft.world.entity.ai.attributes.Attribute;
+import net.minecraft.world.entity.ai.attributes.AttributeModifier;
 import net.minecraft.world.entity.projectile.Projectile;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.Level;
@@ -44,6 +45,7 @@ import org.apache.commons.lang3.reflect.MethodUtils;
 import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
 import java.util.Optional;
+import java.util.UUID;
 import java.util.concurrent.atomic.AtomicInteger;
 import java.util.function.Supplier;
 import java.util.stream.IntStream;
@@ -362,14 +364,30 @@ public class IronSpellGrenade extends ThrowableItemEntity {
                 .getAsDouble();
     }
 
-    private static void forceCast(LivingEntity caster, AbstractSpell spell, int spellLevel) {
-        MagicData magicData = MagicData.getPlayerMagicData(caster);
-        if (!spell.checkPreCastConditions(caster.level(), spellLevel, caster, magicData)) {
-            return;
-        }
+    private static final UUID FORCE_CAST_POWER_MODIFIER_ID = UUID.fromString("00e3ff7e-e031-47eb-bb41-f8770168049b");
+    private void forceCast(LivingEntity caster, AbstractSpell spell, int spellLevel) {
+        var SPELL_POWER = IronSpellGrenade.SPELL_POWER.get();
+        var casterSpellPower = caster.getAttribute(SPELL_POWER);
+        var finalSpellPower = getSpellPower();
+        var modifier = casterSpellPower == null ? null : (casterSpellPower.getValue() == 0
+                ? new AttributeModifier(FORCE_CAST_POWER_MODIFIER_ID, "Force Cast Power Modifier", finalSpellPower, AttributeModifier.Operation.ADDITION)
+                : new AttributeModifier(FORCE_CAST_POWER_MODIFIER_ID, "Force Cast Power Modifier", finalSpellPower / casterSpellPower.getValue() - 1, AttributeModifier.Operation.MULTIPLY_TOTAL));
+        try {
+            if (casterSpellPower != null) {
+                casterSpellPower.addTransientModifier(modifier);
+            }
+            MagicData magicData = MagicData.getPlayerMagicData(caster);
+            if (!spell.checkPreCastConditions(caster.level(), spellLevel, caster, magicData)) {
+                return;
+            }
 
-        spell.onCast(caster.level(), spellLevel, caster, CastSource.COMMAND, magicData);
-        spell.onServerCastComplete(caster.level(), spellLevel, caster, magicData, false);
+            spell.onCast(caster.level(), spellLevel, caster, CastSource.COMMAND, magicData);
+            spell.onServerCastComplete(caster.level(), spellLevel, caster, magicData, false);
+        } finally {
+            if (casterSpellPower != null) {
+                casterSpellPower.removeModifier(modifier);
+            }
+        }
     }
 
     @Override
