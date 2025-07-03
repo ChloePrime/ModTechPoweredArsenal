@@ -40,5 +40,6 @@ public class IronSpellModuleContent {
     public static void init(IEventBus bus) {
         ENTITY_TYPE_DFR.register(bus);
         DATA_TYPE_DFR.register(bus);
+        bus.register(VirtualCaster.AttributeInitializer.class);
     }
 }

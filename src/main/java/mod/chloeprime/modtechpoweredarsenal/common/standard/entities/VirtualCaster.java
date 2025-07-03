@@ -8,6 +8,7 @@ import io.redspace.ironsspellbooks.api.spells.AbstractSpell;
 import io.redspace.ironsspellbooks.api.spells.CastSource;
 import io.redspace.ironsspellbooks.api.spells.CastType;
 import io.redspace.ironsspellbooks.entity.mobs.abstract_spell_casting_mob.AbstractSpellCastingMob;
+import mod.chloeprime.modtechpoweredarsenal.MTPA;
 import mod.chloeprime.modtechpoweredarsenal.common.standard.internal.HateTransferable;
 import mod.chloeprime.modtechpoweredarsenal.common.standard.util.MoreMth;
 import mod.chloeprime.modtechpoweredarsenal.common.standard.util.RegistryHelper;
@@ -50,6 +51,12 @@ import static mod.chloeprime.modtechpoweredarsenal.common.iron_spell.throwable.I
 @ParametersAreNonnullByDefault
 @MethodsReturnNonnullByDefault
 public class VirtualCaster extends AbstractSpellCastingMob implements TraceableEntity, HateTransferable {
+    static {
+        if (!MTPA.ISB_GRENADE_ENABLED) {
+            throw new UnsupportedOperationException("Trying to load entity class \"VirtualCaster\" without its required dependency mods loaded");
+        }
+    }
+
     public static final EntityType<VirtualCaster> TYPE = EntityType.Builder
             .<VirtualCaster>of(VirtualCaster::new, MobCategory.MISC)
             .sized(1F, 1F)
@@ -188,7 +195,6 @@ public class VirtualCaster extends AbstractSpellCastingMob implements TraceableE
     /**
      * 初始化实体 Attribute
      */
-    @Mod.EventBusSubscriber(bus = Mod.EventBusSubscriber.Bus.MOD)
     public static final class AttributeInitializer {
         @SubscribeEvent
         public static void onCreateAttributes(EntityAttributeCreationEvent event) {
