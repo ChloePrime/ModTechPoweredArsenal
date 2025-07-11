@@ -1,9 +1,9 @@
 {
-  "model": "lrtactical:throwable/m67_grenade_geo",
+  "model": "modtech_arsenal:throwable/iron_spell_grenade_blood_geo",
   "animation": "lrtactical:throwable/m67_grenade",
   "state_machine": "lrtactical:default_grenade_state_machine",
-  "texture": "lrtactical:throwable/m67_uv",
-  "slot_texture": "lrtactical:throwable/slot/m67_grenade",
+  "texture": "modtech_arsenal:throwable/uv/iron_spell_grenade_blood",
+  "slot_texture": "modtech_arsenal:throwable/slot/iron_spell_grenade_blood",
   "sounds": {
     "death": "lrtactical:entity.grenade.m67.explode"
   },
