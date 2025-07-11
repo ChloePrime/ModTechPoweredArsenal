@@ -61,11 +61,21 @@ description='''${mod_description}'''
    versionRange="${minecraft_version_range}"
    ordering="NONE"
    side="BOTH"
+
+# TaCZ
 [[dependencies."${mod_id}"]]
   modId="tacz"
   mandatory=true
   # This version range declares a minimum of the current minecraft version up to but not including the next major version
   versionRange="${tacz_version_range}"
+  ordering="NONE"
+  side="BOTH"
+# 绿葡萄战术装备
+[[dependencies."${mod_id}"]]
+  modId="lrtactical"
+  mandatory=false
+  # This version range declares a minimum of the current minecraft version up to but not including the next major version
+  versionRange="[0.3,)"
   ordering="NONE"
   side="BOTH"
 

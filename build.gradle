@@ -228,7 +228,7 @@ dependencies {
     // TACZ
     implementation fg.deobf('curse.maven:timeless-and-classics-zero-1028108:6632240-sources-6633203')
     // LRTAC
-    implementation fg.deobf('maven.modrinth:lr-tactical:0.2.4')
+    implementation fg.deobf('maven.modrinth:lr-tactical:0.3.0')
 
     // GunsmithLib
     implementation(jarJar(fg.deobf('mod.chloeprime:gunsmithlib:4.2.0+mc1.20.1+tacz1.1.6'))) {

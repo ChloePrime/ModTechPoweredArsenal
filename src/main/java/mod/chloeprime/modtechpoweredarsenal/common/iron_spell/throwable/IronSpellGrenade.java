@@ -81,7 +81,6 @@ public class IronSpellGrenade extends ThrowableItemEntity {
         entity.setShouldBounce(data.getEntityData().isShouldBounce());
         entity.setExplodeFx(data.getExplodeFx());
         entity.setIterativeCastingRange(data.getIterativeCastingRange());
-        entity.setGrenadeItem(stack);
 
         if (!entity.loadSpellOverrideFromNBT(stack, thrower, data)) {
             entity.setSpell(data.getDefaultSpellId());
@@ -123,7 +122,6 @@ public class IronSpellGrenade extends ThrowableItemEntity {
     private @Nullable EffekseerEmitterPO explodeFx;
     private double iterativeCastingRange = 6;
 
-    private ItemStack grenadeItem;
     private final Supplier<VirtualCaster> caster = Suppliers.memoize(() -> createCaster(level()));
     private final EventHandler handler = new EventHandler();
     private final AtomicInteger isCasterJoiningLevel = new AtomicInteger();
@@ -193,11 +191,6 @@ public class IronSpellGrenade extends ThrowableItemEntity {
         this.iterativeCastingRange = iterativeCastingRange;
     }
 
-    private void setGrenadeItem(ItemStack stack) {
-        this.grenadeItem = stack.copy();
-    }
-
-
     private boolean spellIs(TagKey<AbstractSpell> tag) {
         return RegistryHelper.is(level(), SpellRegistry.SPELL_REGISTRY_KEY, this.spell, tag);
     }
@@ -219,27 +212,16 @@ public class IronSpellGrenade extends ThrowableItemEntity {
     }
 
     @Override
-    protected void onHit(HitResult result) {
-        this.hitPos = result instanceof BlockHitResult
+    public void onDeath(@Nullable HitResult result) {
+        hitPos = result instanceof BlockHitResult
                 ? result.getLocation()
                 : this.position();
-        this.hitNormal = result instanceof BlockHitResult blockHit
+        hitNormal = result instanceof BlockHitResult blockHit
                 ? Vec3.atLowerCornerOf(blockHit.getDirection().getNormal())
                 : getDeltaMovement().normalize().scale(-1);
-        super.onHit(result);
-    }
-
-    @Override
-    public void onDeath() {
-        if (hitPos.equals(Vec3.ZERO)) {
-            hitPos = position();
-        }
-        if (hitNormal.equals(Vec3.ZERO)) {
-            hitNormal = getDeltaMovement().normalize().scale(-1);
-        }
         explode();
         explodeVFX();
-        super.onDeath();
+        super.onDeath(result);
     }
 
     private void explode() {
