@@ -1,9 +1,9 @@
 {
-  "model": "modtech_arsenal:throwable/holy_grenade_geo",
+  "model": "modtech_arsenal:throwable/iron_spell_grenade_holy_geo",
   "animation": "lrtactical:throwable/m67_grenade",
   "state_machine": "lrtactical:default_grenade_state_machine",
-  "texture": "modtech_arsenal:throwable/uv/holy_grenade",
-  "slot_texture": "modtech_arsenal:throwable/slot/holy_grenade",
+  "texture": "modtech_arsenal:throwable/uv/iron_spell_grenade_holy",
+  "slot_texture": "modtech_arsenal:throwable/slot/iron_spell_grenade_holy",
   "sounds": {
     "death": "lrtactical:entity.grenade.m67.explode"
   },
