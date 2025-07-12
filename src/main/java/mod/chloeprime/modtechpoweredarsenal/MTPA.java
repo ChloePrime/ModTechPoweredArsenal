@@ -109,6 +109,11 @@ public final class MTPA {
         public static final RegistryObject<Item> GALLIUM_NITRIDE_GEM = registerSimpleItem("gallium_nitride");
         public static final RegistryObject<Item> GALLIUM_NITRIDE_SUBSTRATE = registerSimpleItem("gallium_nitride_substrate");
 
+        public static final RegistryObject<Item> HNO3 = Items.REGISTRY.register("hno3", () -> new Item(new Item
+                .Properties()
+                .craftRemainder(net.minecraft.world.item.Items.GLASS_BOTTLE)));
+        public static final RegistryObject<Item> SMOKELESS_GUNPOWDER = registerSimpleItem("smokeless_gunpowder");
+
         private Items() {}
 
         public static final class Tags {
@@ -118,6 +123,7 @@ public final class MTPA {
             public static final TagKey<Item> RAW_MATERIALS_GALLIUM = forgeTag("raw_materials/gallium");
             public static final TagKey<Item> STORAGE_BLOCKS_GALLIUM = forgeTag("storage_blocks/gallium");
             public static final TagKey<Item> STORAGE_BLOCKS_RAW_GALLIUM = forgeTag("storage_blocks/raw_gallium");
+            public static final TagKey<Item> GUNPOWDER_SMOKELESS = forgeTag("gunpowder/smokeless");
 
             public static final TagKey<Item> GEMS_GALLIUM_NITRIDE = forgeTag("gems/gallium_nitride");
 
@@ -191,6 +197,8 @@ public final class MTPA {
         output.accept(Items.GALLIUM_BLOCK.get());
         output.accept(Items.GALLIUM_NUGGET.get());
         output.accept(Items.GALLIUM_NITRIDE_GEM.get());
+        output.accept(Items.HNO3.get());
+        output.accept(Items.SMOKELESS_GUNPOWDER.get());
         output.accept(gun("ew_scythe"));
         output.accept(gun("ew_hammer"));
         output.accept(gun("gl_shark"));

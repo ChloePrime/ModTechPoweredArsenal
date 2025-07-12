@@ -57,5 +57,11 @@ public class MtpaItemTagProvider extends ItemTagsProvider {
             tag(Tags.RAW_MATERIALS_GALLIUM).add(RAW_GALLIUM.get());
             tag(Items.RAW_MATERIALS).addTag(Tags.RAW_MATERIALS_GALLIUM);
         }
+
+        // Misc
+        {
+            tag(Tags.GUNPOWDER_SMOKELESS).add(SMOKELESS_GUNPOWDER.get());
+            tag(Items.GUNPOWDER).addTags(Tags.GUNPOWDER_SMOKELESS);
+        }
     }
 }

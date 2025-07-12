@@ -1,6 +1,8 @@
-// 1.20.1	2025-01-25T22:34:52.2849375	Tags for minecraft:item mod id modtech_arsenal
+// 1.20.1	2025-07-12T22:58:04.2165462	Tags for minecraft:item mod id modtech_arsenal
 e802a638fb105b95118cd06f1461290ab1fdd43e data/forge/tags/items/gems.json
 08572fa9c67b060504432613a35871f94766e2ef data/forge/tags/items/gems/gallium_nitride.json
+a89c6b3ed7f9d7d88339317637f5bc6d4eeac35f data/forge/tags/items/gunpowder.json
+7d0bc06ec1a8f544ea529af8791339cc89b4d5d4 data/forge/tags/items/gunpowder/smokeless.json
 29cda0bfdb547461e9c31c7ee6f89a7346f852bd data/forge/tags/items/ingots.json
 47eed2875cc300829a9cf4a4ed1e3bd1e396085c data/forge/tags/items/ingots/gallium.json
 a40781dd9bb0d5f766be7e6cbf2135e5175bba73 data/forge/tags/items/nuggets.json

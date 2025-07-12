@@ -8,8 +8,17 @@ import net.minecraft.data.PackOutput;
 import net.minecraft.data.recipes.FinishedRecipe;
 import net.minecraft.data.recipes.RecipeCategory;
 import net.minecraft.data.recipes.RecipeProvider;
+import net.minecraft.data.recipes.ShapelessRecipeBuilder;
 import net.minecraft.resources.ResourceLocation;
+import net.minecraft.tags.ItemTags;
 import net.minecraft.world.item.Item;
+import net.minecraft.world.item.ItemStack;
+import net.minecraft.world.item.Items;
+import net.minecraft.world.item.PotionItem;
+import net.minecraft.world.item.alchemy.Potion;
+import net.minecraft.world.item.alchemy.PotionUtils;
+import net.minecraft.world.item.alchemy.Potions;
+import net.minecraftforge.common.crafting.PartialNBTIngredient;
 import org.jetbrains.annotations.NotNull;
 
 import java.util.Objects;
@@ -25,6 +34,11 @@ public class MtpaRecipeProvider extends RecipeProvider {
     protected void buildRecipes(@NotNull Consumer<FinishedRecipe> writer) {
         material(writer, MTPA.Items.GALLIUM_INGOT, MTPA.Items.GALLIUM_BLOCK, MTPA.Items.GALLIUM_NUGGET);
         storageBlock(writer, MTPA.Items.RAW_GALLIUM, MTPA.Items.RAW_GALLIUM_BLOCK);
+        ShapelessRecipeBuilder.shapeless(RecipeCategory.MISC, MTPA.Items.SMOKELESS_GUNPOWDER.get(), 4)
+                .requires(MTPA.Items.HNO3.get())
+                .requires(ItemTags.WOOL)
+                .unlockedBy("has_hno3", has(MTPA.Items.HNO3.get()))
+                .save(writer);
     }
 
     @SuppressWarnings("SameParameterValue")
@@ -40,6 +54,10 @@ public class MtpaRecipeProvider extends RecipeProvider {
         provider.blasting(DataIngredient.items(MTPA.Items.DEEPSLATE_GALLIUM_ORE.get()), RecipeCategory.MISC, MTPA.Items.GALLIUM_INGOT, 1);
         provider.smelting(DataIngredient.items(MTPA.Items.RAW_GALLIUM.get()), RecipeCategory.MISC, MTPA.Items.GALLIUM_INGOT, 1);
         provider.blasting(DataIngredient.items(MTPA.Items.RAW_GALLIUM.get()), RecipeCategory.MISC, MTPA.Items.GALLIUM_INGOT, 1);
+        ItemStack strength2Potion = PotionUtils.setPotion(Items.POTION.getDefaultInstance(), Potions.STRONG_STRENGTH);
+        provider.smelting(
+                DataIngredient.ingredient(PartialNBTIngredient.of(Items.POTION, Objects.requireNonNull(strength2Potion.getTag())), Items.POTION),
+                RecipeCategory.MISC, MTPA.Items.HNO3, 1);
     }
 
     @SuppressWarnings("deprecation")

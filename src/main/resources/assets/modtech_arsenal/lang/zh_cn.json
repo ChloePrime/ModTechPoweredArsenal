@@ -12,6 +12,9 @@
   "item.modtech_arsenal.gallium_nugget": "镓粒",
   "item.modtech_arsenal.gallium_nitride": "氮化镓晶体",
 
+  "item.modtech_arsenal.hno3": "浓硝酸",
+  "item.modtech_arsenal.smokeless_gunpowder": "无烟火药",
+
   "entity.modtech_arsenal.fang_emitter": "唤魔者尖牙生成器",
   "entity.modtech_arsenal.shockwave": "冲击波",
 

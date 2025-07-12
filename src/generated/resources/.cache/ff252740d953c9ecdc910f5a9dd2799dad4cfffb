@@ -1,13 +1,15 @@
-// 1.20.1	2025-01-23T18:50:45.9276817	Registrate Provider for modtech_arsenal [Recipes, Advancements, Loot Tables, Tags (blocks), Tags (items), Tags (fluids), Tags (entity_types), generic_server_provider, Blockstates, Item models, Lang (en_us/en_ud), generic_client_provider, Tags (attributes), Tags (enchantments), Tags (mob_effects), Tags (traits), Patchouli Provider]
+// 1.20.1	2025-07-12T22:29:34.3468912	Registrate Provider for modtech_arsenal [Recipes, Advancements, Loot Tables, Tags (blocks), Tags (items), Tags (fluids), Tags (entity_types), generic_server_provider, Blockstates, Item models, Lang (en_us/en_ud), generic_client_provider, Tags (attributes), Tags (enchantments), Tags (mob_effects), Tags (traits), Patchouli Provider]
 822eb985ddbbe7729c7d348085a373bfff6158b9 data/modtech_arsenal/advancements/recipes/misc/gallium_ingot_from_deepslate_gallium_ore_blasting.json
 97ef146d28dc2dcd9090dfef25678a79c7fa443f data/modtech_arsenal/advancements/recipes/misc/gallium_ingot_from_deepslate_gallium_ore_smelting.json
 938e1e6340b110e1a5855fc64bc1f3ecb8ce90fc data/modtech_arsenal/advancements/recipes/misc/gallium_ingot_from_gallium_ore_blasting.json
 d5a7a8657f8812158ad0881af088c3293a5366fe data/modtech_arsenal/advancements/recipes/misc/gallium_ingot_from_gallium_ore_smelting.json
 cf75a6faa85ab0a7e6edf6fa9363437f623e5b42 data/modtech_arsenal/advancements/recipes/misc/gallium_ingot_from_raw_gallium_blasting.json
 9acbcb4cc0019e3f2c6de78d7dd130d7f4a3a293 data/modtech_arsenal/advancements/recipes/misc/gallium_ingot_from_raw_gallium_smelting.json
+e5e1b57094ce4ecee15eccb7b260a2f3d2d30ce2 data/modtech_arsenal/advancements/recipes/misc/hno3_from_potion_smelting.json
 6737b085b467e019aa58493ffda6fa6a05f25bfb data/modtech_arsenal/recipes/gallium_ingot_from_deepslate_gallium_ore_blasting.json
 c6f717e7b1409fc81a0a2f193b11ef5715fc4449 data/modtech_arsenal/recipes/gallium_ingot_from_deepslate_gallium_ore_smelting.json
 c257f1119878ddcb8f5e00286d8e3a4570c0dc37 data/modtech_arsenal/recipes/gallium_ingot_from_gallium_ore_blasting.json
 cf10e2c5e1e7c9e456d569688af5f2d67002e2b0 data/modtech_arsenal/recipes/gallium_ingot_from_gallium_ore_smelting.json
 5565aa2939e76b8e317ed12938aa696271b07f43 data/modtech_arsenal/recipes/gallium_ingot_from_raw_gallium_blasting.json
 290f4d6ef1d03d30adde7611c1cb3b9a11c24a61 data/modtech_arsenal/recipes/gallium_ingot_from_raw_gallium_smelting.json
+173475589e079028e12809bca6ca48882ca1fcac data/modtech_arsenal/recipes/hno3_from_potion_smelting.json

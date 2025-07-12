@@ -1,5 +1,7 @@
-// 1.20.1	2025-01-25T22:34:52.2839037	Item Models: modtech_arsenal
+// 1.20.1	2025-07-12T22:48:26.4245703	Item Models: modtech_arsenal
 9e9335128e220ed9c7dbc7a1a0e65002684ce25a assets/modtech_arsenal/models/item/gallium_ingot.json
 b078f61438f23f5d871146fecb84835b15a129bd assets/modtech_arsenal/models/item/gallium_nitride.json
 3a632f00f106bfd8191aed63255df74f62ad4b83 assets/modtech_arsenal/models/item/gallium_nugget.json
+d2f676b3e4d5656b9a45bbc4c06afaac191e023a assets/modtech_arsenal/models/item/hno3.json
 02c5319316dd545f8f61a3818746550464319ead assets/modtech_arsenal/models/item/raw_gallium.json
+729dde353fe37cc2f4e00ecfba03ba7f19bb2dcf assets/modtech_arsenal/models/item/smokeless_gunpowder.json
