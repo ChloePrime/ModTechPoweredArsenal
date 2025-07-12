@@ -18,7 +18,7 @@
       "id": "modtech_arsenal:iron_spell_grenade/evocation",
       "scale": 4
     },
-    "spell": "irons_spellbooks:raise_dead",
+    "spell": "irons_spellbooks:fang_ward",
     "school": "irons_spellbooks:evocation",
     "school_affinity_buff": 4,
     "school_power_buff": 0.5
