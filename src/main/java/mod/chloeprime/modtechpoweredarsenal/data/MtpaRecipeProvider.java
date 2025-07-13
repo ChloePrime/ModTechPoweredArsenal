@@ -5,17 +5,12 @@ import com.tterrag.registrate.util.DataIngredient;
 import mod.chloeprime.modtechpoweredarsenal.MTPA;
 import net.minecraft.core.registries.BuiltInRegistries;
 import net.minecraft.data.PackOutput;
-import net.minecraft.data.recipes.FinishedRecipe;
-import net.minecraft.data.recipes.RecipeCategory;
-import net.minecraft.data.recipes.RecipeProvider;
-import net.minecraft.data.recipes.ShapelessRecipeBuilder;
+import net.minecraft.data.recipes.*;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.tags.ItemTags;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.Items;
-import net.minecraft.world.item.PotionItem;
-import net.minecraft.world.item.alchemy.Potion;
 import net.minecraft.world.item.alchemy.PotionUtils;
 import net.minecraft.world.item.alchemy.Potions;
 import net.minecraftforge.common.crafting.PartialNBTIngredient;
@@ -41,12 +36,6 @@ public class MtpaRecipeProvider extends RecipeProvider {
                 .save(writer);
     }
 
-    @SuppressWarnings("SameParameterValue")
-    private void material(Consumer<FinishedRecipe> writer, Supplier<? extends Item> ingot, Supplier<? extends Item> block, Supplier<? extends Item> nugget) {
-        storageBlock(writer, ingot, block);
-        nugget(writer, ingot, nugget);
-    }
-
     public static void buildRecipesWithRegistrate(RegistrateRecipeProvider provider) {
         provider.smelting(DataIngredient.items(MTPA.Items.GALLIUM_ORE.get()), RecipeCategory.MISC, MTPA.Items.GALLIUM_INGOT, 1);
         provider.blasting(DataIngredient.items(MTPA.Items.GALLIUM_ORE.get()), RecipeCategory.MISC, MTPA.Items.GALLIUM_INGOT, 1);
@@ -58,6 +47,12 @@ public class MtpaRecipeProvider extends RecipeProvider {
         provider.smelting(
                 DataIngredient.ingredient(PartialNBTIngredient.of(Items.POTION, Objects.requireNonNull(strength2Potion.getTag())), Items.POTION),
                 RecipeCategory.MISC, MTPA.Items.HNO3, 1);
+    }
+
+    @SuppressWarnings("SameParameterValue")
+    private void material(Consumer<FinishedRecipe> writer, Supplier<? extends Item> ingot, Supplier<? extends Item> block, Supplier<? extends Item> nugget) {
+        storageBlock(writer, ingot, block);
+        nugget(writer, ingot, nugget);
     }
 
     @SuppressWarnings("deprecation")

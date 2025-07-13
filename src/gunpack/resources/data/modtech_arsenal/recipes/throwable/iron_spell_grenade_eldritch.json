@@ -1,0 +1,37 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "conditions": [
+    {
+      "type": "forge:mod_loaded",
+      "modid": "lrtactical"
+    },
+    {
+      "type": "forge:mod_loaded",
+      "modid": "irons_spellbooks"
+    }
+  ],
+  "category": "combat",
+  "key": {
+    "#":
+    {
+      "tag": "forge:gunpowder/smokeless"
+    },
+    "X": {
+      "tag": "forge:ingots/iron"
+    },
+    "C": {
+      "tag": "irons_spellbooks:eldritch_focus"
+    }
+  },
+  "pattern": [
+    "X#X",
+    "#C#",
+    "X#X"
+  ],
+  "result": {
+    "item": "lrtactical:throwable",
+    "nbt": "{ThrowableId:\"modtech_arsenal:iron_spell_grenade_eldritch\",ISB_Spells:{maxSpells:1,mustEquip:1b,spellWheel:0b}}",
+    "count": 8
+  },
+  "show_notification": true
+}
