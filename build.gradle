@@ -201,9 +201,10 @@ repositories {
         url = "https://maven.theillusivec4.top/"
     }
 
-    maven { // Registrate
-        url "https://maven.tterrag.com/"
-    }
+    // This maven is inaccessible in my IDE, so use libs folder
+    // maven { // Registrate
+    //     url "https://maven.tterrag.com/"
+    // }
 
     maven {
         name "KosmX's maven"
