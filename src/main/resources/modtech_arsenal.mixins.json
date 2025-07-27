@@ -10,6 +10,7 @@
     "minecraft.DamageSourcesAccessor",
     "minecraft.MakeGunEnchantableMixin",
     "minecraft.MixinDamageSource",
+    "minecraft.MixinDispenserBlock",
     "minecraft.MixinEvokerFang",
     "minecraft.MixinNoteBlock",
     "minecraft.PerkEnchantmentLimitMixin",
